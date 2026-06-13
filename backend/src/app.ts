@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import { authRoutes } from './modules/auth/auth.routes'
 import { subjectRoutes } from './modules/subject/subject.routes'
 import { planningRoutes } from './modules/planning/planning.routes'
+import { pdfRoutes } from './modules/pdf/pdf.routes'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/auth', authRoutes)
 app.use('/api/subjects', subjectRoutes)
 app.use('/api/planning', planningRoutes)
+app.use('/api/pdf', pdfRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Revix API opérationnelle' })
