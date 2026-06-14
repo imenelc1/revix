@@ -9,12 +9,8 @@
       ]"
     >
       <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75 animate-ping"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
-          </span>
-          <span class="text-2xl font-bold text-primary">Revix</span>
+        <div class="flex items-center">
+          <AppLogo size="xl" />
         </div>
 
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -311,6 +307,7 @@ import AppButton from '@/shared/components/AppButton.vue'
 import AppCard from '@/shared/components/AppCard.vue'
 import ThemeToggle from '@/shared/components/ThemeToggle.vue'
 import LanguageToggle from '@/shared/components/LanguageToggle.vue'
+import AppLogo from '@/shared/components/AppLogo.vue'
 import {
   Sparkles, ArrowRight, FileText, Calendar, TrendingUp,
   FileSearch, Check, CalendarClock, Zap
