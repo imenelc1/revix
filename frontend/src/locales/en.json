@@ -73,9 +73,9 @@
     "createAccount": "Create an account",
     "orEmail": "or continue with",
     "firstName": "First name",
-    "firstNamePlaceholder": "Ex: John",
+    "firstNamePlaceholder": "Enter your first name",
     "lastName": "Last name",
-    "lastNamePlaceholder": "Ex: Smith",
+    "lastNamePlaceholder": "Enter your last name",
     "registerEmail": "Academic or personal email",
     "confirmPassword": "Confirm password",
     "terms": "I accept the",
@@ -86,9 +86,38 @@
     "hasAccount": "Already have an account?",
     "signIn": "Log in",
     "errorPasswordMatch": "Passwords do not match",
-    "errorTerms": "You must accept the terms"
+    "errorTerms": "You must accept the terms",
+    "registerTitle": "Create your account",
+    "registerSubtitle2": "You can start organizing your study schedule in less than 2 minutes."
   },
   "buttons": {
     "google": "Google"
+  },
+  "hero": {
+  "badge": "3 EXAMS IN 9 DAYS",
+  "title1": "Your schedule already knows",
+  "titleHighlight": "where to start",
+  "description": "No need to study by feel. Revix calculates every day what matters most based on your level, difficulty, and exam date.",
+
+  "today": "Today",
+  "examMode": "EXAM MODE",
+
+  "metaFree": "100% free",
+  "metaAI": "Llama 3.3 AI",
+  "metaLang": "EN / FR",
+
+  "progressLabel": "progress"
+},
+"onboarding": {
+    "badge": "READY IN LESS THAN 2 MINUTES",
+    "title1": "Your first schedule",
+    "titleHighlight": "starts here",
+    "description": "Add your modules, set your level per chapter and your availability — Revix takes care of organizing everything, day by day.",
+    "cardTitle": "Your modules",
+    "cardBadge": "{count} ADDED",
+    "addModule": "Add a module",
+    "metaFree": "100% free",
+    "metaAI": "Llama 3.3 AI",
+    "metaLang": "FR / EN"
   }
 }

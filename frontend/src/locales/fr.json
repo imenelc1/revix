@@ -7,10 +7,10 @@
   },
   "landing": {
     "badge": "PLANNING GÉNÉRÉ EN 12 SECONDES",
-    "title1": "Sache exactement",
+    "title1": "Sachez exactement",
     "titleHighlight": "quoi réviser",
     "title2": "aujourd'hui",
-    "description": "Revix transforme tes modules, tes niveaux et tes dates d'examens en un planning jour par jour — réaliste, équilibré, et qui s'adapte quand tu rates une session.",
+    "description": "Revix transforme vos modules, votre niveau et vos dates d'examen en un planning jour par jour — réaliste, équilibré et capable de s'adapter lorsque vous manquez une session.",
     "ctaStart": "Créer mon planning",
     "ctaFeatures": "Voir comment ça marche",
     "freeTag": "100% gratuit",
@@ -21,74 +21,130 @@
     "readyLabel": "PRÊT POUR L'EXAMEN",
     "examModeChip": "Mode Examen activé — J-7",
     "completedChip": "Algo — Tri rapide terminé",
-    "stat1": "Score de préparation moyen en plus",
-    "stat2": "Gagnées par semaine sur l'organisation",
+    "stat1": "Score moyen de préparation en plus",
+    "stat2": "Gagnées chaque semaine sur l'organisation",
     "stat3": "Gratuit, pour toujours",
+
     "whyTag": "Pourquoi Revix",
-    "featuresTitle": "L'organisation, réinventée par l'IA",
-    "featuresSubtitle": "Des outils pensés pour les étudiants qui visent l'excellence sans y sacrifier leurs soirées.",
+    "featuresTitle": "L'organisation réinventée par l'IA",
+    "featuresSubtitle": "Des outils conçus pour les étudiants qui visent l'excellence sans sacrifier leurs soirées.",
+
     "feature1Title": "Analyse PDF intelligente",
-    "feature1Desc": "Upload ton cours ou ton TD. Revix détecte les chapitres, les concepts clés et la difficulté — tu corriges avant d'importer.",
+    "feature1Desc": "Importez votre cours ou votre TD. Revix détecte les chapitres, les concepts clés et le niveau de difficulté — vous gardez le contrôle avant l'import.",
     "feature1Tag1": "12 chapitres détectés",
     "feature1Tag2": "Groq · Llama 3.3",
+
     "feature2Title": "Mode Examen automatique",
-    "feature2Desc": "À J-7, ton planning change de stratégie : moins de nouveaux chapitres, plus de répétitions, sessions courtes et ciblées.",
+    "feature2Desc": "À J-7, votre planning change de stratégie : moins de nouveaux chapitres, davantage de révisions, avec des sessions courtes et ciblées.",
     "feature2Tag1": "Activé à J-7",
     "feature2Tag2": "Quiz + flashcards",
+
     "feature3Title": "Rattrapage intelligent",
-    "feature3Desc": "Une session ratée n'est jamais perdue. Elle est redistribuée sur les prochains jours sans casser le planning global.",
-    "feature3Tag1": "Redistribution auto",
-    "feature3Tag2": "Zéro culpabilité",
+    "feature3Desc": "Une session manquée n'est jamais perdue. Elle est redistribuée sur les prochains jours sans déséquilibrer votre planning global.",
+    "feature3Tag1": "Redistribution automatique",
+    "feature3Tag2": "Sans culpabilité",
+
     "howTag": "Comment ça marche",
     "howTitle": "Quatre étapes, un planning",
     "howSubtitle": "Du module ajouté au planning généré, sans friction.",
-    "step1Title": "Ajoute tes modules",
+
+    "step1Title": "Ajoutez vos modules",
     "step1Desc": "Nom, date d'examen, chapitres — manuellement ou extraits depuis un PDF.",
-    "step2Title": "Indique ton niveau",
-    "step2Desc": "Pas compris, moyen, maîtrisé — par chapitre, pour que l'IA priorise correctement.",
-    "step3Title": "Donne tes dispos",
-    "step3Desc": "Jours libres et heures par jour. Revix gère le reste, pauses incluses.",
-    "step4Title": "Révise, suis, ajuste",
-    "step4Desc": "Calendrier interactif, flashcards, quiz, et dashboard de progression en temps réel.",
-    "ctaTitle": "Prêt à transformer tes révisions ?",
-    "ctaDesc": "Crée ton compte gratuitement et génère ton premier planning personnalisé en quelques minutes.",
+
+    "step2Title": "Indiquez votre niveau",
+    "step2Desc": "Non compris, moyen, maîtrisé — par chapitre, afin que l'IA priorise efficacement.",
+
+    "step3Title": "Définissez vos disponibilités",
+    "step3Desc": "Jours libres et heures disponibles par jour. Revix s'occupe du reste, pauses incluses.",
+
+    "step4Title": "Révisez, suivez, ajustez",
+    "step4Desc": "Calendrier interactif, flashcards, quiz et tableau de bord de progression en temps réel.",
+
+    "ctaTitle": "Prêt à transformer vos révisions ?",
+    "ctaDesc": "Créez votre compte gratuitement et générez votre premier planning personnalisé en quelques minutes.",
     "ctaButton": "Essayer gratuitement",
     "ctaFooter": "Sans carte bancaire · Annulation à tout moment",
+
     "freeForever": "100% gratuit, pour toujours."
   },
+
   "footer": {
     "rights": "Tous droits réservés.",
     "support": "Support",
     "privacy": "Confidentialité"
   },
+
   "auth": {
-    "welcomeBack": "Content de te revoir",
-    "loginSubtitle": "Connecte-toi pour reprendre ton planning là où tu l'as laissé.",
+    "welcomeBack": "Heureux de vous revoir",
+    "loginSubtitle": "Connectez-vous pour reprendre votre planning là où vous l'avez laissé.",
+
     "email": "Email",
     "emailPlaceholder": "nom{'@'}exemple.com",
+
     "password": "Mot de passe",
-    "forgotPassword": "Oublié ?",
+    "forgotPassword": "Mot de passe oublié ?",
+
     "loginButton": "Se connecter",
+
     "noAccount": "Nouveau sur Revix ?",
-    "createAccount": "Crée un compte",
+    "createAccount": "Créer un compte",
+
     "orEmail": "ou continuer avec",
+
     "firstName": "Prénom",
-    "firstNamePlaceholder": "Ex: Jean",
+    "firstNamePlaceholder": "Entrez votre prénom",
+
     "lastName": "Nom",
-    "lastNamePlaceholder": "Ex: Dupont",
+    "lastNamePlaceholder": "Entrez votre nom",
+
     "registerEmail": "Email académique ou personnel",
+
     "confirmPassword": "Confirmation",
+
     "terms": "J'accepte les",
     "termsLink": "Conditions Générales d'Utilisation",
     "and": "et la",
     "privacyLink": "Politique de Confidentialité",
+
     "registerButton": "Créer mon compte gratuitement",
+
     "hasAccount": "Déjà inscrit ?",
     "signIn": "Connexion",
+
     "errorPasswordMatch": "Les mots de passe ne correspondent pas",
-    "errorTerms": "Vous devez accepter les conditions"
+    "errorTerms": "Vous devez accepter les conditions",
+    "registerTitle": "Créez votre compte",
+    "registerSubtitle2": "Vous pouvez commencer à organiser vos révisions en moins de 2 minutes."
   },
+
   "buttons": {
     "google": "Google"
+  },
+  "hero": {
+  "badge": "3 EXAMENS DANS 9 JOURS",
+  "title1": "Ton planning sait déjà",
+  "titleHighlight": "par où commencer",
+  "description": "Pas besoin de réviser au feeling. Revix calcule chaque jour ce qui compte le plus selon ton niveau, la difficulté et la date de l'examen.",
+
+  "today": "Aujourd'hui",
+  "examMode": "MODE EXAMEN",
+
+  "metaFree": "100% gratuit",
+  "metaAI": "IA Llama 3.3",
+  "metaLang": "FR / EN",
+
+  "progressLabel": "progression"
+},
+"onboarding": {
+    "badge": "PRÊT EN MOINS DE 2 MINUTES",
+    "title1": "Votre premier planning",
+    "titleHighlight": "commence ici",
+    "description": "Ajoutez vos modules, indiquez votre niveau par chapitre et vos disponibilités — Revix s'occupe de tout organiser, jour par jour.",
+    "cardTitle": "Vos modules",
+    "cardBadge": "{count} AJOUTÉS",
+    "addModule": "Ajouter un module",
+    "metaFree": "100% gratuit",
+    "metaAI": "IA Llama 3.3",
+    "metaLang": "FR / EN"
   }
 }

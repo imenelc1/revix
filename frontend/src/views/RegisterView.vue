@@ -18,62 +18,68 @@
 
       <!-- logo -->
       <RouterLink to="/" class="relative z-10">
-        <AppLogo size="md" />
+        <AppLogo size="2xl" />
       </RouterLink>
 
       <!-- headline + onboarding preview card -->
-      <div class="relative z-10 max-w-md">
-        <div class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-primary-soft mb-4 opacity-0 animate-rise" style="animation-delay: 0.05s">
-          <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_theme(colors.primary)] animate-pulse-dot"></span>
-          PRÊT EN MOINS DE 2 MINUTES
-        </div>
+     <div class="relative z-10 max-w-md">
+  <!-- Badge supérieur -->
+  <div class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-primary-soft mb-4 opacity-0 animate-rise" style="animation-delay: 0.05s">
+    <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_theme(colors.primary)] animate-pulse-dot"></span>
+    {{ $t('onboarding.badge') }}
+  </div>
 
-        <h1 class="font-display text-4xl font-bold leading-[1.12] tracking-tight mb-4 opacity-0 animate-rise" style="animation-delay: 0.12s">
-          Ton premier planning
-          <span class="bg-gradient-to-br from-primary to-primary-soft bg-clip-text text-transparent">commence ici</span>
-        </h1>
+  <!-- Titre Principal -->
+  <h1 class="font-display text-4xl font-bold leading-[1.12] tracking-tight mb-4 opacity-0 animate-rise" style="animation-delay: 0.12s">
+    {{ $t('onboarding.title1') }}
+    <span class="bg-gradient-to-br from-primary to-primary-soft bg-clip-text text-transparent">{{ $t('onboarding.titleHighlight') }}</span>
+  </h1>
 
-        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-9 opacity-0 animate-rise" style="animation-delay: 0.2s">
-          Ajoute tes modules, indique ton niveau par chapitre et tes disponibilités — Revix s'occupe de tout organiser, jour par jour.
-        </p>
+  <!-- Description -->
+  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-9 opacity-0 animate-rise" style="animation-delay: 0.2s">
+    {{ $t('onboarding.description') }}
+  </p>
 
-        <!-- onboarding preview card -->
-        <div class="group bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-600 rounded-2xl p-[18px] shadow-xl shadow-gray-200/50 dark:shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-primary opacity-0 animate-rise" style="animation-delay: 0.3s">
-          <div class="flex items-center justify-between mb-3.5">
-            <div class="font-display font-bold text-sm">Tes modules</div>
-            <div class="font-mono text-[10px] tracking-wide bg-primary/10 text-primary-soft px-2.5 py-1 rounded-md">3 AJOUTÉS</div>
-          </div>
-
-          <div
-            v-for="(module, i) in onboardingModules"
-            :key="module.name"
-            class="flex items-center gap-3 py-2.5 rounded-lg transition-all duration-200 hover:px-2 hover:bg-gray-50 dark:hover:bg-ink-700"
-            :class="i > 0 ? 'border-t border-gray-200 dark:border-ink-600' : ''"
-          >
-            <span class="w-2 h-2 rounded-full shrink-0" :style="{ background: module.color }"></span>
-            <div class="flex-1">
-              <div class="text-[13px] font-semibold">{{ module.name }}</div>
-              <div class="text-[11px] font-mono text-gray-400 mt-0.5">{{ module.meta }}</div>
-            </div>
-            <div class="font-mono text-[11px] text-gray-400 dark:text-ink-600">{{ module.chapters }}</div>
-          </div>
-
-          <!-- add module row -->
-          <div class="flex items-center gap-3 py-2.5 mt-1 rounded-lg border-t border-dashed border-gray-200 dark:border-ink-600 text-gray-400 dark:text-ink-600">
-            <span class="w-5 h-5 rounded-full border border-dashed border-gray-300 dark:border-ink-600 flex items-center justify-center shrink-0">
-              <Plus :size="11" />
-            </span>
-            <div class="text-[12px] font-medium">Ajouter un module</div>
-          </div>
-        </div>
+  <!-- Onboarding preview card -->
+  <div class="group bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-600 rounded-2xl p-[18px] shadow-xl shadow-gray-200/50 dark:shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-primary opacity-0 animate-rise" style="animation-delay: 0.3s">
+    <div class="flex items-center justify-between mb-3.5">
+      <div class="font-display font-bold text-sm">{{ $t('onboarding.cardTitle') }}</div>
+      <div class="font-mono text-[10px] tracking-wide bg-primary/10 text-primary-soft px-2.5 py-1 rounded-md">
+        {{ $t('onboarding.cardBadge', { count: onboardingModules.length }) }}
       </div>
+    </div>
 
-      <!-- bottom meta -->
-      <div class="relative z-10 flex gap-6 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise" style="animation-delay: 0.5s">
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>100% gratuit</span>
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>IA Llama 3.3</span>
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>FR / EN</span>
+    <!-- Liste des modules -->
+    <div
+      v-for="(module, i) in onboardingModules"
+      :key="module.name"
+      class="flex items-center gap-3 py-2.5 rounded-lg transition-all duration-200 hover:px-2 hover:bg-gray-50 dark:hover:bg-ink-700"
+      :class="i > 0 ? 'border-t border-gray-200 dark:border-ink-600' : ''"
+    >
+      <span class="w-2 h-2 rounded-full shrink-0" :style="{ background: module.color }"></span>
+      <div class="flex-1">
+        <div class="text-[13px] font-semibold">{{ module.name }}</div>
+        <div class="text-[11px] font-mono text-gray-400 mt-0.5">{{ module.meta }}</div>
       </div>
+      <div class="font-mono text-[11px] text-gray-400 dark:text-ink-600">{{ module.chapters }}</div>
+    </div>
+
+    <!-- Row d'ajout de module -->
+    <div class="flex items-center gap-3 py-2.5 mt-1 rounded-lg border-t border-dashed border-gray-200 dark:border-ink-600 text-gray-400 dark:text-ink-600">
+      <span class="w-5 h-5 rounded-full border border-dashed border-gray-300 dark:border-ink-600 flex items-center justify-center shrink-0">
+        <Plus :size="11" />
+      </span>
+      <div class="text-[12px] font-medium">{{ $t('onboarding.addModule') }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom meta -->
+<div class="relative z-10 flex gap-6 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise" style="animation-delay: 0.5s">
+  <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>{{ $t('onboarding.metaFree') }}</span>
+  <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>{{ $t('onboarding.metaAI') }}</span>
+  <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>{{ $t('onboarding.metaLang') }}</span>
+</div>
     </div>
 
     <!-- ===== Right: form side ===== -->
@@ -82,7 +88,7 @@
       <!-- top bar: mobile logo + theme/lang toggles -->
       <div class="absolute top-6 left-6 right-6 flex items-center justify-between">
         <RouterLink to="/" class="lg:hidden">
-          <AppLogo size="md" />
+          <AppLogo size="2xl" />
         </RouterLink>
         <div class="flex items-center gap-1 ml-auto">
           <LanguageToggle />
@@ -92,12 +98,11 @@
 
       <div class="w-full max-w-[400px]">
         <h2 class="font-display text-3xl font-bold tracking-tight mb-2.5 opacity-0 animate-rise" style="animation-delay: 0.15s">
-          Crée ton compte
-        </h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-7 opacity-0 animate-rise" style="animation-delay: 0.22s">
-          Gratuit, sans carte bancaire. Tu peux commencer à organiser tes révisions en moins de 2 minutes.
-        </p>
-
+  {{ $t('auth.registerTitle') }}
+</h2>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-7 opacity-0 animate-rise" style="animation-delay: 0.22s">
+  {{ $t('auth.registerSubtitle2') }}
+</p>
         <form @submit.prevent="onSubmit" class="space-y-4">
           <div class="grid grid-cols-2 gap-3 opacity-0 animate-rise" style="animation-delay: 0.26s">
             <AppInput

@@ -15,69 +15,104 @@
 
       <!-- logo -->
       <RouterLink to="/" class="relative z-10">
-        <AppLogo size="md" />
+        <AppLogo size="2xl" />
       </RouterLink>
 
       <!-- headline + live card -->
-      <div class="relative z-10 max-w-md">
-        <div class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-primary-soft mb-4 opacity-0 animate-rise" style="animation-delay: 0.05s">
-          <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_theme(colors.primary)] animate-pulse-dot"></span>
-          3 EXAMENS DANS 9 JOURS
-        </div>
+<div class="relative z-10 max-w-md">
+  <div class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-primary-soft mb-4 opacity-0 animate-rise"
+       style="animation-delay: 0.05s">
 
-        <h1 class="font-display text-4xl font-bold leading-[1.12] tracking-tight mb-4 opacity-0 animate-rise" style="animation-delay: 0.12s">
-          Ton planning sait déjà
-          <span class="bg-gradient-to-br from-primary to-primary-soft bg-clip-text text-transparent">par où commencer</span>
-        </h1>
+    <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_theme(colors.primary)] animate-pulse-dot"></span>
 
-        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-9 opacity-0 animate-rise" style="animation-delay: 0.2s">
-          Pas besoin de réviser au feeling. Revix calcule chaque jour ce qui compte le plus selon ton niveau, la difficulté et la date de l'examen.
-        </p>
+    {{ t('hero.badge') }}
+  </div>
 
-        <!-- live planner card -->
-        <div class="group bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-600 rounded-2xl p-[18px] shadow-xl shadow-gray-200/50 dark:shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-primary opacity-0 animate-rise" style="animation-delay: 0.3s">
-          <div class="flex items-center justify-between mb-3.5">
-            <div class="font-display font-bold text-sm">Aujourd'hui</div>
-            <div class="font-mono text-[10px] tracking-wide bg-primary/10 text-primary-soft px-2.5 py-1 rounded-md">MODE EXAMEN</div>
-          </div>
+  <h1 class="font-display text-4xl font-bold leading-[1.12] tracking-tight mb-4 opacity-0 animate-rise"
+      style="animation-delay: 0.12s">
 
-          <div
-            v-for="(session, i) in liveSessions"
-            :key="session.name"
-            class="flex items-center gap-3 py-2.5 rounded-lg transition-all duration-200 hover:px-2 hover:bg-gray-50 dark:hover:bg-ink-700"
-            :class="i > 0 ? 'border-t border-gray-200 dark:border-ink-600' : ''"
-          >
-            <span class="w-2 h-2 rounded-full shrink-0" :style="{ background: session.color }"></span>
-            <div class="flex-1">
-              <div class="text-[13px] font-semibold">{{ session.name }}</div>
-              <div class="text-[11px] font-mono text-gray-400 mt-0.5">{{ session.time }}</div>
-            </div>
-            <div
-              class="w-[22px] h-[22px] rounded-full border-[1.5px] flex items-center justify-center text-[11px] transition-all"
-              :class="session.done
-                ? 'bg-primary border-primary text-white'
-                : 'border-gray-300 dark:border-ink-600 text-transparent'"
-            >
-              <Check :size="12" v-if="session.done" />
-            </div>
-          </div>
+    {{ t('hero.title1') }}
 
-          <!-- progress -->
-          <div class="flex items-center gap-3 mt-3.5 pt-3.5 border-t border-gray-200 dark:border-ink-600">
-            <div class="flex-1 h-1.5 bg-gray-100 dark:bg-ink-700 rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-primary to-primary-soft rounded-full animate-fill-bar-slow" style="--target-width: 68%"></div>
-            </div>
-            <div class="font-mono text-xs font-semibold text-primary-soft min-w-[36px] text-right">68%</div>
-          </div>
-        </div>
+    <span class="bg-gradient-to-br from-primary to-primary-soft bg-clip-text text-transparent">
+      {{ t('hero.titleHighlight') }}
+    </span>
+  </h1>
+
+  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-9 opacity-0 animate-rise"
+     style="animation-delay: 0.2s">
+    {{ t('hero.description') }}
+  </p>
+
+  <!-- live planner card -->
+  <div class="group bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-600 rounded-2xl p-[18px] shadow-xl shadow-gray-200/50 dark:shadow-black/40 transition-all duration-300 hover:-translate-y-1 hover:border-primary opacity-0 animate-rise"
+       style="animation-delay: 0.3s">
+
+    <div class="flex items-center justify-between mb-3.5">
+      <div class="font-display font-bold text-sm">
+        {{ t('hero.today') }}
       </div>
 
-      <!-- bottom meta -->
-      <div class="relative z-10 flex gap-6 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise" style="animation-delay: 0.5s">
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>100% gratuit</span>
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>IA Llama 3.3</span>
-        <span class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-current"></span>FR / EN</span>
+      <div class="font-mono text-[10px] tracking-wide bg-primary/10 text-primary-soft px-2.5 py-1 rounded-md">
+        {{ t('hero.examMode') }}
       </div>
+    </div>
+
+    <div
+      v-for="(session, i) in liveSessions"
+      :key="session.name"
+      class="flex items-center gap-3 py-2.5 rounded-lg transition-all duration-200 hover:px-2 hover:bg-gray-50 dark:hover:bg-ink-700"
+      :class="i > 0 ? 'border-t border-gray-200 dark:border-ink-600' : ''"
+    >
+      <span class="w-2 h-2 rounded-full shrink-0" :style="{ background: session.color }"></span>
+
+      <div class="flex-1">
+        <div class="text-[13px] font-semibold">{{ session.name }}</div>
+        <div class="text-[11px] font-mono text-gray-400 mt-0.5">{{ session.time }}</div>
+      </div>
+
+      <div
+        class="w-[22px] h-[22px] rounded-full border-[1.5px] flex items-center justify-center text-[11px] transition-all"
+        :class="session.done
+          ? 'bg-primary border-primary text-white'
+          : 'border-gray-300 dark:border-ink-600 text-transparent'"
+      >
+        <Check :size="12" v-if="session.done" />
+      </div>
+    </div>
+
+    <!-- progress -->
+    <div class="flex items-center gap-3 mt-3.5 pt-3.5 border-t border-gray-200 dark:border-ink-600">
+      <div class="flex-1 h-1.5 bg-gray-100 dark:bg-ink-700 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-primary to-primary-soft rounded-full animate-fill-bar-slow"
+             style="--target-width: 68%"></div>
+      </div>
+
+      <div class="font-mono text-xs font-semibold text-primary-soft min-w-[36px] text-right">
+        68%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bottom meta -->
+<div class="relative z-10 flex gap-6 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise"
+     style="animation-delay: 0.5s">
+
+  <span class="flex items-center gap-1.5">
+    <span class="w-1 h-1 rounded-full bg-current"></span>
+    {{ t('hero.metaFree') }}
+  </span>
+
+  <span class="flex items-center gap-1.5">
+    <span class="w-1 h-1 rounded-full bg-current"></span>
+    {{ t('hero.metaAI') }}
+  </span>
+
+  <span class="flex items-center gap-1.5">
+    <span class="w-1 h-1 rounded-full bg-current"></span>
+    {{ t('hero.metaLang') }}
+  </span>
+</div>
     </div>
 
     <!-- ===== Right: form side ===== -->
@@ -86,7 +121,7 @@
       <!-- top bar: mobile logo + theme/lang toggles -->
       <div class="absolute top-6 left-6 right-6 flex items-center justify-between">
         <RouterLink to="/" class="lg:hidden">
-          <AppLogo size="md" />
+          <AppLogo size="2xl" />
         </RouterLink>
         <div class="flex items-center gap-1 ml-auto">
           <LanguageToggle />

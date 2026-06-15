@@ -9,7 +9,7 @@
       ]"
     >
       <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <AppLogo size="xl" />
+        <AppLogo size="2xl" />
 
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
           <a href="#features" class="relative group transition hover:text-gray-900 dark:hover:text-white">
@@ -34,7 +34,8 @@
     </nav>
 
     <!-- ===== HERO ===== -->
-    <section class="relative max-w-6xl mx-auto px-6 pt-16 pb-20 overflow-hidden">
+    <section class="relative w-full px-6 pt-16 pb-20 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-6">
 
       <!-- grain -->
       <div
@@ -143,6 +144,7 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- ===== STATS ===== -->
@@ -245,7 +247,7 @@
     <!-- ===== Footer ===== -->
     <footer class="border-t border-gray-200 dark:border-ink-600 py-8">
       <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
-        <span class="font-display font-bold text-gray-900 dark:text-white">Revix</span>
+        <span class="font-display font-bold text-gray-900 dark:text-white"><AppLogo size="2xl" /></span>
         <span>© 2026 Revix. {{ t('footer.rights') }}</span>
         <div class="flex gap-6">
           <a href="#" class="hover:text-primary transition">{{ t('footer.support') }}</a>
