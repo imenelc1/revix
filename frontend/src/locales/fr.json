@@ -114,7 +114,8 @@
     "errorPasswordMatch": "Les mots de passe ne correspondent pas",
     "errorTerms": "Vous devez accepter les conditions",
     "registerTitle": "Créez votre compte",
-    "registerSubtitle2": "Vous pouvez commencer à organiser vos révisions en moins de 2 minutes."
+    "registerSubtitle2": "Vous pouvez commencer à organiser vos révisions en moins de 2 minutes.",
+    "logout": "Déconnexion"
   },
 
   "buttons": {
@@ -145,6 +146,33 @@
     "addModule": "Ajouter un module",
     "metaFree": "100% gratuit",
     "metaAI": "IA Llama 3.3",
-    "metaLang": "FR / EN"
+    "metaLang": "FR / EN",
+    "addModuleTitle": "Ajouter un module",
+    "stepIdentity": "Identité",
+    "stepChapters": "Chapitres",
+    "stepMastery": "Maîtrise",
+    "moduleInfo": "Informations du Module",
+    "moduleSubtitle": "Commençons par les bases pour organiser votre session.",
+    "labelModuleName": "Nom du module",
+    "placeholderModuleName": "ex: Microéconomie Avancée",
+    "labelExamDate": "Date de l'examen",
+    "moduleContent": "Contenu du Module",
+    "moduleContentSubtitle": "Listez vos chapitres ou laissez notre IA les extraire pour vous.",
+    "dragPdf": "Glissez votre PDF ici",
+    "pdfMax": "Extraction intelligente des chapitres par IA (Max 50Mo)",
+    "addedChapters": "Chapitres ajoutés",
+    "addManually": "Ajouter manuellement",
+    "selfEvaluation": "Auto-évaluation",
+    "selfEvaluationSubtitle": "Soyez honnête avec vous-même pour un plan d'étude optimisé.",
+    "back": "Retour",
+    "continue": "Continuer",
+    "finishModule": "Finaliser le Module"
+  },
+  "sidebar": {
+   "academicExcellence": "Excellence Académique",
+    "dashboard": "Tableau de bord",
+    "modules": "Modules",
+    "calendar": "Calendrier",
+    "iaAnalysis": "Analyses IA"
   }
 }

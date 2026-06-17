@@ -88,7 +88,8 @@
     "errorPasswordMatch": "Passwords do not match",
     "errorTerms": "You must accept the terms",
     "registerTitle": "Create your account",
-    "registerSubtitle2": "You can start organizing your study schedule in less than 2 minutes."
+    "registerSubtitle2": "You can start organizing your study schedule in less than 2 minutes.",
+     "logout": "Log Out"
   },
   "buttons": {
     "google": "Google"
@@ -118,6 +119,33 @@
     "addModule": "Add a module",
     "metaFree": "100% free",
     "metaAI": "Llama 3.3 AI",
-    "metaLang": "FR / EN"
+    "metaLang": "FR / EN",
+     "addModuleTitle": "Add a Module",
+    "stepIdentity": "Identity",
+    "stepChapters": "Chapters",
+    "stepMastery": "Mastery",
+    "moduleInfo": "Module Information",
+    "moduleSubtitle": "Let's start with the basics to organize your study session.",
+    "labelModuleName": "Module Name",
+    "placeholderModuleName": "e.g., Advanced Microeconomics",
+    "labelExamDate": "Examination Date",
+    "moduleContent": "Module Content",
+    "moduleContentSubtitle": "List your chapters or let our AI extract them for you.",
+    "dragPdf": "Drop your PDF here",
+    "pdfMax": "Smart chapter extraction by AI (Max 50MB)",
+    "addedChapters": "Added chapters",
+    "addManually": "Add manually",
+    "selfEvaluation": "Self-evaluation",
+    "selfEvaluationSubtitle": "Be honest with yourself for an optimized study plan.",
+    "back": "Back",
+    "continue": "Continue",
+    "finishModule": "Finalize Module"
+  },
+  "sidebar": {
+   "academicExcellence": "Academic Excellence",
+    "dashboard": "Dashboard",
+    "modules": "Modules",
+    "calendar": "Calendar",
+    "iaAnalysis": "AI Analysis"
   }
 }
