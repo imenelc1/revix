@@ -21,6 +21,11 @@ module.exports = {
           800: '#171A23',
           700: '#1E222D',
           600: '#272B37',
+        },
+        surface: {
+          DEFAULT: '#F5F6FA',
+          card: '#FFFFFF',
+          border: '#E8EAF0',
         }
       },
       fontFamily: {
@@ -57,10 +62,6 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateX(-12px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' }
         },
-        shine: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' }
-        }
       },
       animation: {
         float: 'float 5s ease-in-out infinite',

@@ -1,43 +1,50 @@
-<script setup>
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
-</script>
-
 <template>
-  <header class="h-20 bg-[#0b0f19]/80 backdrop-blur-md border-b border-slate-900/60 flex items-center justify-between px-8 fixed top-0 right-0 left-64 z-10">
-    <!-- Titre de la page actuelle -->
-    <div>
-      <h2 class="text-white font-semibold text-lg">{{ t('onboarding.addModuleTitle') }}</h2>
-    </div>
+  <header class="h-16 shrink-0 flex items-center justify-between px-4 md:px-6 border-b border-surface-border dark:border-ink-700 bg-white dark:bg-ink-900 transition-colors duration-300">
 
-    <!-- Actions à droite -->
-    <div class="flex items-center gap-6">
-      <!-- Badge de Score Global -->
-      <div class="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
-        <span class="text-xs font-medium text-emerald-400 tracking-wide">
-          {{ t('onboarding.globalScore') }} <strong class="font-bold">85%</strong>
-        </span>
-      </div>
+    <!-- Left: menu mobile + title -->
+    <div class="flex items-center gap-3">
+      <!-- Burger menu — mobile only -->
+      <button
+        @click="$emit('toggle-sidebar')"
+        class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-ink-800 transition"
+      >
+        <Menu :size="20" />
+      </button>
 
-      <!-- Boutons d'outils Quick Actions -->
-      <div class="flex items-center gap-4 text-slate-400">
-        <button class="hover:text-white transition-colors">
-          <!-- Icône Cloche Notification -->
-          <span class="block w-5 h-5 rounded-full border-2 border-current"></span>
-        </button>
-        <button class="hover:text-white transition-colors">
-          <!-- Icône Paramètres -->
-          <span class="block w-5 h-5 rounded-full border-2 border-current"></span>
-        </button>
-      </div>
-
-      <!-- Profil Utilisateur -->
-      <div class="flex items-center gap-3 pl-2 border-l border-slate-800">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border border-slate-700 overflow-hidden flex items-center justify-center text-white text-xs font-bold">
-          IM
-        </div>
+      <div>
+        <h1 class="font-display text-base md:text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+          {{ title }}
+        </h1>
+        <p v-if="subtitle" class="text-xs text-gray-500 dark:text-gray-400 font-mono mt-0.5 hidden md:block">
+          {{ subtitle }}
+        </p>
       </div>
     </div>
+
+    <!-- Right: score + toggles -->
+    <div class="flex items-center gap-2 md:gap-3">
+      <div v-if="score > 0" class="hidden sm:flex items-center gap-2 bg-secondary/10 border border-secondary/20 px-3 py-1.5 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+        <span class="text-xs font-semibold text-secondary font-mono">{{ score }}%</span>
+      </div>
+
+      <LanguageToggle />
+      <ThemeToggle />
+    </div>
+
   </header>
 </template>
+
+<script setup lang="ts">
+import { Menu } from '@lucide/vue'
+import ThemeToggle from '@/shared/components/ThemeToggle.vue'
+import LanguageToggle from '@/shared/components/LanguageToggle.vue'
+
+defineEmits(['toggle-sidebar'])
+
+withDefaults(defineProps<{
+  title?: string
+  subtitle?: string
+  score?: number
+}>(), { score: 0 })
+</script>
