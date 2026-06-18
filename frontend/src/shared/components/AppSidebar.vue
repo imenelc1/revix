@@ -1,28 +1,31 @@
 <template>
   <aside class="w-64 border-r border-gray-200 dark:border-ink-700 bg-white dark:bg-ink-950 p-4 flex flex-col justify-between shrink-0 transition-colors duration-300">
-    <div class="space-y-6">
+   <div class="space-y-8">
       <div class="px-3">
-        <h2 class="font-display text-lg font-bold tracking-tight text-gray-900 dark:text-white">Revix</h2>
-        <p class="text-[11px] font-mono tracking-wider text-gray-400 dark:text-gray-500 uppercase">
+        <h2 class="font-display text-xl font-bold tracking-tight text-gray-900 dark:text-white">Revix</h2>
+        <p class="text-[10px] font-mono tracking-widest text-gray-400 dark:text-gray-500 uppercase font-semibold mt-0.5">
           {{ t('sidebar.academicExcellence') }}
         </p>
       </div>
 
       <nav class="space-y-1">
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition">
-          <LayoutDashboard :size="18" />
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800/50 transition duration-200">
+          <LayoutDashboard :size="18" class="opacity-80" />
           {{ t('sidebar.dashboard') }}
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-primary-soft dark:text-white bg-primary/5 dark:bg-ink-800 border border-primary/10 dark:border-ink-600 transition">
+        
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-primary-soft dark:text-white bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700/50 shadow-inner transition duration-200">
           <BookOpen :size="18" />
           {{ t('sidebar.modules') }}
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition">
-          <Calendar :size="18" />
+        
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800/50 transition duration-200">
+          <Calendar :size="18" class="opacity-80" />
           {{ t('sidebar.calendar') }}
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition">
-          <BarChart3 :size="18" />
+        
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-ink-800/50 transition duration-200">
+          <BarChart3 :size="18" class="opacity-80" />
           {{ t('sidebar.iaAnalysis') }}
         </a>
       </nav>

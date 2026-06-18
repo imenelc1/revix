@@ -1,40 +1,33 @@
 <template>
+  <!-- Conteneur principal de l'application avec support du Light/Dark mode fluide -->
   <div class="min-h-screen bg-gray-50 dark:bg-ink-950 text-gray-900 dark:text-white font-sans flex flex-col transition-colors duration-300">
+    
+    <!-- =========================================================================
+         HEADER DE L'APPLICATION
+         ========================================================================= -->
     <header class="flex items-center justify-between px-8 py-4 border-b border-gray-200 dark:border-ink-700 bg-white dark:bg-ink-950 transition-colors duration-300">
+      <!-- Zone gauche : Logo de l'application -->
       <div class="flex items-center gap-2">
         <AppLogo variant="full" size="sm" />
       </div>
       
+      <!-- Zone droite : Actions utilisateur, sélecteurs globaux et profil -->
       <div class="flex items-center gap-4">
+        <!-- Badge dynamique de Score Global -->
         <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-          Global Score: 85%
+          {{ t('onboarding.globalScore') }} 85%
         </span>
 
-        <div class="flex items-center bg-gray-100 dark:bg-ink-800 rounded-xl p-0.5 border border-gray-200 dark:border-ink-600">
-          <button 
-            @click="locale = 'fr'"
-            :class="['px-2.5 py-1 text-xs font-mono rounded-lg transition-all font-bold', locale === 'fr' ? 'bg-white dark:bg-ink-600 text-primary dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200']"
-          >
-            FR
-          </button>
-          <button 
-            @click="locale = 'en'"
-            :class="['px-2.5 py-1 text-xs font-mono rounded-lg transition-all font-bold', locale === 'en' ? 'bg-white dark:bg-ink-600 text-primary dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200']"
-          >
-            EN
-          </button>
-        </div>
+        <!-- Sélecteur de langue  -->
+        <LanguageToggle />
 
-        <button 
-          @click="uiStore.toggleTheme()" 
-          class="p-2 rounded-xl bg-gray-100 dark:bg-ink-800 border border-gray-200 dark:border-ink-600 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-        >
-          <Sun v-if="uiStore.theme === 'dark'" :size="18" />
-          <Moon v-else :size="18" />
-        </button>
+        <!-- Sélecteur de thème (Light/Dark)  -->
+        <ThemeToggle />
 
+        <!-- Séparateur vertical -->
         <div class="w-px h-5 bg-gray-200 dark:bg-ink-700" />
 
+        <!-- Profil utilisateur : Initiales générées à partir du prénom/nom + adresses emails -->
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-soft flex items-center justify-center font-display font-bold text-sm text-white shadow-md select-none">
             {{ userInitials }}
@@ -51,24 +44,34 @@
       </div>
     </header>
 
+    <!-- Content Wrapper : Contient la barre latérale gauche (Sidebar) et la zone de travail -->
     <div class="flex flex-1">
+      <!-- Sidebar globale isolée -->
       <AppSidebar />
 
+      <!-- =========================================================================
+           ZONE DE CONTENU CENTRAL (FORMULAIRE ONBOARDING)
+           ========================================================================= -->
       <main class="flex-1 bg-gray-50 dark:bg-ink-950 flex flex-col p-8 items-center relative overflow-y-auto transition-colors duration-300">
+        <!-- Grille décorative en background (Dot Matrix adaptatif clair/sombre) -->
         <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#1e222d_1px,transparent_1px)] [background-size:16px_16px] opacity-70 dark:opacity-40 pointer-events-none" />
 
         <div class="w-full max-w-3xl z-10 mt-4">
+          <!-- Titre principal de la page -->
           <h1 class="font-display text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-12">
             {{ t('onboarding.addModuleTitle') }}
           </h1>
 
+          <!-- STEPPER VISUEL HORIZONTAL (Étapes 1, 2, 3) -->
           <div class="relative flex items-center justify-between mb-16 max-w-xl mx-auto">
+            <!-- Lignes de fond fixes et de progression dynamique reliant les ronds -->
             <div class="absolute left-0 top-4 right-0 h-[2px] bg-gray-200 dark:bg-ink-700 -z-10" />
             <div 
               class="absolute left-0 top-4 h-[2px] bg-primary transition-all duration-500 -z-10"
               :style="{ width: currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%' }"
             />
 
+            <!-- Étape 1 : Identité -->
             <div class="flex flex-col items-center gap-2">
               <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
                    :class="currentStep >= 1 ? 'bg-primary text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]' : 'bg-white dark:bg-ink-800 text-gray-400 border border-gray-200 dark:border-ink-600'">
@@ -79,6 +82,7 @@
               </span>
             </div>
 
+            <!-- Étape 2 : Chapitres -->
             <div class="flex flex-col items-center gap-2">
               <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
                    :class="currentStep >= 2 ? 'bg-primary text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]' : 'bg-white dark:bg-ink-800 text-gray-400 border border-gray-200 dark:border-ink-600'">
@@ -89,6 +93,7 @@
               </span>
             </div>
 
+            <!-- Étape 3 : Maîtrise -->
             <div class="flex flex-col items-center gap-2">
               <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
                    :class="currentStep >= 3 ? 'bg-primary text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]' : 'bg-white dark:bg-ink-800 text-gray-400 border border-gray-200 dark:border-ink-600'">
@@ -100,8 +105,10 @@
             </div>
           </div>
 
+          <!-- CONTENEUR DU BLOC FORMULAIRE DYNAMIQUE -->
           <div class="bg-white dark:bg-ink-800/90 backdrop-blur-md border border-gray-200 dark:border-ink-600 rounded-2xl p-8 max-w-2xl mx-auto shadow-xl dark:shadow-2xl shadow-gray-200/50 dark:shadow-black/50">
             
+            <!-- CONTENU ÉTAPE 1 : IDENTITÉ -->
             <div v-if="currentStep === 1" class="space-y-6 animate-rise">
               <div>
                 <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white mb-1">
@@ -135,6 +142,7 @@
               </div>
             </div>
 
+            <!-- CONTENU ÉTAPE 2 : CHAPITRES -->
             <div v-if="currentStep === 2" class="space-y-6 animate-rise">
               <div>
                 <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white mb-1">
@@ -180,6 +188,7 @@
               </div>
             </div>
 
+            <!-- CONTENU ÉTAPE 3 : AUTO-ÉVALUATION -->
             <div v-if="currentStep === 3" class="space-y-6 animate-rise">
               <div>
                 <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white mb-1">
@@ -194,12 +203,14 @@
                 <div v-for="(chapter, idx) in chapters" :key="idx" class="p-4 bg-gray-50 dark:bg-ink-900/60 border border-gray-200 dark:border-ink-700 rounded-xl space-y-4">
                   <div class="flex flex-col">
                     <span class="text-sm font-bold text-gray-900 dark:text-white">{{ chapter.title }}</span>
-                    <span class="text-xs text-gray-400">Concepts de base et définitions</span>
+                    <span class="text-xs text-gray-400">{{ t('onboarding.chapterConcept') }}</span>
                   </div>
 
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-200/60 dark:border-ink-700/60">
                     <div>
-                      <span class="block text-[11px] font-mono font-bold text-gray-400 uppercase mb-2">Maîtrise</span>
+                      <span class="block text-[11px] font-mono font-bold text-gray-400 uppercase mb-2">
+                        {{ t('onboarding.masteryLabel') }}
+                      </span>
                       <div class="flex items-center gap-1.5">
                         <button @click="chapter.mastery = 'low'" :class="['p-2 rounded-lg border text-sm transition', chapter.mastery === 'low' ? 'bg-red-500/10 border-red-500/30 text-red-500' : 'bg-white dark:bg-ink-800 border-gray-200 dark:border-ink-700 text-gray-400']">
                           <SmileX :size="16" />
@@ -214,11 +225,17 @@
                     </div>
 
                     <div>
-                      <span class="block text-[11px] font-mono font-bold text-gray-400 uppercase mb-2">Difficulté</span>
+                      <span class="block text-[11px] font-mono font-bold text-gray-400 uppercase mb-2">
+                        {{ t('onboarding.difficultyLabel') }}
+                      </span>
                       <div class="flex bg-white dark:bg-ink-800 rounded-xl p-0.5 border border-gray-200 dark:border-ink-700 w-fit">
-                        <button v-for="level in ['Faible', 'Moyenne', 'Élevée']" :key="level" @click="chapter.difficulty = level"
-                                :class="['px-3 py-1 text-xs font-medium rounded-lg transition-all', chapter.difficulty === level ? 'bg-gray-100 dark:bg-ink-700 text-gray-900 dark:text-white font-bold shadow-sm' : 'text-gray-400 hover:text-gray-600']">
-                          {{ level }}
+                        <button 
+                          v-for="level in ['low', 'medium', 'high']" 
+                          :key="level" 
+                          @click="chapter.difficulty = level"
+                          :class="['px-3 py-1 text-xs font-medium rounded-lg transition-all capitalize', chapter.difficulty === level ? 'bg-gray-100 dark:bg-ink-700 text-gray-900 dark:text-white font-bold shadow-sm' : 'text-gray-400 hover:text-gray-600']"
+                        >
+                          {{ t(`onboarding.levels.${level}`) }}
                         </button>
                       </div>
                     </div>
@@ -227,6 +244,7 @@
               </div>
             </div>
 
+            <!-- BARRE D'ACTION BASSE -->
             <div class="flex items-center justify-between mt-8 pt-6 border-t border-gray-200 dark:border-ink-700">
               <button 
                 v-if="currentStep > 1" 
@@ -235,7 +253,7 @@
               >
                 {{ t('onboarding.back') }}
               </button>
-              <div v-else />
+              <div v-else /> 
               
               <AppButton variant="primary" size="md" @click="nextStep" class="px-6 group">
                 {{ currentStep === 3 ? t('onboarding.finishModule') : t('onboarding.continue') }}
@@ -257,30 +275,37 @@
 import { ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { 
-  Sun, Moon, ArrowRight, UploadCloud, Plus, Trash2, Sparkles,
+  ArrowRight, UploadCloud, Plus, Trash2, Sparkles,
   Frown as SmileX, Meh, Smile, Calendar as CalendarIcon 
 } from '@lucide/vue'
+
+// Importation des composants du Design System globaux
 import AppLogo from '@/shared/components/AppLogo.vue'
 import AppInput from '@/shared/components/AppInput.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import AppSidebar from '@/shared/components/AppSidebar.vue'
-import { useUiStore } from '@/stores/ui.store'
+import ThemeToggle from '@/shared/components/ThemeToggle.vue'
+import LanguageToggle from '@/shared/components/LanguageToggle.vue'
+
+// Importation du store d'authentification
 import { useAuthStore } from '@/stores/auth.store'
 
-const { t, locale } = useI18n()
-const uiStore = useUiStore()
+// Hooks i18n et Store
+const { t } = useI18n()
 const authStore = useAuthStore()
 
+// États locaux du formulaire
 const currentStep = ref(1)
 const moduleName = ref('')
 const examDate = ref('')
 
-// Liste reactive simulée d'après l'UI de l'étape 2 et 3
+// Liste réactive des chapitres
 const chapters = reactive([
-  { title: 'Chapitre 1 : Introduction aux marchés', mastery: 'low', difficulty: 'Moyenne' },
-  { title: 'Chapitre 2 : Théorie du producteur', mastery: 'medium', difficulty: 'Élevée' }
+  { title: 'Chapitre 1 : Introduction aux marchés', mastery: 'low', difficulty: 'medium' },
+  { title: 'Chapitre 2 : Théorie du producteur', mastery: 'medium', difficulty: 'high' }
 ])
 
+// Extraction des initiales de l'utilisateur connecté
 const userInitials = computed(() => {
   const fName = authStore.user?.firstName || 'R'
   const lName = authStore.user?.lastName || 'X'
@@ -289,9 +314,9 @@ const userInitials = computed(() => {
 
 function addManualChapter() {
   chapters.push({
-    title: `Chapitre ${chapters.length + 1} : Nouvelle Notion`,
+    title: `${t('onboarding.chapterPlaceholderText')} ${chapters.length + 1}`,
     mastery: 'medium',
-    difficulty: 'Moyenne'
+    difficulty: 'medium'
   })
 }
 
@@ -303,7 +328,7 @@ function nextStep() {
   if (currentStep.value < 3) {
     currentStep.value++
   } else {
-    console.log('Finalisation du module', { name: moduleName.value, date: examDate.value, chapters })
+    console.log('Finalisation du module avec succès !', { name: moduleName.value, date: examDate.value, chapters })
   }
 }
 </script>

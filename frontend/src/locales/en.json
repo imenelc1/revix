@@ -89,38 +89,26 @@
     "errorTerms": "You must accept the terms",
     "registerTitle": "Create your account",
     "registerSubtitle2": "You can start organizing your study schedule in less than 2 minutes.",
-     "logout": "Log Out"
+    "logout": "Log Out"
   },
   "buttons": {
     "google": "Google"
   },
   "hero": {
-  "badge": "3 EXAMS IN 9 DAYS",
-  "title1": "Your schedule already knows",
-  "titleHighlight": "where to start",
-  "description": "No need to study by feel. Revix calculates every day what matters most based on your level, difficulty, and exam date.",
-
-  "today": "Today",
-  "examMode": "EXAM MODE",
-
-  "metaFree": "100% free",
-  "metaAI": "Llama 3.3 AI",
-  "metaLang": "EN / FR",
-
-  "progressLabel": "progress"
-},
-"onboarding": {
-    "badge": "READY IN LESS THAN 2 MINUTES",
-    "title1": "Your first schedule",
-    "titleHighlight": "starts here",
-    "description": "Add your modules, set your level per chapter and your availability — Revix takes care of organizing everything, day by day.",
-    "cardTitle": "Your modules",
-    "cardBadge": "{count} ADDED",
-    "addModule": "Add a module",
+    "badge": "3 EXAMS IN 9 DAYS",
+    "title1": "Your schedule already knows",
+    "titleHighlight": "where to start",
+    "description": "No need to study by feel. Revix calculates every day what matters most based on your level, difficulty, and exam date.",
+    "today": "Today",
+    "examMode": "EXAM MODE",
     "metaFree": "100% free",
     "metaAI": "Llama 3.3 AI",
-    "metaLang": "FR / EN",
-     "addModuleTitle": "Add a Module",
+    "metaLang": "EN / FR",
+    "progressLabel": "progress"
+  },
+  "onboarding": {
+    "addModuleTitle": "Add a Module",
+    "globalScore": "Global Score:",
     "stepIdentity": "Identity",
     "stepChapters": "Chapters",
     "stepMastery": "Mastery",
@@ -135,14 +123,23 @@
     "pdfMax": "Smart chapter extraction by AI (Max 50MB)",
     "addedChapters": "Added chapters",
     "addManually": "Add manually",
+    "chapterPlaceholderText": "Chapter",
     "selfEvaluation": "Self-evaluation",
     "selfEvaluationSubtitle": "Be honest with yourself for an optimized study plan.",
+    "chapterConcept": "Core concepts and definitions",
+    "masteryLabel": "Mastery",
+    "difficultyLabel": "Difficulty",
+    "levels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
     "back": "Back",
     "continue": "Continue",
     "finishModule": "Finalize Module"
   },
   "sidebar": {
-   "academicExcellence": "Academic Excellence",
+    "academicExcellence": "Academic Excellence",
     "dashboard": "Dashboard",
     "modules": "Modules",
     "calendar": "Calendar",
