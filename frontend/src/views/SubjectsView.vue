@@ -5,12 +5,12 @@
       <!-- Header actions -->
       <div class="flex items-center justify-between">
         <p class="text-sm text-gray-500 dark:text-gray-400">
-          {{ subjectsStore.subjects.length }} module{{ subjectsStore.subjects.length > 1 ? 's' : '' }}
+          {{ t('subjects.count', { count: subjectsStore.subjects.length }) }}
         </p>
         <RouterLink to="/onboarding">
           <AppButton variant="primary" size="sm">
             <template #icon-left><Plus :size="16" /></template>
-            Ajouter un module
+            {{ t('subjects.addModule') }}
           </AppButton>
         </RouterLink>
       </div>
@@ -25,12 +25,12 @@
         <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
           <BookOpen :size="28" class="text-primary" />
         </div>
-        <h3 class="font-display font-bold text-xl text-gray-900 dark:text-white mb-2">Aucun module</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Ajoutez votre premier module pour commencer.</p>
+        <h3 class="font-display font-bold text-xl text-gray-900 dark:text-white mb-2">{{ t('subjects.emptyTitle') }}</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">{{ t('subjects.emptyDescription') }}</p>
         <RouterLink to="/onboarding">
           <AppButton variant="primary" size="md">
             <template #icon-left><Plus :size="16" /></template>
-            Ajouter un module
+            {{ t('subjects.addModule') }}
           </AppButton>
         </RouterLink>
       </div>
@@ -51,7 +51,9 @@
               </div>
               <div>
                 <h4 class="font-display font-bold text-gray-900 dark:text-white text-sm">{{ subject.name }}</h4>
-                <p class="text-xs text-gray-400 font-mono">J-{{ daysUntilExam(subject.examDate) }}</p>
+               <p class="text-xs text-gray-400 font-mono">
+                  {{ t('subjects.daysRemaining', { days: daysUntilExam(subject.examDate) }) }}
+                </p>
               </div>
             </div>
             <button
@@ -65,7 +67,7 @@
           <!-- Progress -->
           <div class="mb-3">
             <div class="flex justify-between text-xs mb-1.5">
-              <span class="text-gray-500 dark:text-gray-400">{{ subject.chapters.length }} chapitres</span>
+              <span class="text-gray-500 dark:text-gray-400">{{ t('subjects.chapters', { count: subject.chapters.length }) }}</span>
               <span class="font-semibold text-gray-900 dark:text-white">{{ subjectProgress(subject) }}%</span>
             </div>
             <div class="h-1.5 bg-gray-100 dark:bg-ink-700 rounded-full overflow-hidden">
@@ -81,28 +83,35 @@
               :key="chapter._id"
               class="flex items-center gap-2 text-xs"
             >
-              <span class="shrink-0" :class="masteryDot(chapter.masteryLevel)">●</span>
+              <component 
+              :is="masteryStatus(chapter.masteryLevel).icon" 
+              :size="14" 
+              class="shrink-0"
+              :class="masteryStatus(chapter.masteryLevel).class"
+            />
+              <span class="truncate text-gray-600 dark:text-gray-400">{{ chapter.title }}</span>
               <span class="truncate text-gray-600 dark:text-gray-400">{{ chapter.title }}</span>
             </div>
             <p v-if="subject.chapters.length > 3" class="text-xs text-gray-400 pl-4">
-              +{{ subject.chapters.length - 3 }} autres chapitres
+              {{ t('subjects.moreChapters', { count: subject.chapters.length - 3 }) }}
             </p>
           </div>
 
           <!-- Exam date -->
           <div class="mt-4 pt-3 border-t border-gray-100 dark:border-ink-700 flex items-center justify-between">
             <span class="text-xs text-gray-400 font-mono">
-              Examen : {{ formatExamDate(subject.examDate) }}
+              {{ t('subjects.exam') }}: {{ formatExamDate(subject.examDate) }}
             </span>
             <span
-              class="text-xs font-semibold px-2 py-0.5 rounded-full"
-              :class="daysUntilExam(subject.examDate) <= 7
-                ? 'bg-warm/10 text-warm'
-                : daysUntilExam(subject.examDate) <= 14
-                ? 'bg-accent/10 text-accent'
-                : 'bg-secondary/10 text-secondary'"
+              class="text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1 w-fit"
+              :class="riskInfo(subject.examDate).class"
             >
-              {{ riskLabel(subject.examDate) }}
+              <component
+                :is="riskInfo(subject.examDate).icon"
+                :size="12"
+              />
+
+              {{ riskInfo(subject.examDate).label }}
             </span>
           </div>
         </div>
@@ -116,12 +125,13 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Plus, Trash2, BookOpen } from '@lucide/vue'
+import { Plus, Trash2, BookOpen, AlertCircle, Clock3, CheckCircle2, XCircle, HelpCircle, CheckCircle } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import type { Subject } from '@/stores/subjects.store'
+
 
 const { t } = useI18n()
 const subjectsStore = useSubjectsStore()
@@ -132,8 +142,15 @@ function subjectProgress(subject: Subject): number {
   return Math.round((mastered / subject.chapters.length) * 100)
 }
 
-function masteryDot(level: string): string {
-  return { not_understood: 'text-warm', average: 'text-accent', mastered: 'text-secondary' }[level] ?? 'text-gray-400'
+function masteryStatus(level: string) {
+  const statusMap: Record<string, { icon: any; class: string }> = {
+    not_understood: { icon: XCircle, class: 'text-warm' },     
+    average: { icon: HelpCircle, class: 'text-accent' },      
+    mastered: { icon: CheckCircle, class: 'text-secondary' }
+  }
+  
+  // Valeur par défaut si le niveau n'est pas reconnu
+  return statusMap[level] ?? { icon: HelpCircle, class: 'text-gray-400' }
 }
 
 function formatExamDate(date: string): string {
@@ -144,15 +161,34 @@ function daysUntilExam(date: string): number {
   return Math.max(0, Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
 }
 
-function riskLabel(date: string): string {
+const riskInfo = (date: string) => {
   const d = daysUntilExam(date)
-  if (d <= 7)  return '🔴 Urgent'
-  if (d <= 14) return '🟡 Bientôt'
-  return '🟢 OK'
+
+  if (d <= 7) {
+    return {
+      label: t('subjects.urgent'),
+      icon: AlertCircle,
+      class: 'bg-warm/10 text-warm'
+    }
+  }
+
+  if (d <= 14) {
+    return {
+      label: t('subjects.soon'),
+      icon: Clock3,
+      class: 'bg-accent/10 text-accent'
+    }
+  }
+
+  return {
+    label: t('subjects.ok'),
+    icon: CheckCircle2,
+    class: 'bg-secondary/10 text-secondary'
+  }
 }
 
 async function confirmDelete(id: string) {
-  if (confirm('Supprimer ce module ?')) {
+  if (confirm(t('subjects.deleteConfirm'))) {
     await subjectsStore.remove(id)
   }
 }

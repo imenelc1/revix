@@ -12,16 +12,16 @@
         <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition">
           <FileText :size="26" class="text-primary" />
         </div>
-        <h3 class="font-display font-bold text-gray-900 dark:text-white mb-1">Analysez votre cours par IA</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Glissez un PDF ou cliquez pour sélectionner</p>
-        <p class="text-xs text-gray-400 font-mono">PDF · Max 10MB · Groq Llama 3.3</p>
+        <h3 class="font-display font-bold text-gray-900 dark:text-white mb-1">{{ t('analysis.uploadTitle') }}</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('analysis.uploadDesc') }}</p>
+        <p class="text-xs text-gray-400 font-mono">{{ t('analysis.uploadMeta') }}</p>
         <input ref="fileInput" type="file" accept=".pdf" class="hidden" @change="onFileSelect" />
       </div>
 
       <!-- Loading -->
       <div v-if="loading" class="text-center py-8">
         <AppSpinner size="lg" />
-        <p class="text-sm text-primary-soft font-mono mt-4 animate-pulse">Analyse IA en cours...</p>
+        <p class="text-sm text-primary-soft font-mono mt-4 animate-pulse">{{ t('analysis.loadingText') }}</p>
       </div>
 
       <!-- Results -->
@@ -30,7 +30,9 @@
           <div class="flex items-center justify-between mb-4">
             <div>
               <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ result.subjectName }}</h3>
-              <p class="text-xs text-gray-400 font-mono mt-0.5">{{ result.totalChapters }} chapitres détectés</p>
+              <p class="text-xs text-gray-400 font-mono mt-0.5">
+                {{ t('analysis.chaptersDetected', { count: result.totalChapters }) }}
+              </p>
             </div>
             <span class="text-xs font-mono bg-primary/10 text-primary-soft px-3 py-1 rounded-full">Groq · Llama 3.3</span>
           </div>
@@ -62,8 +64,10 @@
               </div>
               <span
                 class="shrink-0 text-xs font-semibold px-2 py-0.5 rounded-lg"
-                :class="difficultyClass(chapter.estimatedDifficulty)"
-              >{{ chapter.estimatedDifficulty }}</span>
+                :class="difficultyClass(chapter.estimatedDifficulty).class"
+              >
+                {{ t(`onboarding.levels.${chapter.estimatedDifficulty}`) }}
+              </span>
             </div>
           </div>
 
@@ -73,17 +77,17 @@
               v-model="targetSubjectId"
               class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
             >
-              <option value="">Importer dans un module...</option>
+              <option value="">{{ t('analysis.importOptionPlaceholder') }}</option>
               <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
             </select>
             <AppButton variant="primary" size="sm" :loading="importing" @click="importChapters">
               <template #icon-left><Download :size="15" /></template>
-              Importer ({{ selectedChapters.length }})
+              {{ t('analysis.btnImport', { count: selectedChapters.length }) }}
             </AppButton>
           </div>
 
           <p v-if="importSuccess" class="text-sm text-secondary mt-3 font-semibold">
-            ✅ {{ selectedChapters.length }} chapitres importés avec succès !
+            ✅ {{ t('analysis.importSuccess', { count: selectedChapters.length }) }}
           </p>
         </div>
       </div>
@@ -155,8 +159,13 @@ function toggleChapter(i: number) {
   else selectedChapters.value.splice(idx, 1)
 }
 
-function difficultyClass(d: string): string {
-  return { low: 'bg-secondary/10 text-secondary', medium: 'bg-accent/10 text-accent', high: 'bg-warm/10 text-warm' }[d] ?? 'bg-gray-100 text-gray-400'
+function difficultyClass(d: string) {
+  const classes: Record<string, string> = { 
+    low: 'bg-secondary/10 text-secondary', 
+    medium: 'bg-accent/10 text-accent', 
+    high: 'bg-warm/10 text-warm' 
+  }
+  return { class: classes[d] ?? 'bg-gray-100 text-gray-400' }
 }
 
 async function importChapters() {

@@ -188,5 +188,89 @@
     "noSessionsWeek": "No sessions this week",
     "break": "Break",
     "min": "min"
-  }
+  },
+  "dashboard": {
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+
+  "noUpcomingSessionsToday": "No session planned today.",
+  "todaySessions": "{count} session(s) planned today.",
+
+  "modules": "Modules",
+  "viewAll": "View all",
+  "noModules": "No modules yet.",
+  "addModule": "Add a module",
+
+  "upcomingSessions": "Upcoming sessions",
+  "viewPlanning": "View schedule",
+
+  "noPlanning": "No schedule generated yet",
+  "generatePlanning": "Generate my schedule",
+
+  "noUpcomingSessions": "No upcoming sessions this week",
+
+  "exam": "Exam",
+  "daysRemaining": "D-{days}",
+
+  "chapters": "ch.",
+  "sessionUnit": "session(s)",
+
+  "totalChapters": "Total chapters",
+  "completedSessions": "Completed sessions",
+  "globalScore": "Global score",
+
+  "activity": "Activity over the last 4 weeks",
+  "less": "Less",
+  "more": "More"
+},
+"subjects": {
+  "count": "{count} module | {count} modules",
+
+  "addModule": "Add a module",
+
+  "emptyTitle": "No modules",
+  "emptyDescription": "Add your first module to get started.",
+
+  "daysRemaining": "D-{days}",
+
+  "chapters": "{count} chapter | {count} chapters",
+  "moreChapters": "+{count} more chapters",
+
+  "exam": "Exam",
+
+ "urgent": "Urgent",
+"soon": "Soon",
+"ok": "Ready",
+
+  "deleteConfirm": "Delete this module?"
+},
+"study": {
+  "title": "Flashcards & Quiz",
+  "generateTitle": "Generate Cards",
+  "labelModule": "Module",
+  "selectModule": "Select a module",
+  "labelCourseText": "Course text",
+  "placeholderText": "Paste a course extract here...",
+  "btnFlashcards": "Generate flashcards",
+  "btnQuiz": "Generate quiz",
+  "flashcardsTitle": "Flashcards ({count})",
+  "cardAnswer": "Answer",
+  "cardQuestion": "Question",
+  "quizTitle": "Quiz",
+  "quizCorrect": "correct",
+  "emptyTitle": "No cards generated",
+  "emptyDescription": "Select a module, paste text, and generate."
+},
+"analysis": {
+  "uploadTitle": "Analyze your course with AI",
+  "uploadDesc": "Drag a PDF or click to select",
+  "uploadMeta": "PDF · Max 10MB · Groq Llama 3.3",
+  "loadingText": "AI Analysis in progress...",
+  "chaptersDetected": "{count} chapter detected | {count} chapters detected",
+  "importOptionPlaceholder": "Import into a module...",
+  "btnImport": "Import ({count})",
+  "importSuccess": "{count} chapters imported successfully!"
+}
+
 }

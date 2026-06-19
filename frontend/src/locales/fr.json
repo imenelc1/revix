@@ -189,5 +189,89 @@
     "noSessionsWeek": "Aucune session cette semaine",
     "break": "Pause",
     "min": "min"
-  }
+  },
+  "dashboard": {
+  "greetingMorning": "Bonjour",
+  "greetingAfternoon": "Bon après-midi",
+  "greetingEvening": "Bonsoir",
+
+  "noUpcomingSessionsToday": "Aucune session planifiée aujourd'hui.",
+  "todaySessions": "{count} session(s) planifiée(s) aujourd'hui.",
+
+  "modules": "Modules",
+  "viewAll": "Voir tout →",
+  "noModules": "Aucun module.",
+  "addModule": "Ajouter un module",
+
+  "upcomingSessions": "Sessions à venir",
+  "viewPlanning": "Voir planning →",
+
+  "noPlanning": "Aucun planning généré",
+  "generatePlanning": "Générer mon planning",
+
+  "noUpcomingSessions": "Aucune session à venir cette semaine",
+
+  "exam": "Examen",
+  "daysRemaining": "J-{days}",
+
+  "chapters": "ch.",
+  "sessionUnit": "session(s)",
+
+  "totalChapters": "Chapitres total",
+  "completedSessions": "Sessions terminées",
+  "globalScore": "Score global",
+
+  "activity": "Activité des 4 dernières semaines",
+  "less": "Moins",
+  "more": "Plus"
+},
+"subjects": {
+  "count": "{count} module | {count} modules",
+
+  "addModule": "Ajouter un module",
+
+  "emptyTitle": "Aucun module",
+  "emptyDescription": "Ajoutez votre premier module pour commencer.",
+
+  "daysRemaining": "J-{days}",
+
+  "chapters": "{count} chapitre | {count} chapitres",
+  "moreChapters": "+{count} autres chapitres",
+
+  "exam": "Examen",
+
+ "urgent": "Urgent",
+"soon": "Bientôt",
+"ok": "OK",
+
+  "deleteConfirm": "Supprimer ce module ?"
+},
+"study": {
+  "title": "Flashcards & Quiz",
+  "generateTitle": "Générer des fiches",
+  "labelModule": "Module",
+  "selectModule": "Sélectionner un module",
+  "labelCourseText": "Texte du cours",
+  "placeholderText": "Collez un extrait de cours ici...",
+  "btnFlashcards": "Générer flashcards",
+  "btnQuiz": "Générer quiz",
+  "flashcardsTitle": "Flashcards ({count})",
+  "cardAnswer": "Réponse",
+  "cardQuestion": "Question",
+  "quizTitle": "Quiz",
+  "quizCorrect": "correctes",
+  "emptyTitle": "Aucune fiche générée",
+  "emptyDescription": "Sélectionnez un module, collez du texte et générez."
+},
+"analysis": {
+  "uploadTitle": "Analysez votre cours par IA",
+  "uploadDesc": "Glissez un PDF ou cliquez pour sélectionner",
+  "uploadMeta": "PDF · Max 10MB · Groq Llama 3.3",
+  "loadingText": "Analyse IA en cours...",
+  "chaptersDetected": "{count} chapitre détecté | {count} chapitres détectés",
+  "importOptionPlaceholder": "Importer dans un module...",
+  "btnImport": "Importer ({{count}})",
+  "importSuccess": "{count} chapitres importés avec succès !"
+}
+
 }

@@ -7,7 +7,10 @@
         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;" />
         <div class="relative z-10">
           <p class="font-mono text-xs text-white/70 uppercase tracking-widest mb-1">{{ greeting }}</p>
-          <h2 class="font-display text-2xl font-bold mb-1">{{ authStore.user?.firstName }} 👋</h2>
+          <h2 class="font-display text-2xl font-bold mb-1 flex items-center gap-2">
+  {{ authStore.user?.firstName }}
+
+</h2>
           <p class="text-white/80 text-sm">{{ todaySummary }}</p>
         </div>
         <div class="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2">
@@ -42,9 +45,9 @@
         <!-- Modules progress -->
         <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
           <div class="flex items-center justify-between mb-5">
-            <h3 class="font-display font-bold text-gray-900 dark:text-white">Modules</h3>
+            <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.modules') }}</h3>
             <RouterLink to="/subjects" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
-              Voir tout →
+              {{ t('dashboard.viewAll') }}
             </RouterLink>
           </div>
 
@@ -53,7 +56,7 @@
           </div>
 
           <div v-else-if="subjectsStore.subjects.length === 0" class="text-center py-8">
-            <p class="text-sm text-gray-400">Aucun module. <RouterLink to="/onboarding" class="text-primary-soft hover:text-primary font-semibold">Ajouter un module</RouterLink></p>
+            <p class="text-sm text-gray-400">{{ t('dashboard.noModules') }} <RouterLink to="/onboarding" class="text-primary-soft hover:text-primary font-semibold">{{ t('dashboard.addModule') }}</RouterLink></p>
           </div>
 
           <div v-else class="space-y-4">
@@ -64,7 +67,7 @@
                   <span class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ subject.name }}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="text-xs text-gray-400 font-mono">{{ subject.chapters.length }} ch.</span>
+                  <span class="text-xs text-gray-400 font-mono">{{ subject.chapters.length }} {{ t('dashboard.chapters') }}</span>
                   <span class="text-xs font-semibold text-gray-900 dark:text-white">{{ subjectProgress(subject) }}%</span>
                 </div>
               </div>
@@ -76,13 +79,13 @@
               </div>
               <div class="flex justify-between mt-1">
                 <span class="text-[10px] font-mono text-gray-400">
-                  Examen : {{ formatExamDate(subject.examDate) }}
+                  {{ t('dashboard.exam') }} : {{ formatExamDate(subject.examDate) }}
                 </span>
                 <span
                   class="text-[10px] font-mono font-semibold"
                   :class="daysUntilExam(subject.examDate) <= 7 ? 'text-warm' : 'text-gray-400'"
                 >
-                  J-{{ daysUntilExam(subject.examDate) }}
+                  {{ t('dashboard.daysRemaining', { days: daysUntilExam(subject.examDate) }) }}
                 </span>
               </div>
             </div>
@@ -92,16 +95,16 @@
             to="/onboarding"
             class="mt-4 flex items-center gap-2 w-full p-3 rounded-xl border-2 border-dashed border-gray-200 dark:border-ink-600 text-sm text-gray-400 hover:border-primary hover:text-primary transition justify-center"
           >
-            <Plus :size="16" /> Ajouter un module
+            <Plus :size="16" /> {{ t('dashboard.addModule') }}
           </RouterLink>
         </div>
 
         <!-- Upcoming sessions -->
         <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
           <div class="flex items-center justify-between mb-5">
-            <h3 class="font-display font-bold text-gray-900 dark:text-white">Sessions à venir</h3>
+            <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.upcomingSessions') }}</h3>
             <RouterLink to="/planning" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
-              Voir planning →
+              {{ t('dashboard.viewPlanning') }} 
             </RouterLink>
           </div>
 
@@ -109,11 +112,11 @@
             <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
               <CalendarDays :size="20" class="text-primary" />
             </div>
-            <p class="text-sm text-gray-400 mb-3">Aucun planning généré</p>
+            <p class="text-sm text-gray-400 mb-3">{{ t('dashboard.noPlanning') }}</p>
             <RouterLink to="/planning">
               <AppButton variant="primary" size="sm">
                 <template #icon-left><Sparkles :size="14" /></template>
-                Générer mon planning
+                {{ t('dashboard.generatePlanning') }}
               </AppButton>
             </RouterLink>
           </div>
@@ -136,7 +139,7 @@
             </div>
 
             <div v-if="upcomingSessions.length === 0" class="text-center py-4 text-sm text-gray-400">
-              Aucune session à venir cette semaine
+              {{ t('dashboard.noUpcomingSessions') }}
             </div>
           </div>
         </div>
@@ -144,7 +147,7 @@
 
       <!-- Heatmap placeholder -->
       <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
-        <h3 class="font-display font-bold text-gray-900 dark:text-white mb-5">Activité des 4 dernières semaines</h3>
+        <h3 class="font-display font-bold text-gray-900 dark:text-white mb-5">{{ t('dashboard.activity') }}</h3>
         <div class="grid grid-cols-28 gap-1">
           <div
             v-for="(day, i) in heatmapDays"
@@ -158,12 +161,12 @@
           />
         </div>
         <div class="flex items-center gap-2 mt-3">
-          <span class="text-xs text-gray-400">Moins</span>
+          <span class="text-xs text-gray-400">{{ t('dashboard.less') }}</span>
           <div class="flex gap-1">
             <div v-for="n in 4" :key="n" class="w-3 h-3 rounded-sm"
               :class="['bg-gray-100 dark:bg-ink-700', 'bg-primary/30', 'bg-primary/60', 'bg-primary'][n-1]" />
           </div>
-          <span class="text-xs text-gray-400">Plus</span>
+          <span class="text-xs text-gray-400">{{ t('dashboard.more') }}</span>
         </div>
       </div>
 
@@ -184,6 +187,7 @@ import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import { usePlanningStore } from '@/stores/planning.store'
+import { Hand } from '@lucide/vue'
 import type { Subject } from '@/stores/subjects.store'
 
 const { t } = useI18n()
@@ -194,15 +198,15 @@ const planningStore = usePlanningStore()
 // ── Greeting ──────────────────────────────────────────────────────────────────
 const greeting = computed(() => {
   const h = new Date().getHours()
-  if (h < 12) return 'Bonjour'
-  if (h < 18) return 'Bon après-midi'
-  return 'Bonsoir'
+  if (h < 12) return t('dashboard.greetingMorning')
+  if (h < 18) return t('dashboard.greetingAfternoon')
+  return t('dashboard.greetingEvening')
 })
 
 const todaySummary = computed(() => {
   const upcoming = upcomingSessions.value.length
-  if (upcoming === 0) return 'Aucune session planifiée aujourd\'hui.'
-  return `${upcoming} session${upcoming > 1 ? 's' : ''} planifiée${upcoming > 1 ? 's' : ''} aujourd\'hui.`
+  if (upcoming === 0) return t('dashboard.noUpcomingSessions')
+  return t('dashboard.todaySessions', { count: upcoming })
 })
 
 // ── Stats ──────────────────────────────────────────────────────────────────────
@@ -210,7 +214,7 @@ const readinessScore = computed(() => planningStore.planning?.overallReadinessSc
 
 const stats = computed(() => [
   {
-    label: 'Modules',
+    label: t('dashboard.modules'),
     value: subjectsStore.subjects.length,
     icon: BookOpen,
     iconBg: 'bg-primary/10',
@@ -219,7 +223,7 @@ const stats = computed(() => [
     trendColor: 'text-primary-soft'
   },
   {
-    label: 'Chapitres total',
+    label: t('dashboard.totalChapters'),
     value: subjectsStore.subjects.reduce((s, m) => s + m.chapters.length, 0),
     icon: CheckCircle,
     iconBg: 'bg-secondary/10',
@@ -228,7 +232,7 @@ const stats = computed(() => [
     trendColor: ''
   },
   {
-    label: 'Sessions terminées',
+    label: t('dashboard.completedSessions'),
     value: planningStore.planning?.sessions.filter(s => s.status === 'completed').length ?? 0,
     icon: TrendingUp,
     iconBg: 'bg-teal/10',
@@ -237,7 +241,7 @@ const stats = computed(() => [
     trendColor: ''
   },
   {
-    label: 'Score global',
+    label: t('dashboard.globalScore'),
     value: readinessScore.value + '%',
     icon: CalendarDays,
     iconBg: 'bg-warm/10',
