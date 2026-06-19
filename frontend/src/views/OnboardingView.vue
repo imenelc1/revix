@@ -67,7 +67,7 @@
 
             <!-- Couleur du module -->
             <div>
-              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">Couleur du module</label>
+              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">{{ t('onboarding.moduleColor') }}</label>
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="color in moduleColors"
@@ -101,7 +101,7 @@
               <input ref="pdfInput" type="file" accept=".pdf" class="hidden" @change="onPdfUpload" />
             </div>
 
-            <p v-if="pdfLoading" class="text-sm text-primary-soft font-mono text-center">Analyse IA en cours...</p>
+            <p v-if="pdfLoading" class="text-sm text-primary-soft font-mono text-center">{{ t('onboarding.pdfAnalyzing') }}</p>
 
             <!-- Chapters list -->
             <div class="space-y-2">
@@ -113,7 +113,7 @@
               </div>
 
               <div v-if="form.chapters.length === 0" class="text-center py-6 text-sm text-gray-400">
-                Aucun chapitre ajouté. Uploadez un PDF ou ajoutez manuellement.
+                {{ t('onboarding.noChapters') }}
               </div>
 
               <div
@@ -187,7 +187,7 @@
 
                   <!-- Importance -->
                   <div class="col-span-2">
-                    <p class="text-[11px] font-mono font-bold uppercase text-gray-400 mb-2">Importance (1-5)</p>
+                    <p class="text-[11px] font-mono font-bold uppercase text-gray-400 mb-2">{{ t('onboarding.importanceLabel') }}</p>
                     <div class="flex gap-1.5">
                       <button
                         v-for="n in 5"
@@ -304,9 +304,9 @@ const moduleColors = [
 ]
 
 const masteryLevels = [
-  { value: 'not_understood', icon: Frown, label: 'Non compris', activeClass: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-500' },
-  { value: 'average',        icon: Meh,   label: 'Moyen',       activeClass: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-500' },
-  { value: 'mastered',       icon: Smile, label: 'Maîtrisé',    activeClass: 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500' }
+  { value: 'not_understood', icon: Frown, label: t('onboarding.masteryNotUnderstood'), activeClass: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-500' },
+  { value: 'average',        icon: Meh,   label: t('onboarding.masteryAverage'),       activeClass: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-500' },
+  { value: 'mastered',       icon: Smile, label: t('onboarding.masteryMastered'),    activeClass: 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500' }
 ]
 
 const difficultyLevels = computed(() => [
