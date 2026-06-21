@@ -6,16 +6,14 @@ import type { RegisterInput, LoginInput } from './auth.schema'
 export const authService = {
 
   async register(data: RegisterInput) {
-    // Vérifier si l'email existe déjà
     const existing = await User.findOne({ email: data.email })
     if (existing) throw new Error('Cet email est déjà utilisé')
 
-    // Créer l'utilisateur
     const user = await User.create({
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      passwordHash: data.password // sera hashé par le pre-save hook
+      passwordHash: data.password
     })
 
     const token = generateToken(user.id)
@@ -37,10 +35,39 @@ export const authService = {
     const user = await User.findById(userId)
     if (!user) throw new Error('Utilisateur introuvable')
     return sanitizeUser(user)
+  },
+
+  // ── Mettre à jour le profil (prénom / nom) ──────────────────────────────────
+  async updateProfile(userId: string, data: { firstName?: string; lastName?: string }) {
+    const user = await User.findById(userId)
+    if (!user) throw new Error('Utilisateur introuvable')
+
+    if (data.firstName) user.firstName = data.firstName
+    if (data.lastName)  user.lastName  = data.lastName
+
+    await user.save()
+    return sanitizeUser(user)
+  },
+
+  // ── Changer le mot de passe ──────────────────────────────────────────────────
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const user = await User.findById(userId)
+    if (!user) throw new Error('Utilisateur introuvable')
+
+    if (user.googleId && user.passwordHash.startsWith('google_')) {
+      throw new Error('Les comptes connectés via Google ne peuvent pas changer de mot de passe ici')
+    }
+
+    const valid = await user.comparePassword(currentPassword)
+    if (!valid) throw new Error('Mot de passe actuel incorrect')
+
+    user.passwordHash = newPassword // re-hashé par le pre-save hook du modèle
+    await user.save()
+
+    return { message: 'Mot de passe mis à jour avec succès' }
   }
 }
 
-// Génère un JWT
 function generateToken(userId: string): string {
   return jwt.sign({ id: userId }, ENV.JWT_SECRET, {
     expiresIn: ENV.JWT_EXPIRES_IN
@@ -54,6 +81,7 @@ function sanitizeUser(user: any) {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    createdAt: user.createdAt
+    createdAt: user.createdAt,
+    isGoogleAccount: !!user.googleId
   }
 }

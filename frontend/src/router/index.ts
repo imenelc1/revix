@@ -18,6 +18,7 @@ const router = createRouter({
     { path: '/subjects',      name: 'subjects',    component: () => import('../views/SubjectsView.vue') },
     { path: '/flashcards',    name: 'flashcards',  component: () => import('../views/FlashcardsView.vue') },
     { path: '/pdf',           name: 'pdf',         component: () => import('../views/PdfAnalysisView.vue') },
+    { path: '/settings',      name: 'settings',    component: () => import('../views/SettingsView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/NotFoundView.vue') },
   ],
 })

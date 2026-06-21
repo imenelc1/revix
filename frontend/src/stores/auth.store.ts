@@ -3,10 +3,12 @@ import { ref, computed } from 'vue'
 import api from '@/shared/utils/api'
 
 interface User {
-  id:        string
-  firstName: string
-  lastName:  string
-  email:     string
+  id:               string
+  firstName:        string
+  lastName:         string
+  email:            string
+  createdAt?:       string
+  isGoogleAccount?: boolean
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -17,19 +19,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!token.value && !!user.value)
 
-  // ── Utilisé par AuthCallbackView après redirection Google ──────────────────
   function setToken(newToken: string) {
     token.value = newToken
     localStorage.setItem('token', newToken)
   }
 
-  // ── Connexion Google : simple redirection vers le backend ──────────────────
   function loginWithGoogle() {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
     window.location.href = `${apiUrl}/auth/google`
   }
 
-  // ── Inscription classique ──────────────────────────────────────────────────
   async function register(firstName: string, lastName: string, email: string, password: string) {
     loading.value = true
     error.value   = null
@@ -46,7 +45,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // ── Connexion classique ────────────────────────────────────────────────────
   async function login(email: string, password: string) {
     loading.value = true
     error.value   = null
@@ -63,7 +61,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // ── Récupérer le profil (utilisé au démarrage et après OAuth) ─────────────
   async function fetchMe() {
     if (!token.value) return
     try {
@@ -74,7 +71,18 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // ── Déconnexion ────────────────────────────────────────────────────────────
+  // ── Mettre à jour le profil ──────────────────────────────────────────────────
+  async function updateProfile(firstName: string, lastName: string) {
+    const res = await api.put('/auth/me', { firstName, lastName })
+    user.value = res.data
+    return res.data
+  }
+
+  // ── Changer le mot de passe ──────────────────────────────────────────────────
+  async function changePassword(currentPassword: string, newPassword: string) {
+    return api.put('/auth/me/password', { currentPassword, newPassword })
+  }
+
   function logout() {
     user.value  = null
     token.value = null
@@ -85,5 +93,6 @@ export const useAuthStore = defineStore('auth', () => {
     user, token, loading, error, isAuthenticated,
     setToken, loginWithGoogle,
     register, login, fetchMe, logout,
+    updateProfile, changePassword,
   }
 })

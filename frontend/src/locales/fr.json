@@ -151,7 +151,8 @@
     "dashboard": "Tableau de bord",
     "modules": "Modules",
     "calendar": "Calendrier",
-    "iaAnalysis": "Analyses IA"
+    "iaAnalysis": "Analyses IA",
+    "settings": "Paramètres"
   },
   "planning": {
     "title": "Mon Planning",
@@ -258,5 +259,39 @@
     "importOptionPlaceholder": "Importer dans un module...",
     "btnImport": "Importer ({{count}})",
     "importSuccess": "{count} chapitres importés avec succès !"
-  }
+  },
+"calendar": {
+  "title": "Calendrier",
+  "subtitle": "Vue mensuelle de vos sessions de révision",
+  "today": "Aujourd'hui",
+  "legend": "Légende",
+  "noSessionsDay": "Aucune session prévue ce jour-là",
+  "examBadge": "Examen"
+},
+"settings": {
+  "title": "Paramètres",
+  "subtitle": "Gérez votre compte et vos préférences",
+  "profileTitle": "Profil",
+  "profileSubtitle": "Vos informations personnelles",
+  "emailLocked": "L'email ne peut pas être modifié",
+  "saveChanges": "Enregistrer",
+  "profileUpdated": "Profil mis à jour avec succès",
+  "preferencesTitle": "Préférences",
+  "preferencesSubtitle": "Personnalisez votre expérience",
+  "theme": "Thème",
+  "themeLight": "Clair",
+  "themeDark": "Sombre",
+  "language": "Langue",
+  "securityTitle": "Sécurité",
+  "securitySubtitle": "Modifiez votre mot de passe",
+  "currentPassword": "Mot de passe actuel",
+  "newPassword": "Nouveau mot de passe",
+  "confirmNewPassword": "Confirmer le nouveau mot de passe",
+  "changePassword": "Changer le mot de passe",
+  "passwordUpdated": "Mot de passe mis à jour avec succès",
+  "googleAccountNotice": "Vous êtes connecté via Google. La gestion du mot de passe n'est pas disponible.",
+  "accountTitle": "Compte",
+  "memberSince": "Membre depuis",
+  "logoutAccount": "Se déconnecter"
+}
 }

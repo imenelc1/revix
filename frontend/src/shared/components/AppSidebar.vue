@@ -58,7 +58,7 @@
 import { computed } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { LayoutDashboard, BookOpen, Calendar, BrainCircuit, FileText, LogOut } from '@lucide/vue'
+import { LayoutDashboard, BookOpen, Calendar, BrainCircuit, FileText, Settings, LogOut } from '@lucide/vue'
 import AppLogo from '@/shared/components/AppLogo.vue'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -73,6 +73,7 @@ const navItems = computed(() => [
   { to: '/calendar',   icon: Calendar,         label: t('sidebar.calendar') },
   { to: '/flashcards', icon: BrainCircuit,     label: 'Flashcards' },
   { to: '/pdf',        icon: FileText,         label: t('sidebar.iaAnalysis') },
+  { to: '/settings',   icon: Settings,         label: t('sidebar.settings') },
 ])
 
 function isActive(path: string) {

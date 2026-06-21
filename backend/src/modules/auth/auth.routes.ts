@@ -12,3 +12,9 @@ authRoutes.post('/login', authController.login)
 
 // GET /api/auth/me  (protégée — nécessite JWT)
 authRoutes.get('/me', authMiddleware, authController.getMe)
+
+// PUT /api/auth/me  — mettre à jour prénom/nom
+authRoutes.put('/me', authMiddleware, authController.updateMe)
+
+// PUT /api/auth/me/password — changer le mot de passe
+authRoutes.put('/me/password', authMiddleware, authController.changePassword)

@@ -150,7 +150,8 @@
     "dashboard": "Dashboard",
     "modules": "Modules",
     "calendar": "Calendar",
-    "iaAnalysis": "AI Analysis"
+    "iaAnalysis": "AI Analysis",
+    "settings": "Settings"
   },
   "planning": {
     "title": "My Schedule",
@@ -257,5 +258,39 @@
     "importOptionPlaceholder": "Import into a module...",
     "btnImport": "Import ({count})",
     "importSuccess": "{count} chapters imported successfully!"
-  }
+  },
+"calendar": {
+  "title": "Calendar",
+  "subtitle": "Monthly overview of your study sessions",
+  "today": "Today",
+  "legend": "Legend",
+  "noSessionsDay": "No session scheduled this day",
+  "examBadge": "Exam"
+},
+"settings": {
+  "title": "Settings",
+  "subtitle": "Manage your account and preferences",
+  "profileTitle": "Profile",
+  "profileSubtitle": "Your personal information",
+  "emailLocked": "Email cannot be changed",
+  "saveChanges": "Save",
+  "profileUpdated": "Profile updated successfully",
+  "preferencesTitle": "Preferences",
+  "preferencesSubtitle": "Customize your experience",
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "language": "Language",
+  "securityTitle": "Security",
+  "securitySubtitle": "Update your password",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "confirmNewPassword": "Confirm new password",
+  "changePassword": "Change password",
+  "passwordUpdated": "Password updated successfully",
+  "googleAccountNotice": "You're signed in with Google. Password management isn't available.",
+  "accountTitle": "Account",
+  "memberSince": "Member since",
+  "logoutAccount": "Log out"
+}
 }
