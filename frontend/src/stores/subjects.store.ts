@@ -43,6 +43,14 @@ export const useSubjectsStore = defineStore('subjects', () => {
     return res.data
   }
 
+
+  async function update(id: string, data: { name?: string; color?: string; examDate?: string }) {
+    const res = await api.put(`/subjects/${id}`, data)
+    const index = subjects.value.findIndex(s => s._id === id)
+    if (index !== -1) subjects.value[index] = res.data
+    return res.data
+  }
+
   async function remove(id: string) {
     await api.delete(`/subjects/${id}`)
     subjects.value = subjects.value.filter(s => s._id !== id)
@@ -68,5 +76,5 @@ export const useSubjectsStore = defineStore('subjects', () => {
     if (index !== -1) subjects.value[index] = res.data
   }
 
-  return { subjects, loading, error, fetchAll, create, remove, addChapter, updateChapter, removeChapter }
+  return { subjects, loading, error, fetchAll, create, update, remove, addChapter, updateChapter, removeChapter }
 })

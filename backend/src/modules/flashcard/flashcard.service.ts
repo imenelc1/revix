@@ -9,7 +9,7 @@ export const flashcardService = {
 
 Contenu :
 """
-${text.slice(0, 6000)}
+${text.slice(0, 12000)}
 """
 
 Réponds UNIQUEMENT avec un JSON valide (sans markdown) :
@@ -19,13 +19,13 @@ Réponds UNIQUEMENT avec un JSON valide (sans markdown) :
   ]
 }
 
-Génère exactement 8 flashcards couvrant les points essentiels.`
+Génère entre 10 et 15 flashcards couvrant l'ensemble du contenu, pas seulement le début.`
 
     const response = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.4,
-      max_tokens: 2000
+      max_tokens: 3000
     })
 
     const content = response.choices[0]?.message?.content || ''
@@ -64,7 +64,7 @@ Génère exactement 8 flashcards couvrant les points essentiels.`
 
 Contenu :
 """
-${text.slice(0, 6000)}
+${text.slice(0, 12000)}
 """
 
 Réponds UNIQUEMENT avec un JSON valide (sans markdown) :
@@ -79,7 +79,7 @@ Réponds UNIQUEMENT avec un JSON valide (sans markdown) :
   ]
 }
 
-Génère exactement 5 questions. correctIndex est l'index (0-3) de la bonne réponse.`
+Génère entre 8 et 10 questions couvrant l'ensemble du contenu. correctIndex est l'index (0-3) de la bonne réponse.`
 
     const response = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',

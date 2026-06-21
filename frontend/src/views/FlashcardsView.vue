@@ -5,34 +5,41 @@
       <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
         <h2 class="font-display font-bold text-gray-900 dark:text-white mb-4">{{ t('study.generateTitle') }}</h2>
 
-        <div class="grid md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label class="block text-xs font-mono font-bold uppercase text-gray-400 mb-2">{{ t('study.labelModule') }}</label>
-            <select
-              v-model="selectedSubjectId"
-              class="w-full rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
-            >
-              <option value="">{{ t('study.selectModule') }}</option>
-              <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
-            </select>
+        <div class="mb-4">
+          <label class="block text-xs font-mono font-bold uppercase text-gray-400 mb-2">{{ t('study.labelModule') }}</label>
+          <select
+            v-model="selectedSubjectId"
+            class="w-full rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
+          >
+            <option value="">{{ t('study.selectModule') }}</option>
+            <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
+          </select>
+        </div>
+
+        <!-- PDF upload zone -->
+        <div
+          class="border-2 border-dashed border-gray-300 dark:border-ink-600 rounded-xl p-6 flex flex-col items-center justify-center bg-gray-50 dark:bg-ink-900/50 hover:border-primary transition cursor-pointer group mb-4"
+          @click="triggerUpload"
+          @dragover.prevent
+          @drop.prevent="onDrop"
+        >
+          <div class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-ink-800 flex items-center justify-center text-gray-500 group-hover:text-primary mb-3 transition">
+            <FileUp :size="22" />
           </div>
-          <div>
-            <label class="block text-xs font-mono font-bold uppercase text-gray-400 mb-2">{{ t('study.labelCourseText') }}</label>
-            <textarea
-              v-model="inputText"
-              rows="3"
-              :placeholder="t('study.placeholderText')"
-              class="w-full rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition resize-none"
-            />
-          </div>
+          <p v-if="!selectedFile" class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+            {{ t('study.dropPdf') }}
+          </p>
+          <p v-else class="text-sm font-semibold text-primary mb-1">{{ selectedFile.name }}</p>
+          <p class="text-xs text-gray-400">{{ t('study.pdfMeta') }}</p>
+          <input ref="fileInput" type="file" accept=".pdf" class="hidden" @change="onFileSelect" />
         </div>
 
         <div class="flex gap-3">
-          <AppButton variant="primary" size="sm" :loading="generating" @click="generate('flashcards')">
+          <AppButton variant="primary" size="sm" :disabled="!canGenerate" :loading="generating === 'flashcards'" @click="generate('flashcards')">
             <template #icon-left><Layers :size="15" /></template>
             {{ t('study.btnFlashcards') }}
           </AppButton>
-          <AppButton variant="outline" size="sm" :loading="generating" @click="generate('quiz')">
+          <AppButton variant="outline" size="sm" :disabled="!canGenerate" :loading="generating === 'quiz'" @click="generate('quiz')">
             <template #icon-left><HelpCircle :size="15" /></template>
             {{ t('study.btnQuiz') }}
           </AppButton>
@@ -113,7 +120,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Layers, HelpCircle } from '@lucide/vue'
+import { Layers, HelpCircle, FileUp } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
@@ -123,8 +130,11 @@ const { t } = useI18n()
 const subjectsStore = useSubjectsStore()
 
 const selectedSubjectId = ref('')
-const inputText = ref('')
-const generating = ref(false)
+const selectedFile = ref<File | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null)
+const generating = ref<'flashcards' | 'quiz' | null>(null)
+
+const canGenerate = computed(() => !!selectedSubjectId.value && !!selectedFile.value)
 
 interface FlashcardUI { question: string; answer: string; flipped: boolean }
 const flashcards = ref<FlashcardUI[]>([])
@@ -142,21 +152,35 @@ const quizScore = computed(() => {
   return Math.round((correctCount.value / quiz.value.questions.length) * 100)
 })
 
+function triggerUpload() { fileInput.value?.click() }
+
+function onDrop(e: DragEvent) {
+  const file = e.dataTransfer?.files?.[0]
+  if (file) selectedFile.value = file
+}
+
+function onFileSelect(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (file) selectedFile.value = file
+}
+
 async function generate(type: 'flashcards' | 'quiz') {
-  if (!selectedSubjectId.value || !inputText.value.trim()) return
-  generating.value = true
+  if (!canGenerate.value || !selectedFile.value) return
+  generating.value = type
   try {
+    const fd = new FormData()
+    fd.append('pdf', selectedFile.value)
+    fd.append('subjectId', selectedSubjectId.value)
+
     if (type === 'flashcards') {
-      const res = await api.post('/flashcards/generate', {
-        subjectId: selectedSubjectId.value,
-        text: inputText.value
+      const res = await api.post('/flashcards/generate-from-pdf', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       })
       flashcards.value = res.data.map((f: any) => ({ ...f, flipped: false }))
       quiz.value = null
     } else {
-      const res = await api.post('/flashcards/quiz/generate', {
-        subjectId: selectedSubjectId.value,
-        text: inputText.value
+      const res = await api.post('/flashcards/quiz/generate-from-pdf', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       })
       quiz.value = res.data
       flashcards.value = []
@@ -165,7 +189,7 @@ async function generate(type: 'flashcards' | 'quiz') {
   } catch (err) {
     console.error(err)
   } finally {
-    generating.value = false
+    generating.value = null
   }
 }
 
