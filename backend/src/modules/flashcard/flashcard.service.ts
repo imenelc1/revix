@@ -106,6 +106,11 @@ Génère entre 8 et 10 questions couvrant l'ensemble du contenu. correctIndex es
   async getQuizBySubject(userId: string, subjectId: string) {
     return Quiz.find({ userId, subjectId }).sort({ createdAt: -1 })
   },
+    async deleteQuiz(userId: string, quizId: string) {
+    const quiz = await Quiz.findOneAndDelete({ _id: quizId, userId })
+    if (!quiz) throw new Error('Quiz introuvable')
+    return { message: 'Quiz supprimé' }
+  },
 
   // Soumettre les réponses d'un quiz et calculer le score
   async submitQuiz(userId: string, quizId: string, answers: number[]) {

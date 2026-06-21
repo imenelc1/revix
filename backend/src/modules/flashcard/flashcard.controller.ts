@@ -95,6 +95,15 @@ export const flashcardController = {
       res.status(500).json({ error: error.message })
     }
   },
+  async deleteQuiz(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const result = await flashcardService.deleteQuiz(req.userId!, String(req.params.id))
+      res.json(result)
+    } catch (error: any) {
+      res.status(404).json({ error: error.message })
+    }
+  },
+ 
 
   async submitQuiz(req: AuthRequest, res: Response): Promise<void> {
     try {
