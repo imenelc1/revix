@@ -143,7 +143,17 @@
     "importanceLabel": "Importance (1-5)",
     "masteryNotUnderstood": "Not understood",
     "masteryAverage": "Average",
-    "masteryMastered": "Mastered"
+    "masteryMastered": "Mastered",
+    "badge": "PLAN GENERATED IN 12 SECONDS",
+    "title1": "Organize your revision",
+    "titleHighlight": "intelligently",
+    "description": "Add your modules, chapters and level. Revix generates a personalized study plan for your exams.",
+    "cardTitle": "My modules",
+    "cardBadge": "{count} modules",
+    "addModule": "Add a module",
+    "metaFree": "100% free",
+    "metaAI": "Llama 3.3 AI",
+    "metaLang": "EN / FR"
   },
   "sidebar": {
     "academicExcellence": "Academic Excellence",
@@ -228,7 +238,12 @@
     "urgent": "Urgent",
     "soon": "Soon",
     "ok": "Ready",
-    "deleteConfirm": "Delete this module?"
+    "deleteConfirm": "Delete this module?",
+    "documents": "{count} document(s)",
+    "loadingDocuments": "Loading...",
+    "noDocuments": "No document imported for this module.",
+    "chaptersFromDoc": "{count} chapters",
+    "addDocument": "Add a PDF"
   },
   "study": {
     "title": "Flashcards & Quiz",
@@ -259,38 +274,38 @@
     "btnImport": "Import ({count})",
     "importSuccess": "{count} chapters imported successfully!"
   },
-"calendar": {
-  "title": "Calendar",
-  "subtitle": "Monthly overview of your study sessions",
-  "today": "Today",
-  "legend": "Legend",
-  "noSessionsDay": "No session scheduled this day",
-  "examBadge": "Exam"
-},
-"settings": {
-  "title": "Settings",
-  "subtitle": "Manage your account and preferences",
-  "profileTitle": "Profile",
-  "profileSubtitle": "Your personal information",
-  "emailLocked": "Email cannot be changed",
-  "saveChanges": "Save",
-  "profileUpdated": "Profile updated successfully",
-  "preferencesTitle": "Preferences",
-  "preferencesSubtitle": "Customize your experience",
-  "theme": "Theme",
-  "themeLight": "Light",
-  "themeDark": "Dark",
-  "language": "Language",
-  "securityTitle": "Security",
-  "securitySubtitle": "Update your password",
-  "currentPassword": "Current password",
-  "newPassword": "New password",
-  "confirmNewPassword": "Confirm new password",
-  "changePassword": "Change password",
-  "passwordUpdated": "Password updated successfully",
-  "googleAccountNotice": "You're signed in with Google. Password management isn't available.",
-  "accountTitle": "Account",
-  "memberSince": "Member since",
-  "logoutAccount": "Log out"
-}
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Monthly overview of your study sessions",
+    "today": "Today",
+    "legend": "Legend",
+    "noSessionsDay": "No session scheduled this day",
+    "examBadge": "Exam"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and preferences",
+    "profileTitle": "Profile",
+    "profileSubtitle": "Your personal information",
+    "emailLocked": "Email cannot be changed",
+    "saveChanges": "Save",
+    "profileUpdated": "Profile updated successfully",
+    "preferencesTitle": "Preferences",
+    "preferencesSubtitle": "Customize your experience",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "language": "Language",
+    "securityTitle": "Security",
+    "securitySubtitle": "Update your password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "changePassword": "Change password",
+    "passwordUpdated": "Password updated successfully",
+    "googleAccountNotice": "You're signed in with Google. Password management isn't available.",
+    "accountTitle": "Account",
+    "memberSince": "Member since",
+    "logoutAccount": "Log out"
+  }
 }

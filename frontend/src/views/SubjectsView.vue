@@ -218,6 +218,54 @@
             </div>
           </div>
 
+          <!-- Documents importés -->
+          <div class="px-5 pb-3">
+            <button
+              @click="toggleDocuments(subject._id)"
+              class="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition mb-2"
+            >
+              <FileText :size="13" />
+              {{ t('subjects.documents', { count: documentsStore.documents.filter(d => d.subjectId === subject._id).length }) }}
+              <ChevronDown :size="13" class="transition-transform" :class="expandedDocsFor === subject._id ? 'rotate-180' : ''" />
+            </button>
+
+            <div v-if="expandedDocsFor === subject._id" class="space-y-1.5 animate-rise">
+              <div v-if="documentsLoading" class="text-xs text-gray-400 py-2">{{ t('subjects.loadingDocuments') }}</div>
+
+              <div v-else-if="subjectDocuments(subject._id).length === 0" class="text-xs text-gray-400 py-2">
+                {{ t('subjects.noDocuments') }}
+              </div>
+
+              <div
+                v-for="doc in subjectDocuments(subject._id)"
+                :key="doc._id"
+                class="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-gray-50 dark:bg-ink-900/60 border border-gray-100 dark:border-ink-700 group/doc"
+              >
+                <FileText :size="13" class="text-primary-soft shrink-0" />
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{{ doc.fileName }}</p>
+                  <p class="text-[10px] text-gray-400 font-mono">
+                    {{ t('subjects.chaptersFromDoc', { count: doc.chaptersGenerated }) }} · {{ formatDocDate(doc.uploadedAt) }}
+                  </p>
+                </div>
+                <button
+                  @click="deleteDocument(doc._id)"
+                  class="opacity-0 group-hover/doc:opacity-100 text-gray-300 hover:text-red-500 transition shrink-0"
+                >
+                  <Trash2 :size="13" />
+                </button>
+              </div>
+
+              <RouterLink
+                :to="{ path: '/pdf', query: { subjectId: subject._id } }"
+                class="flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-2"
+              >
+                <Plus :size="13" />
+                {{ t('subjects.addDocument') }}
+              </RouterLink>
+            </div>
+          </div>
+
           <!-- Footer card -->
           <div class="px-5 py-3 border-t border-gray-100 dark:border-ink-700 flex items-center justify-between">
             <span class="text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1" :class="riskInfo(subject.examDate).class">
@@ -245,16 +293,49 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
   Plus, Trash2, BookOpen, Pencil, Check, X,
-  AlertCircle, Clock3, CheckCircle2, XCircle, HelpCircle, CheckCircle, Frown, Meh, Smile
+  AlertCircle, Clock3, CheckCircle2, XCircle, HelpCircle, CheckCircle, Frown, Meh, Smile,
+  FileText, ChevronDown
 } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
+import { useDocumentsStore } from '@/stores/documents.store'
 import type { Subject, Chapter } from '@/stores/subjects.store'
 
 const { t } = useI18n()
 const subjectsStore = useSubjectsStore()
+const documentsStore = useDocumentsStore()
+
+// ── Documents par module ──────────────────────────────────────────────────────
+const expandedDocsFor = ref<string | null>(null)
+const documentsLoading = ref(false)
+
+async function toggleDocuments(subjectId: string) {
+  if (expandedDocsFor.value === subjectId) {
+    expandedDocsFor.value = null
+    return
+  }
+  expandedDocsFor.value = subjectId
+  documentsLoading.value = true
+  try {
+    await documentsStore.fetchBySubject(subjectId)
+  } finally {
+    documentsLoading.value = false
+  }
+}
+
+function subjectDocuments(subjectId: string) {
+  return documentsStore.documents.filter(d => d.subjectId === subjectId)
+}
+
+async function deleteDocument(id: string) {
+  await documentsStore.remove(id)
+}
+
+function formatDocDate(date: string): string {
+  return new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
+}
 
 // ── Couleurs disponibles ──────────────────────────────────────────────────────
 const moduleColors = [
@@ -307,7 +388,7 @@ function startEditChapter(subjectId: string, chapter: Chapter) {
   chapterForm.title        = chapter.title
   chapterForm.masteryLevel = chapter.masteryLevel
   chapterForm.difficulty   = chapter.difficulty
-  nextTick(() => chapterInput.value?.focus())
+  nextTick(() => { const el = chapterInput.value as any; if (el) (el.$el ?? el).focus() })
 }
 
 function cancelEditChapter() {
@@ -336,7 +417,7 @@ const newChapterInput  = ref<HTMLInputElement | null>(null)
 function startAddChapter(subjectId: string) {
   addingChapterFor.value = subjectId
   newChapterTitle.value  = ''
-  nextTick(() => newChapterInput.value?.focus())
+  nextTick(() => { const el = newChapterInput.value as any; if (el) (el.$el ?? el).focus() })
 }
 
 async function addChapter(subjectId: string) {

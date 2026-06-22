@@ -11,6 +11,7 @@ import { subjectRoutes }   from './modules/subject/subject.routes'
 import { planningRoutes }  from './modules/planning/planning.routes'
 import { pdfRoutes }       from './modules/pdf/pdf.routes'
 import { flashcardRoutes } from './modules/flashcard/flashcard.routes'
+import { documentRoutes }  from './modules/document/document.routes'
 import { ENV }             from './config/env'
 
 const app = express()
@@ -40,6 +41,7 @@ app.use('/api/subjects',   subjectRoutes)
 app.use('/api/planning',   planningRoutes)
 app.use('/api/pdf',        pdfRoutes)
 app.use('/api/flashcards', flashcardRoutes)
+app.use('/api/documents',  documentRoutes)
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'OK', message: 'Revix API opérationnelle' })

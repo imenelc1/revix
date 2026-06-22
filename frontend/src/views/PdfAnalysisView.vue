@@ -24,6 +24,11 @@
         <p class="text-sm text-primary-soft font-mono mt-4 animate-pulse">{{ t('analysis.loadingText') }}</p>
       </div>
 
+      <!-- Error -->
+      <div v-if="errorMsg && !loading" class="bg-warm/10 border border-warm/30 rounded-2xl p-5 text-center">
+        <p class="text-sm font-semibold text-warm">{{ errorMsg }}</p>
+      </div>
+
       <!-- Results -->
       <div v-if="result && !loading">
         <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm mb-4">
@@ -87,7 +92,7 @@
           </div>
 
           <p v-if="importSuccess" class="text-sm text-secondary mt-3 font-semibold">
-            ✅ {{ t('analysis.importSuccess', { count: selectedChapters.length }) }}
+             {{ t('analysis.importSuccess', { count: selectedChapters.length }) }}
           </p>
         </div>
       </div>
@@ -98,6 +103,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { FileText, Download } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
@@ -107,6 +113,7 @@ import { useSubjectsStore } from '@/stores/subjects.store'
 import api from '@/shared/utils/api'
 
 const { t } = useI18n()
+const route = useRoute()
 const subjectsStore = useSubjectsStore()
 
 const fileInput = ref<HTMLInputElement | null>(null)
@@ -122,6 +129,8 @@ interface AnalysisResult {
   chapters: { title: string; keyConcepts: string[]; estimatedDifficulty: string; summary: string }[]
 }
 const result = ref<AnalysisResult | null>(null)
+const errorMsg = ref('')
+const currentFileName = ref('')
 
 function triggerUpload() { fileInput.value?.click() }
 
@@ -137,7 +146,9 @@ function onFileSelect(e: Event) {
 
 async function analyze(file: File) {
   loading.value = true
+  currentFileName.value = file.name
   result.value = null
+  errorMsg.value = ''
   selectedChapters.value = []
   importSuccess.value = false
   try {
@@ -146,8 +157,9 @@ async function analyze(file: File) {
     const res = await api.post('/pdf/analyze', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
     result.value = res.data
     selectedChapters.value = result.value!.chapters.map((_, i) => i)
-  } catch (err) {
+  } catch (err: any) {
     console.error(err)
+    errorMsg.value = err.response?.data?.error || 'Erreur lors de l\'analyse du PDF. Réessayez.'
   } finally {
     loading.value = false
   }
@@ -173,7 +185,11 @@ async function importChapters() {
   importing.value = true
   try {
     const chapters = selectedChapters.value.map(i => result.value!.chapters[i])
-    await api.post('/pdf/import', { subjectId: targetSubjectId.value, chapters })
+    await api.post('/pdf/import', {
+      subjectId: targetSubjectId.value,
+      chapters,
+      fileName: currentFileName.value
+    })
     importSuccess.value = true
     await subjectsStore.fetchAll()
   } catch (err) {
@@ -183,5 +199,9 @@ async function importChapters() {
   }
 }
 
-onMounted(() => subjectsStore.fetchAll())
+onMounted(async () => {
+  await subjectsStore.fetchAll()
+  const presetId = route.query.subjectId as string | undefined
+  if (presetId) targetSubjectId.value = presetId
+})
 </script>
