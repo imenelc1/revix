@@ -223,7 +223,8 @@
     "totalChapters": "Chapitres total",
     "completedSessions": "Sessions terminées",
     "globalScore": "Score global",
-    "activity": "Activité des 4 dernières semaines",
+    "priorityTitle": "Chapitres à réviser en priorité",
+    "priorityEmpty": "Tous vos chapitres sont maîtrisés ! ",
     "less": "Moins",
     "more": "Plus"
   },

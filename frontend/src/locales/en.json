@@ -222,7 +222,8 @@
     "totalChapters": "Total chapters",
     "completedSessions": "Completed sessions",
     "globalScore": "Global score",
-    "activity": "Activity over the last 4 weeks",
+    "priorityTitle": "Priority chapters to review",
+    "priorityEmpty": "All your chapters are mastered! ",
     "less": "Less",
     "more": "More"
   },

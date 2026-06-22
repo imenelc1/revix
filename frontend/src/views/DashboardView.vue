@@ -146,29 +146,50 @@
       </div>
 
       <!-- Heatmap placeholder -->
-      <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
-        <h3 class="font-display font-bold text-gray-900 dark:text-white mb-5">{{ t('dashboard.activity') }}</h3>
-        <div class="grid grid-cols-28 gap-1">
-          <div
-            v-for="(day, i) in heatmapDays"
-            :key="i"
-            class="w-4 h-4 rounded-sm transition-all hover:scale-125"
-            :class="day === 0 ? 'bg-gray-100 dark:bg-ink-700'
-              : day === 1 ? 'bg-primary/30'
-              : day === 2 ? 'bg-primary/60'
-              : 'bg-primary'"
-            :title="`${day} session(s)`"
-          />
-        </div>
-        <div class="flex items-center gap-2 mt-3">
-          <span class="text-xs text-gray-400">{{ t('dashboard.less') }}</span>
-          <div class="flex gap-1">
-            <div v-for="n in 4" :key="n" class="w-3 h-3 rounded-sm"
-              :class="['bg-gray-100 dark:bg-ink-700', 'bg-primary/30', 'bg-primary/60', 'bg-primary'][n-1]" />
-          </div>
-          <span class="text-xs text-gray-400">{{ t('dashboard.more') }}</span>
+     <!-- Chapitres prioritaires à réviser -->
+<div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
+  <div class="flex items-center justify-between mb-5">
+    <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.priorityTitle') }}</h3>
+    <RouterLink to="/subjects" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
+      {{ t('dashboard.viewAll') }}
+    </RouterLink>
+  </div>
+
+  <div v-if="priorityChapters.length === 0" class="text-center py-8">
+    <div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center mx-auto mb-3">
+      <CheckCircle :size="20" class="text-secondary" />
+    </div>
+    <p class="text-sm text-gray-400">{{ t('dashboard.priorityEmpty') }}</p>
+  </div>
+
+  <div v-else class="space-y-2">
+    <div
+      v-for="(item, i) in priorityChapters"
+      :key="i"
+      class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-ink-900/60 border border-gray-100 dark:border-ink-700"
+    >
+      <component
+        :is="item.masteryLevel === 'not_understood' ? XCircle : HelpCircle"
+        :size="16"
+        :class="item.masteryLevel === 'not_understood' ? 'text-warm' : 'text-accent'"
+        class="shrink-0"
+      />
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ item.chapterTitle }}</p>
+        <div class="flex items-center gap-1.5 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full shrink-0" :style="{ background: item.subjectColor }"></span>
+          <span class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ item.subjectName }}</span>
         </div>
       </div>
+      <span
+        class="shrink-0 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-lg"
+        :class="item.daysUntilExam <= 7 ? 'bg-warm/10 text-warm' : 'bg-gray-100 dark:bg-ink-700 text-gray-500 dark:text-gray-400'"
+      >
+        {{ t('dashboard.daysRemaining', { days: item.daysUntilExam }) }}
+      </span>
+    </div>
+  </div>
+</div>
 
     </div>
   </AppLayout>
@@ -179,7 +200,8 @@ import { computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
-  BookOpen, CalendarDays, CheckCircle, TrendingUp, Plus, Sparkles
+  BookOpen, CalendarDays, CheckCircle, TrendingUp, Plus, Sparkles,
+  XCircle, HelpCircle
 } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
@@ -283,20 +305,38 @@ function formatDate(dateStr: string): string {
 }
 
 // ── Heatmap ────────────────────────────────────────────────────────────────────
-const heatmapDays = computed(() => {
-  const days: number[] = Array(28).fill(0)
-  if (!planningStore.planning) return days
-  const now = new Date()
-  planningStore.planning.sessions.forEach(s => {
-    const diff = Math.floor((now.getTime() - new Date(s.date).getTime()) / (1000 * 60 * 60 * 24))
-    if (diff >= 0 && diff < 28) {
-      const idx = 27 - diff
-      if (s.status === 'completed') days[idx] = Math.min(3, days[idx] + 1)
-    }
-  })
-  return days
-})
+interface PriorityChapter {
+  subjectName: string
+  subjectColor: string
+  chapterTitle: string
+  masteryLevel: string
+  daysUntilExam: number
+}
 
+const priorityChapters = computed<PriorityChapter[]>(() => {
+  const items: PriorityChapter[] = []
+  for (const subject of subjectsStore.subjects) {
+    const days = daysUntilExam(subject.examDate)
+    for (const chapter of subject.chapters) {
+      if (chapter.masteryLevel === 'mastered') continue
+      items.push({
+        subjectName: subject.name,
+        subjectColor: subject.color,
+        chapterTitle: chapter.title,
+        masteryLevel: chapter.masteryLevel,
+        daysUntilExam: days
+      })
+    }
+  }
+  return items
+    .sort((a, b) => {
+      if (a.masteryLevel !== b.masteryLevel) {
+        return a.masteryLevel === 'not_understood' ? -1 : 1
+      }
+      return a.daysUntilExam - b.daysUntilExam
+    })
+    .slice(0, 5)
+})
 // ── Init ───────────────────────────────────────────────────────────────────────
 onMounted(async () => {
   await subjectsStore.fetchAll()
