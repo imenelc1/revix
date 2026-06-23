@@ -13,16 +13,10 @@ interface User {
 
 export const useAuthStore = defineStore('auth', () => {
   const user    = ref<User | null>(null)
-  const token   = ref<string | null>(localStorage.getItem('token'))
   const loading = ref(false)
   const error   = ref<string | null>(null)
 
-  const isAuthenticated = computed(() => !!token.value && !!user.value)
-
-  function setToken(newToken: string) {
-    token.value = newToken
-    localStorage.setItem('token', newToken)
-  }
+  const isAuthenticated = computed(() => !!user.value)
 
   function loginWithGoogle() {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
@@ -33,10 +27,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value   = null
     try {
-      const res    = await api.post('/auth/register', { firstName, lastName, email, password })
-      token.value  = res.data.token
-      user.value   = res.data.user
-      localStorage.setItem('token', res.data.token)
+      const res  = await api.post('/auth/register', { firstName, lastName, email, password })
+      user.value = res.data.user
     } catch (err: any) {
       error.value = err.response?.data?.error || 'Erreur lors de l\'inscription'
       throw err
@@ -49,10 +41,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value   = null
     try {
-      const res    = await api.post('/auth/login', { email, password })
-      token.value  = res.data.token
-      user.value   = res.data.user
-      localStorage.setItem('token', res.data.token)
+      const res  = await api.post('/auth/login', { email, password })
+      user.value = res.data.user
     } catch (err: any) {
       error.value = err.response?.data?.error || 'Email ou mot de passe incorrect'
       throw err
@@ -62,36 +52,35 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchMe() {
-    if (!token.value) return
     try {
-      const res  = await api.get('/auth/me')
+      const res  = await api.get('/auth/me', { skipAuthRedirect: true })
       user.value = res.data
+      return res.data
     } catch {
-      logout()
+      user.value = null
+      return null
     }
   }
 
-  // ── Mettre à jour le profil ──────────────────────────────────────────────────
   async function updateProfile(firstName: string, lastName: string) {
     const res = await api.put('/auth/me', { firstName, lastName })
     user.value = res.data
     return res.data
   }
 
-  // ── Changer le mot de passe ──────────────────────────────────────────────────
   async function changePassword(currentPassword: string, newPassword: string) {
     return api.put('/auth/me/password', { currentPassword, newPassword })
   }
 
-  function logout() {
-    user.value  = null
-    token.value = null
-    localStorage.removeItem('token')
+  async function logout() {
+    user.value = null
+    localStorage.removeItem('token') // nettoyage legacy
+    await api.post('/auth/logout', undefined, { skipAuthRedirect: true }).catch(() => {})
   }
 
   return {
-    user, token, loading, error, isAuthenticated,
-    setToken, loginWithGoogle,
+    user, loading, error, isAuthenticated,
+    loginWithGoogle,
     register, login, fetchMe, logout,
     updateProfile, changePassword,
   }

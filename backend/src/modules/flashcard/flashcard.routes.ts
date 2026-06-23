@@ -2,7 +2,7 @@ import { Router } from 'express'
 import multer from 'multer'
 import { flashcardController } from './flashcard.controller'
 import { authMiddleware } from '../../middlewares/auth.middleware'
-
+import { flashcardRateLimiter } from '../../middlewares/rateLimit.middleware'
 const upload = multer({
   dest: '/tmp',
   fileFilter: (req, file, cb) => {
@@ -24,10 +24,8 @@ flashcardRoutes.get('/subject/:subjectId', flashcardController.getFlashcards)
 flashcardRoutes.delete('/:id', flashcardController.deleteFlashcard)
 
 // Quiz depuis texte
-flashcardRoutes.post('/quiz/generate', flashcardController.generateQuiz)
-// Quiz depuis PDF complet
-flashcardRoutes.post('/quiz/generate-from-pdf', upload.single('pdf'), flashcardController.generateQuizFromPdf)
-
+flashcardRoutes.post('/generate', flashcardRateLimiter, flashcardController.generateFlashcards)
+flashcardRoutes.post('/generate-from-pdf', flashcardRateLimiter, upload.single('pdf'), flashcardController.generateFlashcardsFromPdf)
 flashcardRoutes.get('/quiz/subject/:subjectId', flashcardController.getQuizzes)
 flashcardRoutes.get('/quiz/:quizId', flashcardController.getQuizById)
 flashcardRoutes.post('/quiz/:quizId/submit', flashcardController.submitQuiz)

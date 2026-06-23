@@ -1,10 +1,12 @@
 import { Flashcard, Quiz } from './flashcard.model'
 import { groq } from '../../utils/groq.client'
-
+import { Subject } from '../subject/subject.model'
 export const flashcardService = {
 
   // Générer des flashcards via IA depuis un texte
   async generateFromText(userId: string, subjectId: string, text: string, chapterId?: string) {
+    const subject = await Subject.findOne({ _id: subjectId, userId })
+  if (!subject) throw new Error('subject.notFound')
     const prompt = `Tu es un assistant pédagogique. Génère des flashcards de révision à partir de ce contenu.
 
 Contenu :
@@ -60,6 +62,8 @@ Génère entre 10 et 15 flashcards couvrant l'ensemble du contenu, pas seulement
 
   // Générer un quiz via IA depuis un texte
   async generateQuiz(userId: string, subjectId: string, text: string, chapterId?: string) {
+    const subject = await Subject.findOne({ _id: subjectId, userId })
+  if (!subject) throw new Error('subject.notFound')
     const prompt = `Tu es un assistant pédagogique. Génère un quiz de 5 questions à choix multiples.
 
 Contenu :

@@ -16,5 +16,5 @@ const ChatMessageSchema = new Schema<IChatMessage>({
   role:      { type: String, enum: ['user', 'assistant'], required: true },
   content:   { type: String, required: true }
 }, { timestamps: { createdAt: true, updatedAt: false } })
-
+ChatMessageSchema.index({ userId: 1, subjectId: 1, createdAt: 1 })
 export const ChatMessage = mongoose.model<IChatMessage>('ChatMessage', ChatMessageSchema)

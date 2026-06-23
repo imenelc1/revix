@@ -5,6 +5,13 @@ import { ENV } from '../../config/env'
 
 export const googleRoutes = Router()
 
+const authCookieOptions = {
+  httpOnly: true,
+  secure: ENV.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 7 * 24 * 60 * 60 * 1000
+}
+
 // ─── Étape 1 : Rediriger vers Google ──────────────────────────────────────────
 // GET /api/auth/google
 googleRoutes.get(
@@ -25,14 +32,11 @@ googleRoutes.get(
   }),
   (req: Request, res: Response) => {
     const user = req.user as any
-
-    // Générer le JWT
     const token = jwt.sign({ id: user._id }, ENV.JWT_SECRET, {
       expiresIn: ENV.JWT_EXPIRES_IN,
     } as jwt.SignOptions)
 
-    // Rediriger vers le frontend avec le token dans l'URL
-    // Le frontend l'intercepte et le stocke dans localStorage
-    res.redirect(`${ENV.FRONTEND_URL}/auth/callback?token=${token}`)
+    res.cookie('token', token, authCookieOptions)
+    res.redirect(`${ENV.FRONTEND_URL}/auth/callback`)
   }
 )

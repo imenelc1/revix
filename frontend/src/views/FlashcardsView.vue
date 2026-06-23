@@ -336,9 +336,9 @@ const toast = useToast()
 const activeTab = ref<'generate' | 'flashcards' | 'quizzes'>('generate')
 
 const tabs = computed(() => [
-  { id: 'generate',   label: t('study.tabGenerate'),     icon: Layers,     count: 0 },
-  { id: 'flashcards', label: t('study.tabMyFlashcards'), icon: Layers,     count: allFlashcards.value.length },
-  { id: 'quizzes',    label: t('study.tabMyQuizzes'),    icon: HelpCircle, count: allQuizzes.value.length },
+  { id: 'generate'   as const, label: t('study.tabGenerate'),     icon: Layers,     count: 0 },
+  { id: 'flashcards' as const, label: t('study.tabMyFlashcards'), icon: Layers,     count: allFlashcards.value.length },
+  { id: 'quizzes'    as const, label: t('study.tabMyQuizzes'),    icon: HelpCircle, count: allQuizzes.value.length },
 ])
 
 function goToFlashcards() { activeTab.value = 'flashcards' }

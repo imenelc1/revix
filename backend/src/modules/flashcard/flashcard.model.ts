@@ -47,6 +47,7 @@ const QuizSchema = new Schema<IQuiz>({
   questions: { type: [QuizQuestionSchema], default: [] },
   userScore: { type: Number }
 }, { timestamps: true })
-
+FlashcardSchema.index({ userId: 1, subjectId: 1, createdAt: -1 })
+QuizSchema.index({ userId: 1, subjectId: 1, createdAt: -1 })
 export const Flashcard = mongoose.model<IFlashcard>('Flashcard', FlashcardSchema)
 export const Quiz = mongoose.model<IQuiz>('Quiz', QuizSchema)

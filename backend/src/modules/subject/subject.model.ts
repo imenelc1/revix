@@ -39,5 +39,5 @@ const SubjectSchema = new Schema<ISubject>({
   examModeActive:  { type: Boolean, default: false },
   chapters:        { type: [ChapterSchema], default: [] }
 }, { timestamps: true })
-
+SubjectSchema.index({ userId: 1, examDate: 1 })
 export const Subject = mongoose.model<ISubject>('Subject', SubjectSchema)

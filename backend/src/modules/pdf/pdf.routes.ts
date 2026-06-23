@@ -3,7 +3,7 @@ import multer from 'multer'
 import path from 'path'
 import { pdfController } from './pdf.controller'
 import { authMiddleware } from '../../middlewares/auth.middleware'
-
+import { pdfRateLimiter } from '../../middlewares/rateLimit.middleware'
 // Config multer — stockage local temporaire
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -31,11 +31,9 @@ export const pdfRoutes = Router()
 
 pdfRoutes.use(authMiddleware)
 
-// Analyser un PDF → extraire chapitres via IA
-pdfRoutes.post('/analyze', upload.single('pdf'), pdfController.analyze)
 
-// Générer flashcards + quiz depuis un PDF
-pdfRoutes.post('/flashcards', upload.single('pdf'), pdfController.generateFlashcards)
 
 // Importer les chapitres confirmés dans un module
-pdfRoutes.post('/import', pdfController.importChapters)
+pdfRoutes.post('/import',pdfRateLimiter, pdfController.importChapters)
+pdfRoutes.post('/analyze', pdfRateLimiter, upload.single('pdf'), pdfController.analyze)
+pdfRoutes.post('/flashcards', pdfRateLimiter, upload.single('pdf'), pdfController.generateFlashcards)

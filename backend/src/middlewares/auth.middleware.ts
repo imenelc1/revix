@@ -8,14 +8,15 @@ export interface AuthRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): void => {
+  // Cookie en priorité, fallback sur Bearer header
   const authHeader = req.headers.authorization
+  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : undefined
+  const token = req.cookies?.token || bearerToken
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     res.status(401).json({ error: t('auth.tokenMissing', req.locale) })
     return
   }
-
-  const token = authHeader.split(' ')[1]
 
   try {
     const decoded = jwt.verify(token, ENV.JWT_SECRET) as { id: string }

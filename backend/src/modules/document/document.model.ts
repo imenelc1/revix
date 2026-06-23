@@ -16,5 +16,5 @@ const CourseDocumentSchema = new Schema<ICourseDocument>({
   extractedText:     { type: String, default: '' },
   uploadedAt:        { type: Date, default: Date.now }
 })
-
+CourseDocumentSchema.index({ userId: 1, subjectId: 1, uploadedAt: -1 })
 export const CourseDocument = mongoose.model<ICourseDocument>('CourseDocument', CourseDocumentSchema)

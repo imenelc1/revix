@@ -324,15 +324,15 @@ const moduleColors = [
 ]
 
 const masteryLevels = [
-  { value: 'not_understood', icon: Frown, label: t('onboarding.masteryNotUnderstood'), activeClass: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-500' },
-  { value: 'average',        icon: Meh,   label: t('onboarding.masteryAverage'),       activeClass: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-500' },
-  { value: 'mastered',       icon: Smile, label: t('onboarding.masteryMastered'),    activeClass: 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500' }
+  { value: 'not_understood' as const, icon: Frown, label: t('onboarding.masteryNotUnderstood'), activeClass: 'border-red-500 bg-red-50 dark:bg-red-500/10 text-red-500' },
+  { value: 'average' as const,        icon: Meh,   label: t('onboarding.masteryAverage'),       activeClass: 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-500' },
+  { value: 'mastered' as const,       icon: Smile, label: t('onboarding.masteryMastered'),      activeClass: 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500' }
 ]
 
 const difficultyLevels = computed(() => [
-  { value: 'low',    label: t('onboarding.levels.low') },
-  { value: 'medium', label: t('onboarding.levels.medium') },
-  { value: 'high',   label: t('onboarding.levels.high') }
+  { value: 'low' as const,    label: t('onboarding.levels.low') },
+  { value: 'medium' as const, label: t('onboarding.levels.medium') },
+  { value: 'high' as const,   label: t('onboarding.levels.high') }
 ])
 
 // ─── Chapitres ────────────────────────────────────────────────────────────────

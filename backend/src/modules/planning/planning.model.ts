@@ -60,5 +60,5 @@ const PlanningSchema = new Schema<IPlanning>({
   generatedAt:          { type: Date, default: Date.now },
   availability:         { type: AvailabilitySchema, default: () => ({ availableDays: [], hoursPerDay: 4, startHour: 9 }) }
 }, { timestamps: true })
-
+PlanningSchema.index({ userId: 1 })
 export const Planning = mongoose.model<IPlanning>('Planning', PlanningSchema)

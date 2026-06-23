@@ -8,7 +8,7 @@ export function setupGuards(router: Router) {
     const publicRoutes = ['/', '/login', '/register', '/auth/callback']
     const isPublic     = publicRoutes.includes(to.path)
 
-    if (authStore.token && !authStore.user) {
+    if (!authStore.user) {
       await authStore.fetchMe()
     }
 

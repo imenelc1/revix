@@ -458,9 +458,9 @@ async function addChapter(subjectId: string) {
 
 // ── Helpers maîtrise ──────────────────────────────────────────────────────────
 const masteryLevels = [
-  { value: 'not_understood', icon: Frown,  label: 'Non compris', activeClass: 'text-warm' },
-  { value: 'average',        icon: Meh,    label: 'Moyen',       activeClass: 'text-accent' },
-  { value: 'mastered',       icon: Smile,  label: 'Maîtrisé',   activeClass: 'text-secondary' },
+  { value: 'not_understood' as const, icon: Frown,  label: 'Non compris', activeClass: 'text-warm' },
+  { value: 'average' as const,        icon: Meh,    label: 'Moyen',       activeClass: 'text-accent' },
+  { value: 'mastered' as const,       icon: Smile,  label: 'Maîtrisé',   activeClass: 'text-secondary' },
 ]
 
 function masteryIcon(level: string) {

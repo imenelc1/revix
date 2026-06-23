@@ -3,7 +3,9 @@
     "features": "Fonctionnalités",
     "howItWorks": "Comment ça marche",
     "login": "Connexion",
-    "register": "Inscription"
+    "register": "Inscription",
+    "dashboard": "Mon espace",
+    "logout": "Se déconnecter"
   },
   "landing": {
     "badge": "PLANNING GÉNÉRÉ EN 12 SECONDES",

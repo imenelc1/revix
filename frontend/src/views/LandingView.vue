@@ -25,10 +25,16 @@
         <div class="flex items-center gap-2">
           <LanguageToggle />
           <ThemeToggle />
-          <AppButton variant="ghost" size="sm" to="/login">{{ t('nav.login') }}</AppButton>
-          <AppButton variant="primary" size="sm" to="/register">
-            {{ t('nav.register') }}
+          <template v-if="authStore.isAuthenticated">
+          <AppButton variant="ghost" size="sm" to="/dashboard">{{ t('nav.dashboard') }}</AppButton>
+          <AppButton variant="primary" size="sm" @click="authStore.logout(); $router.push('/')">
+            {{ t('nav.logout') }}
           </AppButton>
+        </template>
+        <template v-else>
+          <AppButton variant="ghost" size="sm" to="/login">{{ t('nav.login') }}</AppButton>
+          <AppButton variant="primary" size="sm" to="/register">{{ t('nav.register') }}</AppButton>
+        </template>
         </div>
       </div>
     </nav>
@@ -273,7 +279,8 @@ import { useUiStore } from '@/stores/ui.store'
 import pdfAnalysisImg from '@/assets/features/pdf-analysis.png'
 import dynamicPlanningImg from '@/assets/features/dynamic-planning.png'
 import catchupSystemImg from '@/assets/features/catchup-system.png'
-
+import { useAuthStore } from '@/stores/auth.store'
+const authStore = useAuthStore()
 const { t } = useI18n()
 const ui = useUiStore()
 

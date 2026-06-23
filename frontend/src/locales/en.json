@@ -3,7 +3,9 @@
     "features": "Features",
     "howItWorks": "How it works",
     "login": "Log in",
-    "register": "Sign up"
+    "register": "Sign up",
+    "dashboard": "My space",
+"logout": "Log out"
   },
   "landing": {
     "badge": "PLAN GENERATED IN 12 SECONDS",

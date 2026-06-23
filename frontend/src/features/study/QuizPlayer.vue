@@ -12,12 +12,12 @@
           :key="oi"
           @click="selectAnswer(qi, oi)"
           class="w-full text-left px-4 py-2.5 rounded-lg text-sm border-2 transition-all"
-          :class="getOptionClass(qi, oi, q.correctIndex)"
+          :class="getOptionClass(qi, oi, q.correctIndex ?? -1)"
         >
           {{ option }}
         </button>
       </div>
-      <p v-if="answers[qi] !== undefined && answers[qi] !== q.correctIndex" class="text-xs text-warm mt-2">
+      <p v-if="answers[qi] !== undefined && answers[qi] !== (q.correctIndex ?? -1)" class="text-xs text-warm mt-2">
         {{ q.explanation }}
       </p>
     </div>
@@ -51,8 +51,8 @@ const { t } = useI18n()
 interface QuizQuestion {
   question: string
   options: string[]
-  correctIndex: number
-  explanation: string
+  correctIndex?: number
+  explanation?: string 
 }
 
 interface Quiz {
@@ -70,7 +70,7 @@ const submitting = ref(false)
 const savedScore = ref(0)
 
 const correctCount = computed(() =>
-  props.quiz.questions.filter((q, i) => answers[i] === q.correctIndex).length
+  props.quiz.questions.filter((q, i) => answers[i] === (q.correctIndex ?? -1)).length
 )
 
 const quizScore = computed(() =>

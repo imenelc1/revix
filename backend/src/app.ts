@@ -16,14 +16,27 @@ import { localeMiddleware } from './middlewares/locale.middleware'
 import { errorMiddleware }  from './middlewares/error.middleware'
 import { ENV }             from './config/env'
 import { chatRoutes }      from './modules/chat/chat.routes'
+import cookieParser from 'cookie-parser'
 const app = express()
+
+const allowedOrigins = new Set([
+  ...ENV.FRONTEND_URLS,
+  ...(ENV.NODE_ENV !== 'production' ? ['http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'] : [])
+])
 
 app.use(helmet())
 app.use(cors({
-  origin: ENV.FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, origin || ENV.FRONTEND_URL)
+      return
+    }
+    callback(new Error('cors.originNotAllowed'))
+  },
   credentials: true,
 }))
 app.use(morgan('dev'))
+app.use(cookieParser())
 app.use(express.json({ limit: '5mb' }))
 app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 app.use(localeMiddleware)
@@ -45,10 +58,6 @@ app.use('/api/pdf',        pdfRoutes)
 app.use('/api/flashcards', flashcardRoutes)
 app.use('/api/documents',  documentRoutes)
 app.use('/api/chat', chatRoutes)
-
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'OK', message: 'Revix API opérationnelle' })
-})
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'OK', message: 'Revix API opérationnelle' })

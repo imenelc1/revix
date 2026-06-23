@@ -17,6 +17,10 @@ export const ENV = {
 
   // ── Frontend ────────────────────────────────────────────────────────────────
   FRONTEND_URL:         process.env.FRONTEND_URL || 'http://localhost:5173',
+  FRONTEND_URLS:        (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173')
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean),
 }
 
 // ── Garde-fou production ──────────────────────────────────────────────────────

@@ -23,16 +23,15 @@ const message   = ref(t('auth.connecting'))
 
 onMounted(async () => {
   const params = new URLSearchParams(window.location.search)
-  const token  = params.get('token')
   const error  = params.get('error')
 
-  if (error || !token) {
+  if (error) {
     message.value = t('auth.googleFailed')
     setTimeout(() => router.push('/login?error=google_failed'), 2000)
     return
   }
 
-  authStore.setToken(token)
+  // Le cookie est déjà posé par le backend — on fetch juste le profil
   await authStore.fetchMe()
 
   if (authStore.user) {
