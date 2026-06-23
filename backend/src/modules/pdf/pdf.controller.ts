@@ -20,9 +20,13 @@ export const pdfController = {
       ...result
     })
   } catch (error: any) {
-    pdfService.cleanup(file.path)
-    res.status(500).json({ error: t(error.message, req.locale) })
+  pdfService.cleanup(file.path)
+  if (error.message?.includes('429') || error.message?.includes('rate_limit_exceeded')) {
+    res.status(429).json({ error: t('pdf.rateLimitExceeded', req.locale) })
+    return
   }
+  res.status(500).json({ error: t(error.message, req.locale) })
+}
 },
 
   async generateFlashcards(req: AuthRequest, res: Response): Promise<void> {
@@ -36,10 +40,14 @@ export const pdfController = {
       const result = await pdfService.generateFlashcards(text)
       pdfService.cleanup(file.path)
       res.json(result)
-    } catch (error: any) {
-      pdfService.cleanup(file.path)
-      res.status(500).json({ error: t(error.message, req.locale) })
-    }
+   } catch (error: any) {
+  pdfService.cleanup(file.path)
+  if (error.message?.includes('429') || error.message?.includes('rate_limit_exceeded')) {
+    res.status(429).json({ error: t('pdf.rateLimitExceeded', req.locale) })
+    return
+  }
+  res.status(500).json({ error: t(error.message, req.locale) })
+}
   },
 
   async importChapters(req: AuthRequest, res: Response): Promise<void> {

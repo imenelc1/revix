@@ -48,12 +48,20 @@ Règles :
       { role: 'user', content: question }
     ]
 
-    const response = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
-      messages: messages as any,
-      temperature: 0.3,
-      max_tokens: 1200
-    })
+    let response
+try {
+  response = await groq.chat.completions.create({
+    model: 'llama-3.3-70b-versatile',
+    messages: messages as any,
+    temperature: 0.3,
+    max_tokens: 1200
+  })
+} catch (err: any) {
+  if (err.message?.includes('429') || err.message?.includes('rate_limit_exceeded')) {
+    throw new Error('pdf.rateLimitExceeded')
+  }
+  throw err
+}
 
     const answer = response.choices[0]?.message?.content || ''
 

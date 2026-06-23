@@ -381,10 +381,10 @@ async function onPdfUpload(e: Event) {
     }
     // Reset input pour permettre de re-sélectionner les mêmes fichiers
     if (pdfInput.value) pdfInput.value.value = ''
-  } catch (err) {
-    console.error('PDF analysis error', err)
-    toast.error(t('common.unexpectedError'))
-  } finally {
+ } catch (err: any) {
+  console.error('PDF analysis error', err)
+  toast.error(err.response?.data?.error || t('common.unexpectedError'))
+} finally {
     pdfLoading.value = false
   }
 }

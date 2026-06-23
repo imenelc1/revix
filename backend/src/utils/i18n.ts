@@ -44,6 +44,7 @@ const messages: Messages = {
   'quiz.notFound': { fr: 'Quiz introuvable', en: 'Quiz not found' },
   'quiz.deleted': { fr: 'Quiz supprimé', en: 'Quiz deleted' },
   'quiz.answersArrayRequired': { fr: 'answers (array) est requis', en: 'answers (array) is required' },
+  
 
   // ── PDF ───────────────────────────────────────────────────────────────────
   'pdf.noFileReceived': { fr: 'Aucun fichier PDF reçu', en: 'No PDF file received' },
@@ -52,6 +53,7 @@ const messages: Messages = {
   'pdf.onlyPdfAccepted': { fr: 'Seuls les fichiers PDF sont acceptés', en: 'Only PDF files are accepted' },
   'pdf.chaptersDetectedMessage': { fr: 'Nous avons détecté {count} chapitres — vous pouvez modifier avant de confirmer', en: 'We detected {count} chapters — you can edit them before confirming' },
   'pdf.chaptersImportedMessage': { fr: '{count} chapitres importés avec succès', en: '{count} chapters imported successfully' },
+  'pdf.rateLimitExceeded': { fr: "Limite d'analyse IA atteinte pour aujourd'hui. Réessayez dans quelques heures.", en: 'Daily AI analysis limit reached. Please try again in a few hours.' },
 
   // ── Planning ──────────────────────────────────────────────────────────────
   'planning.availableDaysAndHoursRequired': { fr: 'availableDays et hoursPerDay sont requis', en: 'availableDays and hoursPerDay are required' },
