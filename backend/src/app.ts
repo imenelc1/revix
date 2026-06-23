@@ -24,6 +24,16 @@ const allowedOrigins = new Set([
   ...(ENV.NODE_ENV !== 'production' ? ['http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'] : [])
 ])
 
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.has(origin)) return callback(null, origin)
+    console.log('CORS blocked:', origin, '| Allowed:', [...allowedOrigins])
+    callback(new Error('cors.originNotAllowed'))
+  },
+  credentials: true,
+}))
+
 app.use(helmet())
 app.use(cors({
   origin: (origin, callback) => {
