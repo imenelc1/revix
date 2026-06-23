@@ -164,7 +164,8 @@
     "metaLang": "FR / EN",
     "errorModuleNameRequired": "Nom du module requis",
     "errorExamDateRequired": "Date d'examen requise",
-    "errorSaving": "Erreur lors de la sauvegarde."
+    "errorSaving": "Erreur lors de la sauvegarde.",
+    "addAnotherPdf": "Ajouter un autre PDF"
   },
   "sidebar": {
     "academicExcellence": "Excellence Académique",

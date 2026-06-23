@@ -313,7 +313,7 @@ import { useToast } from '@/shared/composables/useToast'
 import { formatShortDate } from '@/shared/utils/dates'
 const { confirm } = useConfirm()
 const toast = useToast()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const subjectsStore = useSubjectsStore()
 const documentsStore = useDocumentsStore()
 

@@ -163,7 +163,8 @@
     "metaLang": "EN / FR",
     "errorModuleNameRequired": "Module name required",
     "errorExamDateRequired": "Exam date required",
-    "errorSaving": "Error while saving."
+    "errorSaving": "Error while saving.",
+    "addAnotherPdf": "Add another PDF"
   },
   "sidebar": {
     "academicExcellence": "Academic Excellence",

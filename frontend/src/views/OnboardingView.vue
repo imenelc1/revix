@@ -98,7 +98,26 @@
               </div>
               <p class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">{{ t('onboarding.dragPdf') }}</p>
               <p class="text-xs text-gray-400">{{ t('onboarding.pdfMax') }}</p>
-              <input ref="pdfInput" type="file" accept=".pdf" class="hidden" @change="onPdfUpload" />
+              <input ref="pdfInput" type="file" accept=".pdf" multiple class="hidden" @change="onPdfUpload" />
+            </div>
+            <div v-if="pdfFiles.length > 0 && !pdfLoading" class="space-y-1.5">
+              <div
+                v-for="(pdf, i) in pdfFiles"
+                :key="i"
+                class="flex items-center gap-2 px-3 py-2 rounded-xl bg-primary/5 border border-primary/20 text-xs"
+              >
+                <FileText :size="13" class="text-primary shrink-0" />
+                <span class="flex-1 truncate text-gray-700 dark:text-gray-300 font-medium">{{ pdf.fileName }}</span>
+                <button @click="pdfFiles.splice(i, 1)" class="text-gray-300 hover:text-red-500 transition">
+                  <X :size="13" />
+                </button>
+              </div>
+              <button
+                @click="triggerPdfUpload"
+                class="flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-1"
+              >
+                <Plus :size="13" /> {{ t('onboarding.addAnotherPdf') }}
+              </button>
             </div>
 
             <p v-if="pdfLoading" class="text-sm text-primary-soft font-mono text-center">{{ t('onboarding.pdfAnalyzing') }}</p>
@@ -246,10 +265,8 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import {
-  ArrowRight, Check, Plus, Trash2, UploadCloud, Sparkles,
-  Frown, Meh, Smile, Calendar as CalendarIcon
-} from '@lucide/vue'
+import { ArrowRight, Check, Plus, Trash2, UploadCloud, Sparkles,
+  Frown, Meh, Smile, Calendar as CalendarIcon, FileText, X } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppInput from '@/shared/components/AppInput.vue'
 import AppButton from '@/shared/components/AppButton.vue'
@@ -270,8 +287,7 @@ const saveError   = ref('')
 const pdfLoading  = ref(false)
 const pdfInput    = ref<HTMLInputElement | null>(null)
 const globalScore = ref(0)
-const pdfExtractedText = ref('')
-const pdfFileName      = ref('')
+const pdfFiles = ref<{ fileName: string; extractedText: string }[]>([])
 
 const stepLabels = computed(() => [
   t('onboarding.stepIdentity'),
@@ -334,28 +350,37 @@ function triggerPdfUpload() {
 }
 
 async function onPdfUpload(e: Event) {
-  const file = (e.target as HTMLInputElement).files?.[0]
-  if (!file) return
+  const files = Array.from((e.target as HTMLInputElement).files || [])
+  if (!files.length) return
 
   pdfLoading.value = true
   try {
-    const fd = new FormData()
-    fd.append('pdf', file)
-    const res = await api.post('/pdf/analyze', fd, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
-    const detected = res.data.chapters || []
-    form.chapters = detected.map((c: any) => ({
-      title: c.title,
-      masteryLevel: 'average' as const,
-      difficulty: (c.estimatedDifficulty || 'medium') as 'low' | 'medium' | 'high',
-      importanceScore: 3
-    }))
-    if (!form.name && res.data.subjectName) {
-      form.name = res.data.subjectName
+    for (const file of files) {
+      const fd = new FormData()
+      fd.append('pdf', file)
+      const res = await api.post('/pdf/analyze', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      const detected = res.data.chapters || []
+      // Accumule les chapitres au lieu de remplacer
+      const newChapters = detected.map((c: any) => ({
+        title: c.title,
+        masteryLevel: 'average' as const,
+        difficulty: (c.estimatedDifficulty || 'medium') as 'low' | 'medium' | 'high',
+        importanceScore: 3
+      }))
+      form.chapters.push(...newChapters)
+
+      if (!form.name && res.data.subjectName) {
+        form.name = res.data.subjectName
+      }
+      pdfFiles.value.push({
+        fileName: file.name,
+        extractedText: res.data.extractedText || ''
+      })
     }
-    pdfExtractedText.value = res.data.extractedText || ''
-    pdfFileName.value = file.name
+    // Reset input pour permettre de re-sélectionner les mêmes fichiers
+    if (pdfInput.value) pdfInput.value.value = ''
   } catch (err) {
     console.error('PDF analysis error', err)
     toast.error(t('common.unexpectedError'))
@@ -410,14 +435,16 @@ try {
   }
 
       // 3. Si un PDF a été analysé, persister le document + son texte pour le chatbot
-  if (pdfExtractedText.value) {
+ for (const pdf of pdfFiles.value) {
+  if (pdf.extractedText) {
     await documentsStore.create(
       subject._id,
-      pdfFileName.value || 'Document.pdf',
+      pdf.fileName,
       form.chapters.length,
-      pdfExtractedText.value
+      pdf.extractedText
     )
   }
+}
 
   // 4. Rediriger vers le dashboard
   router.push('/dashboard')
@@ -426,7 +453,7 @@ try {
   toast.error(t('common.unexpectedError'))
 } finally {
   saving.value = false
-}
+}}
 </script>
 
 <style scoped>
