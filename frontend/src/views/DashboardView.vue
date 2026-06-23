@@ -210,7 +210,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import { usePlanningStore } from '@/stores/planning.store'
 import type { Subject } from '@/stores/subjects.store'
-
+import { formatShortDate, formatWeekdayShortDate } from '@/shared/utils/dates'
 const { t, locale } = useI18n()
 const authStore = useAuthStore()
 const subjectsStore = useSubjectsStore()
@@ -280,7 +280,7 @@ function subjectProgress(subject: Subject): number {
 }
 
 function formatExamDate(date: string): string {
-  return new Date(date).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short' })
+  return formatShortDate(date, locale.value)
 }
 
 function daysUntilExam(date: string): number {
@@ -300,9 +300,8 @@ const upcomingSessions = computed(() => {
 })
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'short', day: '2-digit', month: 'short' })
+  return formatWeekdayShortDate(dateStr, locale.value)
 }
-
 // ── Heatmap ────────────────────────────────────────────────────────────────────
 interface PriorityChapter {
   subjectName: string

@@ -310,7 +310,7 @@ import { useDocumentsStore } from '@/stores/documents.store'
 import type { Subject, Chapter } from '@/stores/subjects.store'
 import { useConfirm } from '@/shared/composables/useConfirm'
 import { useToast } from '@/shared/composables/useToast'
-
+import { formatShortDate } from '@/shared/utils/dates'
 const { confirm } = useConfirm()
 const toast = useToast()
 const { t } = useI18n()
@@ -343,8 +343,12 @@ async function deleteDocument(id: string) {
   await documentsStore.remove(id)
 }
 
+function formatExamDate(date: string): string {
+  return formatShortDate(date, locale.value)
+}
+
 function formatDocDate(date: string): string {
-  return new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
+  return formatShortDate(date, locale.value)
 }
 
 // ── Couleurs disponibles ──────────────────────────────────────────────────────
@@ -475,10 +479,6 @@ function difficultyLabel(d: string) {
 function subjectProgress(subject: Subject): number {
   if (!subject.chapters.length) return 0
   return Math.round(subject.chapters.filter(c => c.masteryLevel === 'mastered').length / subject.chapters.length * 100)
-}
-
-function formatExamDate(date: string): string {
-  return new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
 }
 
 function daysUntilExam(date: string): number {

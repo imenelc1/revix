@@ -209,7 +209,7 @@ import AppButton from '@/shared/components/AppButton.vue'
 import { usePlanningStore } from '@/stores/planning.store'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import type { Session } from '@/stores/planning.store'
-
+import { formatMonthYear, formatFullWeekdayDate } from '@/shared/utils/dates'
 const { t, locale } = useI18n()
 const planningStore = usePlanningStore()
 const subjectsStore = useSubjectsStore()
@@ -240,9 +240,7 @@ function goToday() {
   selectedDayKey.value = dateKey(new Date())
 }
 
-const monthLabel = computed(() =>
-  currentMonth.value.toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' })
-)
+const monthLabel = computed(() => formatMonthYear(currentMonth.value, locale.value))
 
 const weekDayLabels = computed(() => [
   t('planning.monday'), t('planning.tuesday'), t('planning.wednesday'),
@@ -325,9 +323,7 @@ const selectedDayExams = computed(() => examsByDate.value[selectedDayKey.value] 
 const formattedSelectedDay = computed(() => {
   const [y, m, d] = selectedDayKey.value.split('-').map(Number)
   const date = new Date(y, m - 1, d)
-  return date.toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', {
-    weekday: 'long', day: 'numeric', month: 'long'
-  })
+  return formatFullWeekdayDate(date, locale.value)
 })
 
 // ── Statuts ─────────────────────────────────────────────────────────────────────

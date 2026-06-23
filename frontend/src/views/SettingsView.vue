@@ -174,7 +174,7 @@ import AppButton from '@/shared/components/AppButton.vue'
 import GoogleIcon from '@/shared/components/icons/GoogleIcon.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useUiStore } from '@/stores/ui.store'
-
+import { formatMonthYear } from '@/shared/utils/dates'
 const { t, locale } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
@@ -256,7 +256,7 @@ async function savePassword() {
 
 // ── Compte ──────────────────────────────────────────────────────────────────────
 function formatMemberSince(date: string): string {
-  return new Date(date).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' })
+  return formatMonthYear(date, locale.value)
 }
 
 function handleLogout() {

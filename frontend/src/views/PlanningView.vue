@@ -251,6 +251,7 @@ import AppButton from '@/shared/components/AppButton.vue'
 import { usePlanningStore } from '@/stores/planning.store'
 import type { Session } from '@/stores/planning.store'
 import { useConfirm } from '@/shared/composables/useConfirm'
+import { formatLongDate, formatWeekdayShortDate } from '@/shared/utils/dates'
 const { confirm } = useConfirm()
 const { t, locale } = useI18n()
 const planningStore = usePlanningStore()
@@ -299,12 +300,10 @@ function nextWeek() {
   loadWeek()
 }
 
-const formatWeekStart = computed(() => {
-  return currentWeekStart.value.toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'long', year: 'numeric' })
-})
+const formatWeekStart = computed(() => formatLongDate(currentWeekStart.value, locale.value))
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'short', day: '2-digit', month: 'short' })
+  return formatWeekdayShortDate(dateStr, locale.value)
 }
 
 // ── Week sessions ──────────────────────────────────────────────────────────────
