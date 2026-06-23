@@ -2,20 +2,20 @@ import { Response } from 'express'
 import { flashcardService } from './flashcard.service'
 import { pdfService } from '../pdf/pdf.service'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
-
+import { t } from '../../utils/i18n'
 export const flashcardController = {
 
   async generateFlashcards(req: AuthRequest, res: Response): Promise<void> {
     try {
       const { subjectId, text, chapterId } = req.body
       if (!subjectId || !text) {
-        res.status(400).json({ error: 'subjectId et text sont requis' })
+        res.status(400).json({ error: t('flashcard.subjectIdAndTextRequired', req.locale) })
         return
       }
       const flashcards = await flashcardService.generateFromText(req.userId!, subjectId, text, chapterId)
       res.status(201).json(flashcards)
     } catch (error: any) {
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -23,8 +23,8 @@ export const flashcardController = {
   async generateFlashcardsFromPdf(req: AuthRequest, res: Response): Promise<void> {
     const file = (req as any).file
     const { subjectId, chapterId } = req.body
-    if (!file) { res.status(400).json({ error: 'Aucun fichier PDF reçu' }); return }
-    if (!subjectId) { res.status(400).json({ error: 'subjectId est requis' }); return }
+    if (!file) { res.status(400).json({ error: t('flashcard.noPdfFile', req.locale) }); return }
+    if (!subjectId) { res.status(400).json({ error: t('flashcard.subjectIdRequired', req.locale) }); return }
 
     try {
       const text = await pdfService.extractText(file.path)
@@ -33,7 +33,7 @@ export const flashcardController = {
       res.status(201).json(flashcards)
     } catch (error: any) {
       pdfService.cleanup(file.path)
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -42,16 +42,16 @@ export const flashcardController = {
       const flashcards = await flashcardService.getBySubject(req.userId!, String(req.params.subjectId))
       res.json(flashcards)
     } catch (error: any) {
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
   async deleteFlashcard(req: AuthRequest, res: Response): Promise<void> {
     try {
       const result = await flashcardService.delete(req.userId!, String(req.params.id))
-      res.json(result)
+      res.json({ message: t(result.message, req.locale) })
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -59,13 +59,13 @@ export const flashcardController = {
     try {
       const { subjectId, text, chapterId } = req.body
       if (!subjectId || !text) {
-        res.status(400).json({ error: 'subjectId et text sont requis' })
+        res.status(400).json({ error: t('flashcard.subjectIdAndTextRequired', req.locale) })
         return
       }
       const quiz = await flashcardService.generateQuiz(req.userId!, subjectId, text, chapterId)
       res.status(201).json(quiz)
     } catch (error: any) {
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -73,8 +73,8 @@ export const flashcardController = {
   async generateQuizFromPdf(req: AuthRequest, res: Response): Promise<void> {
     const file = (req as any).file
     const { subjectId, chapterId } = req.body
-    if (!file) { res.status(400).json({ error: 'Aucun fichier PDF reçu' }); return }
-    if (!subjectId) { res.status(400).json({ error: 'subjectId est requis' }); return }
+    if (!file) { res.status(400).json({ error: t('flashcard.noPdfFile', req.locale) }); return }
+    if (!subjectId) { res.status(400).json({ error: t('flashcard.subjectIdRequired', req.locale) }); return }
 
     try {
       const text = await pdfService.extractText(file.path)
@@ -83,7 +83,7 @@ export const flashcardController = {
       res.status(201).json(quiz)
     } catch (error: any) {
       pdfService.cleanup(file.path)
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -92,30 +92,38 @@ export const flashcardController = {
       const quizzes = await flashcardService.getQuizBySubject(req.userId!, String(req.params.subjectId))
       res.json(quizzes)
     } catch (error: any) {
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
   async deleteQuiz(req: AuthRequest, res: Response): Promise<void> {
     try {
       const result = await flashcardService.deleteQuiz(req.userId!, String(req.params.id))
-      res.json(result)
+      res.json({ message: t(result.message, req.locale) })
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   },
+  async getQuizById(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const quiz = await flashcardService.getQuizById(req.userId!, String(req.params.quizId))
+    res.json(quiz)
+  } catch (error: any) {
+    res.status(404).json({ error: t(error.message, req.locale) })
+  }
+},
  
 
   async submitQuiz(req: AuthRequest, res: Response): Promise<void> {
     try {
       const { answers } = req.body
       if (!answers || !Array.isArray(answers)) {
-        res.status(400).json({ error: 'answers (array) est requis' })
+        res.status(400).json({ error: t('flashcard.answersRequired', req.locale) })
         return
       }
       const result = await flashcardService.submitQuiz(req.userId!, String(req.params.quizId), answers)
       res.json(result)
     } catch (error: any) {
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   }
 }

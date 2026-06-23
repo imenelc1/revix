@@ -21,10 +21,10 @@ const upload = multer({
     if (file.mimetype === 'application/pdf') {
       cb(null, true)
     } else {
-      cb(new Error('Seuls les fichiers PDF sont acceptés'))
+      cb(new Error('pdf.onlyPdfAccepted'))
     }
   },
-  limits: { fileSize: 10 * 1024 * 1024 } // max 10MB
+  limits: { fileSize: 10 * 1024 * 1024 }
 })
 
 export const pdfRoutes = Router()

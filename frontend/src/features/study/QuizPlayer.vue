@@ -25,14 +25,14 @@
     <!-- Score final — affiché seulement après soumission réussie -->
     <div v-if="submitted" class="text-center pt-2">
       <div class="inline-block bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl px-8 py-5 shadow-sm">
-        <p v-if="submitting" class="text-sm text-gray-400 font-mono mb-2">Enregistrement...</p>
+        <p v-if="submitting" class="text-sm text-gray-400 font-mono mb-2">{{ t('study.saving') }}</p>
         <template v-else>
           <p class="font-display text-3xl font-bold text-primary">{{ savedScore }}%</p>
-          <p class="text-sm text-gray-500 mt-1">
-            {{ correctCount }}/{{ quiz.questions.length }} correctes
+         <p class="text-sm text-gray-500 mt-1">
+            {{ correctCount }}/{{ quiz.questions.length }} {{ t('study.quizCorrect') }}
           </p>
           <AppButton variant="outline" size="sm" class="mt-3" @click="reset">
-            Recommencer
+            {{ t('study.restart') }}
           </AppButton>
         </template>
       </div>
@@ -44,6 +44,9 @@
 import { reactive, computed, ref, watch } from 'vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import api from '@/shared/utils/api'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 interface QuizQuestion {
   question: string

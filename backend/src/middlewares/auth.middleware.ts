@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { ENV } from '../config/env'
+import { t } from '../utils/i18n'
 
 export interface AuthRequest extends Request {
   userId?: string
@@ -10,7 +11,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Token manquant' })
+    res.status(401).json({ error: t('auth.tokenMissing', req.locale) })
     return
   }
 
@@ -21,6 +22,6 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
     req.userId = decoded.id
     next()
   } catch {
-    res.status(401).json({ error: 'Token invalide ou expiré' })
+    res.status(401).json({ error: t('auth.tokenInvalid', req.locale) })
   }
 }

@@ -7,7 +7,7 @@ export const authService = {
 
   async register(data: RegisterInput) {
     const existing = await User.findOne({ email: data.email })
-    if (existing) throw new Error('Cet email est déjà utilisé')
+    if (existing) throw new Error('auth.emailAlreadyUsed')
 
     const user = await User.create({
       firstName: data.firstName,
@@ -22,10 +22,10 @@ export const authService = {
 
   async login(data: LoginInput) {
     const user = await User.findOne({ email: data.email })
-    if (!user) throw new Error('Email ou mot de passe incorrect')
+    if (!user) throw new Error('auth.invalidCredentials')
 
     const valid = await user.comparePassword(data.password)
-    if (!valid) throw new Error('Email ou mot de passe incorrect')
+    if (!valid) throw new Error('auth.invalidCredentials')
 
     const token = generateToken(user.id)
     return { user: sanitizeUser(user), token }
@@ -33,14 +33,14 @@ export const authService = {
 
   async getMe(userId: string) {
     const user = await User.findById(userId)
-    if (!user) throw new Error('Utilisateur introuvable')
+    if (!user) throw new Error('auth.userNotFound')
     return sanitizeUser(user)
   },
 
   // ── Mettre à jour le profil (prénom / nom) ──────────────────────────────────
   async updateProfile(userId: string, data: { firstName?: string; lastName?: string }) {
     const user = await User.findById(userId)
-    if (!user) throw new Error('Utilisateur introuvable')
+    if (!user) throw new Error('auth.userNotFound')
 
     if (data.firstName) user.firstName = data.firstName
     if (data.lastName)  user.lastName  = data.lastName
@@ -52,19 +52,19 @@ export const authService = {
   // ── Changer le mot de passe ──────────────────────────────────────────────────
   async changePassword(userId: string, currentPassword: string, newPassword: string) {
     const user = await User.findById(userId)
-    if (!user) throw new Error('Utilisateur introuvable')
+    if (!user) throw new Error('auth.userNotFound')
 
     if (user.googleId && user.passwordHash.startsWith('google_')) {
-      throw new Error('Les comptes connectés via Google ne peuvent pas changer de mot de passe ici')
+      throw new Error('auth.googleAccountPasswordChange')
     }
 
     const valid = await user.comparePassword(currentPassword)
-    if (!valid) throw new Error('Mot de passe actuel incorrect')
+    if (!valid) throw new Error('auth.currentPasswordIncorrect')
 
     user.passwordHash = newPassword // re-hashé par le pre-save hook du modèle
     await user.save()
 
-    return { message: 'Mot de passe mis à jour avec succès' }
+    return { message: 'auth.passwordUpdated' }
   }
 }
 

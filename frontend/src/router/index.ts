@@ -20,6 +20,7 @@ const router = createRouter({
     { path: '/pdf',           name: 'pdf',         component: () => import('../views/PdfAnalysisView.vue') },
     { path: '/settings',      name: 'settings',    component: () => import('../views/SettingsView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/NotFoundView.vue') },
+    { path: '/chat', name: 'chat', component: () => import('../views/ChatView.vue') },
   ],
 })
 

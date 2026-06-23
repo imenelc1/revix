@@ -24,10 +24,16 @@ export const useDocumentsStore = defineStore('documents', () => {
     }
   }
 
+  async function create(subjectId: string, fileName: string, chaptersGenerated: number, extractedText?: string) {
+    const res = await api.post('/documents', { subjectId, fileName, chaptersGenerated, extractedText })
+    documents.value.unshift(res.data)
+    return res.data
+  }
+
   async function remove(id: string) {
     await api.delete(`/documents/${id}`)
     documents.value = documents.value.filter(d => d._id !== id)
   }
 
-  return { documents, loading, fetchBySubject, remove }
+  return { documents, loading, fetchBySubject, create, remove }
 })

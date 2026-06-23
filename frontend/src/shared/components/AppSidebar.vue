@@ -58,7 +58,7 @@
 import { computed } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { LayoutDashboard, BookOpen, Calendar, BrainCircuit, FileText, Settings, LogOut } from '@lucide/vue'
+import { LayoutDashboard, BookOpen, Calendar, BrainCircuit, FileText, Settings, LogOut, MessageCircle } from '@lucide/vue'
 import AppLogo from '@/shared/components/AppLogo.vue'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -71,11 +71,11 @@ const navItems = computed(() => [
   { to: '/dashboard',  icon: LayoutDashboard, label: t('sidebar.dashboard') },
   { to: '/subjects',   icon: BookOpen,         label: t('sidebar.modules') },
   { to: '/calendar',   icon: Calendar,         label: t('sidebar.calendar') },
-  { to: '/flashcards', icon: BrainCircuit,     label: 'Flashcards' },
+  { to: '/flashcards', icon: BrainCircuit,     label: t('sidebar.flashcards') },
+  { to: '/chat',       icon: MessageCircle,    label: t('sidebar.chat') },
   { to: '/pdf',        icon: FileText,         label: t('sidebar.iaAnalysis') },
   { to: '/settings',   icon: Settings,         label: t('sidebar.settings') },
 ])
-
 function isActive(path: string) {
   return route.path === path
 }

@@ -8,16 +8,15 @@ const pdfParse = require('pdf-parse')
 
 export const pdfService = {
 
-  async extractText(filePath: string): Promise<string> {
-    const buffer = fs.readFileSync(filePath)
-    const data = await pdfParse(buffer)
-    const text = data.text
-      .replace(/\s+/g, ' ')
-      .trim()
-      .slice(0, 8000)
-    return text
-  },
-
+ async extractText(filePath: string): Promise<string> {
+  const buffer = fs.readFileSync(filePath)
+  const data = await pdfParse(buffer)
+  const text = data.text
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 20000)
+  return text
+},
   async analyzeWithAI(text: string) {
     const prompt = `Tu es un assistant pédagogique. Analyse ce cours universitaire et extrait les informations suivantes.
 
@@ -53,8 +52,8 @@ Réponds UNIQUEMENT avec un JSON valide (sans markdown, sans explication) dans c
       const cleaned = content.replace(/```json|```/g, '').trim()
       return JSON.parse(cleaned)
     } catch {
-      throw new Error('L\'IA n\'a pas retourné un JSON valide. Réessayez.')
-    }
+  throw new Error('pdf.aiInvalidJson')
+}
   },
 
   async generateFlashcards(text: string) {
@@ -96,13 +95,13 @@ Génère exactement 5 flashcards et exactement 5 questions de quiz.`
       const cleaned = content.replace(/```json|```/g, '').trim()
       return JSON.parse(cleaned)
     } catch {
-      throw new Error('L\'IA n\'a pas retourné un JSON valide. Réessayez.')
-    }
+  throw new Error('pdf.aiInvalidJson')
+}
   },
 
   async importChapters(userId: string, subjectId: string, chapters: any[]) {
     const subject = await Subject.findOne({ _id: subjectId, userId })
-    if (!subject) throw new Error('Module introuvable')
+    if (!subject) throw new Error('subject.notFound')
 
     for (const chapter of chapters) {
       subject.chapters.push({

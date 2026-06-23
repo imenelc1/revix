@@ -255,11 +255,13 @@ import AppInput from '@/shared/components/AppInput.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import api from '@/shared/utils/api'
-import { useI18n as useI18nComposable } from 'vue-i18n'
-
+import { useDocumentsStore } from '@/stores/documents.store'
+import { useToast } from '@/shared/composables/useToast'
+const toast = useToast()
 const { t } = useI18n()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
+const documentsStore = useDocumentsStore()
 
 // ─── State ───────────────────────────────────────────────────────────────────
 const currentStep = ref(1)
@@ -268,6 +270,8 @@ const saveError   = ref('')
 const pdfLoading  = ref(false)
 const pdfInput    = ref<HTMLInputElement | null>(null)
 const globalScore = ref(0)
+const pdfExtractedText = ref('')
+const pdfFileName      = ref('')
 
 const stepLabels = computed(() => [
   t('onboarding.stepIdentity'),
@@ -350,17 +354,19 @@ async function onPdfUpload(e: Event) {
     if (!form.name && res.data.subjectName) {
       form.name = res.data.subjectName
     }
+    pdfExtractedText.value = res.data.extractedText || ''
+    pdfFileName.value = file.name
   } catch (err) {
     console.error('PDF analysis error', err)
+    toast.error(t('common.unexpectedError'))
   } finally {
     pdfLoading.value = false
   }
 }
-
 // ─── Validation ───────────────────────────────────────────────────────────────
 function validateStep1(): boolean {
-  errors.name     = !form.name     ? 'Nom du module requis'   : undefined
-  errors.examDate = !form.examDate ? 'Date d\'examen requise' : undefined
+  errors.name     = !form.name     ? t('onboarding.errorModuleNameRequired') : undefined
+  errors.examDate = !form.examDate ? t('onboarding.errorExamDateRequired')   : undefined
   return !errors.name && !errors.examDate
 }
 
@@ -382,34 +388,44 @@ async function nextStep() {
     return
   }
 
-  // Step 3 → sauvegarder
-  saving.value = true
-  try {
-    // 1. Créer le module (subject)
-    const subject = await subjectsStore.create({
-      name: form.name,
-      color: form.color,
-      examDate: form.examDate
+ // Step 3 → sauvegarder
+saving.value = true
+try {
+  // 1. Créer le module (subject)
+  const subject = await subjectsStore.create({
+    name: form.name,
+    color: form.color,
+    examDate: form.examDate
+  })
+
+  // 2. Ajouter les chapitres un par un
+  for (const chapter of form.chapters) {
+    if (!chapter.title.trim()) continue
+    await subjectsStore.addChapter(subject._id, {
+      title: chapter.title,
+      masteryLevel: chapter.masteryLevel,
+      difficulty: chapter.difficulty,
+      importanceScore: chapter.importanceScore
     })
-
-    // 2. Ajouter les chapitres un par un
-    for (const chapter of form.chapters) {
-      if (!chapter.title.trim()) continue
-      await subjectsStore.addChapter(subject._id, {
-        title: chapter.title,
-        masteryLevel: chapter.masteryLevel,
-        difficulty: chapter.difficulty,
-        importanceScore: chapter.importanceScore
-      })
-    }
-
-    // 3. Rediriger vers le dashboard
-    router.push('/dashboard')
-  } catch (err: any) {
-    saveError.value = err.response?.data?.error || 'Erreur lors de la sauvegarde.'
-  } finally {
-    saving.value = false
   }
+
+      // 3. Si un PDF a été analysé, persister le document + son texte pour le chatbot
+  if (pdfExtractedText.value) {
+    await documentsStore.create(
+      subject._id,
+      pdfFileName.value || 'Document.pdf',
+      form.chapters.length,
+      pdfExtractedText.value
+    )
+  }
+
+  // 4. Rediriger vers le dashboard
+  router.push('/dashboard')
+} catch (err: any) {
+  saveError.value = err.response?.data?.error || t('onboarding.errorSaving')
+  toast.error(t('common.unexpectedError'))
+} finally {
+  saving.value = false
 }
 </script>
 

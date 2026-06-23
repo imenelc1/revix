@@ -209,10 +209,9 @@ import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import { usePlanningStore } from '@/stores/planning.store'
-import { Hand } from '@lucide/vue'
 import type { Subject } from '@/stores/subjects.store'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const authStore = useAuthStore()
 const subjectsStore = useSubjectsStore()
 const planningStore = usePlanningStore()
@@ -281,7 +280,7 @@ function subjectProgress(subject: Subject): number {
 }
 
 function formatExamDate(date: string): string {
-  return new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })
+  return new Date(date).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short' })
 }
 
 function daysUntilExam(date: string): number {
@@ -301,7 +300,7 @@ const upcomingSessions = computed(() => {
 })
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' })
+  return new Date(dateStr).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'short', day: '2-digit', month: 'short' })
 }
 
 // ── Heatmap ────────────────────────────────────────────────────────────────────

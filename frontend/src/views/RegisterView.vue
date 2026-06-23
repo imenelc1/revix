@@ -245,10 +245,10 @@ function validate(): boolean {
   errors.confirmPassword = undefined
   errors.terms          = undefined
 
-  if (!firstName.value)  errors.firstName      = t('auth.firstName') + ' requis'
-  if (!lastName.value)   errors.lastName       = t('auth.lastName') + ' requis'
-  if (!email.value)      errors.email          = t('auth.email') + ' requis'
-  if (!password.value)   errors.password       = t('auth.password') + ' requis'
+  if (!firstName.value)  errors.firstName      = t('auth.errorFirstNameRequired')
+  if (!lastName.value)   errors.lastName       = t('auth.errorLastNameRequired')
+  if (!email.value)      errors.email          = t('auth.errorEmailRequired')
+  if (!password.value)   errors.password       = t('auth.errorPasswordRequired')
   if (password.value !== confirmPassword.value) errors.confirmPassword = t('auth.errorPasswordMatch')
   if (!acceptTerms.value) errors.terms         = t('auth.errorTerms')
 

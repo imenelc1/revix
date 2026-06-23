@@ -5,14 +5,15 @@ export interface ICourseDocument extends Document {
   subjectId: mongoose.Types.ObjectId
   fileName: string
   chaptersGenerated: number
+  extractedText: string
   uploadedAt: Date
 }
-
 const CourseDocumentSchema = new Schema<ICourseDocument>({
   userId:            { type: Schema.Types.ObjectId, ref: 'User', required: true },
   subjectId:         { type: Schema.Types.ObjectId, ref: 'Subject', required: true },
   fileName:          { type: String, required: true },
   chaptersGenerated: { type: Number, default: 0 },
+  extractedText:     { type: String, default: '' },
   uploadedAt:        { type: Date, default: Date.now }
 })
 

@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { subjectService } from './subject.service'
 import { CreateSubjectSchema, UpdateSubjectSchema, ChapterSchema, UpdateChapterSchema } from './subject.schema'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
-
+import { t, translateZodErrors } from '../../utils/i18n'
 export const subjectController = {
 
   async getAll(req: AuthRequest, res: Response): Promise<void> {
@@ -10,7 +10,7 @@ export const subjectController = {
       const subjects = await subjectService.getAll(req.userId!)
       res.json(subjects)
     } catch (error: any) {
-      res.status(500).json({ error: error.message })
+      res.status(500).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -19,7 +19,7 @@ export const subjectController = {
       const subject = await subjectService.getOne(req.userId!, String(req.params.id))
       res.json(subject)
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -30,7 +30,7 @@ export const subjectController = {
       res.status(201).json(subject)
     } catch (error: any) {
       if (error.name === 'ZodError') { res.status(400).json({ error: error.errors }); return }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -41,18 +41,18 @@ export const subjectController = {
       res.json(subject)
     } catch (error: any) {
       if (error.name === 'ZodError') { res.status(400).json({ error: error.errors }); return }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
   async delete(req: AuthRequest, res: Response): Promise<void> {
-    try {
-      const result = await subjectService.delete(req.userId!, String(req.params.id))
-      res.json(result)
-    } catch (error: any) {
-      res.status(404).json({ error: error.message })
-    }
-  },
+  try {
+    const result = await subjectService.delete(req.userId!, String(req.params.id))
+    res.json({ message: t(result.message, req.locale) })
+  } catch (error: any) {
+    res.status(404).json({ error: t(error.message, req.locale) })
+  }
+},
 
   async addChapter(req: AuthRequest, res: Response): Promise<void> {
     try {
@@ -61,7 +61,7 @@ export const subjectController = {
       res.status(201).json(subject)
     } catch (error: any) {
       if (error.name === 'ZodError') { res.status(400).json({ error: error.errors }); return }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -72,7 +72,7 @@ export const subjectController = {
       res.json(subject)
     } catch (error: any) {
       if (error.name === 'ZodError') { res.status(400).json({ error: error.errors }); return }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -81,7 +81,7 @@ export const subjectController = {
       const subject = await subjectService.deleteChapter(req.userId!, String(req.params.id), String(req.params.chapterId))
       res.json(subject)
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   }
 }

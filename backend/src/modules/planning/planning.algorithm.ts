@@ -3,10 +3,10 @@ import { ISession } from './planning.model'
 import { computePriorityScore, recommendedDuration } from '../../utils/priority.score'
 import mongoose from 'mongoose'
 
-interface Availability {
-  availableDays: number[]  // 0=Dimanche, 1=Lundi ... 6=Samedi
+export interface Availability {
+  availableDays: number[]
   hoursPerDay: number
-  startHour: number        // heure de début ex: 9 pour 09:00
+  startHour: number
 }
 
 interface ChapterWithMeta {
@@ -21,12 +21,12 @@ interface ChapterWithMeta {
 }
 
 // Formate une heure en string "HH:MM"
-function formatTime(hour: number, minute: number): string {
+export function formatTime(hour: number, minute: number): string {
   return `${String(Math.floor(hour)).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
 }
 
 // Ajoute des minutes à une heure "HH:MM" et retourne "HH:MM"
-function addMinutes(time: string, minutes: number): string {
+export function addMinutes(time: string, minutes: number): string {
   const [h, m] = time.split(':').map(Number)
   const total = h * 60 + m + minutes
   return formatTime(Math.floor(total / 60), total % 60)
@@ -130,4 +130,77 @@ export function generateSessions(subjects: ISubject[], availability: Availabilit
   }
 
   return sessions
+}
+function dateKey(d: Date): string {
+  const dt = new Date(d)
+  dt.setHours(0, 0, 0, 0)
+  return dt.toISOString().slice(0, 10)
+}
+
+// Replace les sessions 'missed' sur les prochains jours disponibles,
+// en respectant le budget horaire quotidien et sans chevaucher les sessions déjà placées ce jour-là.
+export function rescheduleMissedSessions(
+  sessions: ISession[],
+  availability: Availability
+): { rescheduledCount: number; unresolvedCount: number } {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const missed = sessions.filter(s => s.status === 'missed')
+  if (missed.length === 0) return { rescheduledCount: 0, unresolvedCount: 0 }
+
+  const maxMinutesPerDay = availability.hoursPerDay * 60
+
+  const usedMinutesByDay = new Map<string, number>()
+  const lastEndTimeByDay = new Map<string, string>()
+
+  for (const s of sessions) {
+    if (s.status === 'missed') continue
+    const key = dateKey(s.date)
+    const totalDuration = s.durationMinutes + s.breakDurationMinutes
+    usedMinutesByDay.set(key, (usedMinutesByDay.get(key) || 0) + totalDuration)
+
+    const candidateEnd = addMinutes(s.endTime, s.breakDurationMinutes)
+    const currentLast = lastEndTimeByDay.get(key)
+    if (!currentLast || candidateEnd > currentLast) {
+      lastEndTimeByDay.set(key, candidateEnd)
+    }
+  }
+
+  let rescheduledCount = 0
+  const MAX_LOOKAHEAD_DAYS = 90
+
+  for (const session of missed) {
+    let placed = false
+
+    for (let offset = 1; offset <= MAX_LOOKAHEAD_DAYS && !placed; offset++) {
+      const candidateDate = new Date(today)
+      candidateDate.setDate(candidateDate.getDate() + offset)
+
+      if (!availability.availableDays.includes(candidateDate.getDay())) continue
+
+      const key = dateKey(candidateDate)
+      const usedMinutes = usedMinutesByDay.get(key) || 0
+      const remaining = maxMinutesPerDay - usedMinutes
+      if (remaining < session.durationMinutes) continue
+
+      const startTime = lastEndTimeByDay.get(key) || formatTime(availability.startHour, 0)
+      const endTime = addMinutes(startTime, session.durationMinutes)
+
+      session.date = candidateDate
+      session.startTime = startTime
+      session.endTime = endTime
+      session.status = 'rescheduled'
+
+      const totalUsed = session.durationMinutes + session.breakDurationMinutes
+      usedMinutesByDay.set(key, usedMinutes + totalUsed)
+      lastEndTimeByDay.set(key, addMinutes(endTime, session.breakDurationMinutes))
+
+      rescheduledCount++
+      placed = true
+    }
+  }
+
+  const unresolvedCount = missed.filter(s => s.status === 'missed').length
+  return { rescheduledCount, unresolvedCount }
 }

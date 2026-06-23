@@ -250,8 +250,9 @@ import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
 import { usePlanningStore } from '@/stores/planning.store'
 import type { Session } from '@/stores/planning.store'
-
-const { t } = useI18n()
+import { useConfirm } from '@/shared/composables/useConfirm'
+const { confirm } = useConfirm()
+const { t, locale } = useI18n()
 const planningStore = usePlanningStore()
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -299,11 +300,11 @@ function nextWeek() {
 }
 
 const formatWeekStart = computed(() => {
-  return currentWeekStart.value.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })
+  return currentWeekStart.value.toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'long', year: 'numeric' })
 })
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' })
+  return new Date(dateStr).toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'short', day: '2-digit', month: 'short' })
 }
 
 // ── Week sessions ──────────────────────────────────────────────────────────────
@@ -350,6 +351,20 @@ function statusLabel(status: Session['status']) {
 
 // ── Actions ────────────────────────────────────────────────────────────────────
 async function generatePlanning() {
+  if (planningStore.planning) {
+    const hasProgress = planningStore.planning.sessions.some(
+      s => s.status === 'completed' || s.status === 'missed'
+    )
+    if (hasProgress) {
+      const ok = await confirm({
+        title: t('planning.regenerateWarningTitle'),
+        message: t('planning.regenerateWarningMessage'),
+        confirmLabel: t('planning.regenerate'),
+        danger: true
+      })
+      if (!ok) return
+    }
+  }
   await planningStore.generate(
     config.value.availableDays,
     config.value.hoursPerDay,
@@ -357,7 +372,6 @@ async function generatePlanning() {
   )
   await loadWeek()
 }
-
 async function markStatus(sessionId: string, status: 'completed' | 'missed') {
   await planningStore.updateStatus(sessionId, status)
 }

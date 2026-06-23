@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { authService } from './auth.service'
 import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema } from './auth.schema'
+import { t, translateZodErrors } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
 
 export const authController = {
@@ -12,10 +13,10 @@ export const authController = {
       res.status(201).json(result)
     } catch (error: any) {
       if (error.name === 'ZodError') {
-        res.status(400).json({ error: error.errors })
+        res.status(400).json({ error: translateZodErrors(error.errors, req.locale) })
         return
       }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -26,10 +27,10 @@ export const authController = {
       res.json(result)
     } catch (error: any) {
       if (error.name === 'ZodError') {
-        res.status(400).json({ error: error.errors })
+        res.status(400).json({ error: translateZodErrors(error.errors, req.locale) })
         return
       }
-      res.status(401).json({ error: error.message })
+      res.status(401).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -38,7 +39,7 @@ export const authController = {
       const user = await authService.getMe(req.userId!)
       res.json(user)
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -49,10 +50,10 @@ export const authController = {
       res.json(user)
     } catch (error: any) {
       if (error.name === 'ZodError') {
-        res.status(400).json({ error: error.errors })
+        res.status(400).json({ error: translateZodErrors(error.errors, req.locale) })
         return
       }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -60,13 +61,13 @@ export const authController = {
     try {
       const data = ChangePasswordSchema.parse(req.body)
       const result = await authService.changePassword(req.userId!, data.currentPassword, data.newPassword)
-      res.json(result)
+      res.json({ message: t(result.message, req.locale) })
     } catch (error: any) {
       if (error.name === 'ZodError') {
-        res.status(400).json({ error: error.errors })
+        res.status(400).json({ error: translateZodErrors(error.errors, req.locale) })
         return
       }
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   }
 }

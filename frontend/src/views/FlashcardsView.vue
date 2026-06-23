@@ -72,7 +72,7 @@
             <h3 class="font-display font-bold text-gray-900 dark:text-white">
               {{ t('study.flashcardsTitle', { count: generatedFlashcards.length }) }}
             </h3>
-            <span class="text-xs text-gray-400 font-mono">Cliquez pour retourner</span>
+            <span class="text-xs text-gray-400 font-mono">{{ t('study.clickToFlip') }}</span>
           </div>
           <div class="grid sm:grid-cols-2 gap-3">
             <div
@@ -91,7 +91,7 @@
             </div>
           </div>
           <div class="text-center mt-4">
-            <AppButton variant="outline" size="sm" @click="goToFlashcards">Voir dans l'historique →</AppButton>
+            <AppButton variant="outline" size="sm" @click="goToFlashcards">{{ t('study.viewInHistory') }} →</AppButton>
           </div>
         </div>
 
@@ -100,7 +100,7 @@
           <h3 class="font-display font-bold text-gray-900 dark:text-white mb-3">{{ t('study.quizTitle') }}</h3>
           <QuizPlayer :quiz="generatedQuiz" @completed="onGeneratedQuizCompleted" />
           <div class="text-center mt-4">
-            <AppButton variant="outline" size="sm" @click="goToQuizzes">Voir dans l'historique →</AppButton>
+            <AppButton variant="outline" size="sm" @click="goToQuizzes">{{ t('study.viewInHistory') }} →</AppButton>
           </div>
         </div>
 
@@ -122,10 +122,10 @@
             class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
             @change="loadFlashcards"
           >
-            <option value="">Tous les modules</option>
+            <option value="">{{ t('study.allModules') }}</option>
             <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
           </select>
-          <span class="text-xs font-mono text-gray-400 whitespace-nowrap">{{ allFlashcards.length }} cartes</span>
+          <span class="text-xs font-mono text-gray-400 whitespace-nowrap">{{ allFlashcards.length }} {{ t('study.cardsUnit') }}</span>
         </div>
 
         <div v-if="loadingFlashcards" class="flex justify-center py-12">
@@ -136,10 +136,10 @@
           <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <Layers :size="28" class="text-primary" />
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Aucune flashcard générée pour ce module.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('study.noFlashcards') }}</p>
           <AppButton variant="primary" size="sm" @click="activeTab = 'generate'">
             <template #icon-left><Plus :size="14" /></template>
-            Générer des flashcards
+            {{ t('study.btnFlashcards') }}
           </AppButton>
         </div>
 
@@ -154,7 +154,7 @@
               <div class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full" :style="{ background: group.color }"></span>
                 <span class="font-display font-bold text-gray-900 dark:text-white">{{ group.name }}</span>
-                <span class="text-xs font-mono text-gray-400">{{ group.cards.length }} cartes</span>
+                <span class="text-xs font-mono text-gray-400">{{ group.cards.length }} {{ t('study.cardsUnit') }}</span>
               </div>
               <span class="text-xs text-gray-400 font-mono">{{ group.date }}</span>
             </div>
@@ -187,7 +187,7 @@
                 @click="showAllMap[group.subjectId] = !showAllMap[group.subjectId]"
                 class="text-xs font-semibold text-primary-soft hover:text-primary transition"
               >
-                {{ showAllMap[group.subjectId] ? 'Réduire ↑' : `+ ${group.cards.length - 4} autres cartes` }}
+                {{ showAllMap[group.subjectId] ? t('study.collapse') + ' ↑' : t('study.moreCards', { count: group.cards.length - 4 }) }}
               </button>
             </div>
           </div>
@@ -202,25 +202,25 @@
             class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
             @change="loadQuizzes"
           >
-            <option value="">Tous les modules</option>
+            <option value="">{{ t('study.allModules') }}</option>
             <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
           </select>
-          <span class="text-xs font-mono text-gray-400 whitespace-nowrap">{{ allQuizzes.length }} quiz</span>
+          <span class="text-xs font-mono text-gray-400 whitespace-nowrap">{{ allQuizzes.length }} {{ t('study.quizzesUnit') }}</span>
         </div>
 
         <!-- Stats globales -->
         <div v-if="allQuizzes.length > 0" class="grid grid-cols-3 gap-3">
           <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-xl p-4 text-center shadow-sm">
             <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">{{ allQuizzes.length }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Quiz générés</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ t('study.generatedQuizzes') }}</p>
           </div>
           <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-xl p-4 text-center shadow-sm">
             <p class="font-display text-2xl font-bold text-secondary">{{ avgScore }}%</p>
-            <p class="text-xs text-gray-400 mt-0.5">Score moyen</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ t('study.avgScore') }}</p>
           </div>
           <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-xl p-4 text-center shadow-sm">
             <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">{{ totalQuestions }}</p>
-            <p class="text-xs text-gray-400 mt-0.5">Questions total</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ t('study.totalQuestions') }}</p>
           </div>
         </div>
 
@@ -232,10 +232,10 @@
           <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <HelpCircle :size="28" class="text-primary" />
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Aucun quiz généré pour ce module.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('study.noQuizzes') }}</p>
           <AppButton variant="primary" size="sm" @click="activeTab = 'generate'">
             <template #icon-left><Plus :size="14" /></template>
-            Générer un quiz
+            {{ t('study.btnQuiz') }}
           </AppButton>
         </div>
 
@@ -272,18 +272,18 @@
                   <span class="font-display font-bold text-gray-900 dark:text-white text-sm">{{ subjectName(quiz.subjectId) }}</span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ quiz.questions.length }} questions ·
+                  {{ quiz.questions.length }} {{ t('study.questionsUnit') }} ·
                   {{ quiz.userScore !== undefined
-                    ? Math.round(quiz.userScore / 100 * quiz.questions.length) + '/' + quiz.questions.length + ' correctes'
-                    : 'pas encore soumis' }}
+                    ? Math.round(quiz.userScore / 100 * quiz.questions.length) + '/' + quiz.questions.length + ' ' + t('study.correct')
+                    : t('study.notSubmitted') }}
                 </p>
                 <p class="text-xs text-gray-400 font-mono mt-1">{{ formatDate(quiz.createdAt) }}</p>
               </div>
 
               <!-- Actions -->
               <div class="flex gap-2 shrink-0">
-                <AppButton variant="primary" size="sm" @click="toggleQuiz(quiz._id)">
-                  {{ openQuizId === quiz._id ? 'Fermer' : quiz.userScore !== undefined ? 'Refaire' : 'Commencer' }}
+                <AppButton variant="primary" size="sm" :loading="loadingQuizDetail && openQuizId !== quiz._id ? false : undefined" @click="toggleQuiz(quiz._id)">
+                  {{ openQuizId === quiz._id ? t('study.close') : quiz.userScore !== undefined ? t('study.retry') : t('study.start') }}
                 </AppButton>
                 <button
                   @click="removeQuiz(quiz._id)"
@@ -296,10 +296,14 @@
 
             <!-- Quiz player inline -->
             <div v-if="openQuizId === quiz._id" class="mt-5 pt-5 border-t border-gray-100 dark:border-ink-700">
+              <div v-if="loadingQuizDetail" class="flex justify-center py-6">
+                <AppSpinner size="sm" />
+              </div>
               <!-- key= force le remount complet à chaque ouverture (reset propre) -->
               <QuizPlayer
+                v-else-if="openQuizData"
                 :key="quiz._id + '-' + quizAttempt[quiz._id]"
-                :quiz="quiz"
+                :quiz="openQuizData"
                 @completed="onQuizCompleted(quiz, $event)"
               />
             </div>
@@ -320,18 +324,21 @@ import AppButton from '@/shared/components/AppButton.vue'
 import AppSpinner from '@/shared/components/AppSpinner.vue'
 import QuizPlayer from '@/features/study/QuizPlayer.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
+import { useToast } from '@/shared/composables/useToast'
+import { formatDateWithYear } from '@/shared/utils/dates'
 import api from '@/shared/utils/api'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const subjectsStore = useSubjectsStore()
+const toast = useToast()
 
 // ── Onglets ──────────────────────────────────────────────────────────────────
 const activeTab = ref<'generate' | 'flashcards' | 'quizzes'>('generate')
 
 const tabs = computed(() => [
-  { id: 'generate',   label: 'Générer',        icon: Layers,     count: 0 },
-  { id: 'flashcards', label: 'Mes flashcards', icon: Layers,     count: allFlashcards.value.length },
-  { id: 'quizzes',    label: 'Mes quiz',       icon: HelpCircle, count: allQuizzes.value.length },
+  { id: 'generate',   label: t('study.tabGenerate'),     icon: Layers,     count: 0 },
+  { id: 'flashcards', label: t('study.tabMyFlashcards'), icon: Layers,     count: allFlashcards.value.length },
+  { id: 'quizzes',    label: t('study.tabMyQuizzes'),    icon: HelpCircle, count: allQuizzes.value.length },
 ])
 
 function goToFlashcards() { activeTab.value = 'flashcards' }
@@ -350,7 +357,7 @@ const generating = ref<'flashcards' | 'quiz' | null>(null)
 const canGenerate = computed(() => !!selectedSubjectId.value && !!selectedFile.value)
 
 interface FlashcardData { _id: string; subjectId: string; question: string; answer: string; createdAt: string; flipped: boolean }
-interface QuizQuestion  { question: string; options: string[]; correctIndex: number; explanation: string }
+interface QuizQuestion  { question: string; options: string[]; correctIndex?: number; explanation?: string }
 interface QuizData      { _id: string; subjectId: string; questions: QuizQuestion[]; userScore?: number; createdAt: string }
 
 const generatedFlashcards = ref<FlashcardData[]>([])
@@ -379,6 +386,7 @@ async function generate(type: 'flashcards' | 'quiz') {
     }
   } catch (err) {
     console.error(err)
+    toast.error(t('common.unexpectedError'))
   } finally {
     generating.value = null
   }
@@ -406,7 +414,7 @@ const flashcardGroups = computed(() => {
       const subj = subjectsStore.subjects.find(s => s._id === card.subjectId)
       map[card.subjectId] = {
         subjectId: card.subjectId,
-        name: subj?.name ?? 'Module inconnu',
+        name: subj?.name ?? t('study.unknownModule'),
         color: subj?.color ?? '#6366F1',
         date: formatDate(card.createdAt),
         cards: []
@@ -431,6 +439,7 @@ async function loadFlashcards() {
     allFlashcards.value = results.flat().map((f: any) => ({ ...f, flipped: false }))
   } catch (err) {
     console.error(err)
+    toast.error(t('common.unexpectedError'))
   } finally {
     loadingFlashcards.value = false
   }
@@ -442,15 +451,18 @@ async function deleteFlashcard(cardId: string) {
     allFlashcards.value = allFlashcards.value.filter(c => c._id !== cardId)
   } catch (err) {
     console.error(err)
+    toast.error(t('common.unexpectedError'))
   }
 }
 
 // ── Historique quiz ───────────────────────────────────────────────────────────
-const allQuizzes    = ref<QuizData[]>([])
-const loadingQuizzes = ref(false)
-const openQuizId    = ref<string | null>(null)
+const allQuizzes        = ref<QuizData[]>([])
+const loadingQuizzes     = ref(false)
+const openQuizId         = ref<string | null>(null)
+const openQuizData       = ref<QuizData | null>(null)
+const loadingQuizDetail  = ref(false)
 // compteur d'essai par quiz — incrémenter force le remount de QuizPlayer (reset propre)
-const quizAttempt   = reactive<Record<string, number>>({})
+const quizAttempt = reactive<Record<string, number>>({})
 
 const avgScore = computed(() => {
   const scored = allQuizzes.value.filter(q => q.userScore !== undefined)
@@ -477,36 +489,58 @@ async function loadQuizzes() {
     )
   } catch (err) {
     console.error(err)
+    toast.error(t('common.unexpectedError'))
   } finally {
     loadingQuizzes.value = false
   }
 }
 
-function toggleQuiz(id: string) {
+// Récupère le quiz complet (avec correctIndex/explanation) uniquement à l'ouverture,
+// pour ne jamais exposer les réponses dans la liste avant que l'utilisateur ne joue.
+async function toggleQuiz(id: string) {
   if (openQuizId.value === id) {
     openQuizId.value = null
-  } else {
+    openQuizData.value = null
+    return
+  }
+  loadingQuizDetail.value = true
+  try {
+    const res = await api.get(`/flashcards/quiz/${id}`)
+    openQuizData.value = res.data
     // incrémenter l'attempt pour forcer le remount de QuizPlayer
     quizAttempt[id] = (quizAttempt[id] ?? 0) + 1
     openQuizId.value = id
+  } catch (err) {
+    console.error(err)
+    toast.error(t('common.unexpectedError'))
+  } finally {
+    loadingQuizDetail.value = false
   }
 }
 
 function onQuizCompleted(quiz: QuizData, score: number) {
   quiz.userScore = score
   // fermer automatiquement après 2 secondes
-  setTimeout(() => { openQuizId.value = null }, 2000)
+  setTimeout(() => {
+    openQuizId.value = null
+    openQuizData.value = null
+  }, 2000)
 }
 
-function removeQuiz(id: string) {
-  allQuizzes.value = allQuizzes.value.filter(q => q._id !== id)
-  if (openQuizId.value === id) openQuizId.value = null
+async function removeQuiz(id: string) {
+  try {
+    await api.delete(`/flashcards/quiz/${id}`)
+    allQuizzes.value = allQuizzes.value.filter(q => q._id !== id)
+    if (openQuizId.value === id) openQuizId.value = null
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function subjectName(id: string)  { return subjectsStore.subjects.find(s => s._id === id)?.name  ?? 'Module' }
+function subjectName(id: string)  { return subjectsStore.subjects.find(s => s._id === id)?.name  ?? t('study.unknownModule') }
 function subjectColor(id: string) { return subjectsStore.subjects.find(s => s._id === id)?.color ?? '#6366F1' }
-function formatDate(d: string)    { return new Date(d).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) }
+function formatDate(d: string)    { return formatDateWithYear(d, locale.value) }
 
 onMounted(async () => {
   await subjectsStore.fetchAll()

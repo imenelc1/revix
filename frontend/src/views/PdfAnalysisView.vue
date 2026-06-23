@@ -111,7 +111,8 @@ import AppButton from '@/shared/components/AppButton.vue'
 import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import api from '@/shared/utils/api'
-
+import { useToast } from '@/shared/composables/useToast'
+const toast = useToast()
 const { t } = useI18n()
 const route = useRoute()
 const subjectsStore = useSubjectsStore()
@@ -126,6 +127,7 @@ const selectedChapters = ref<number[]>([])
 interface AnalysisResult {
   subjectName: string
   totalChapters: number
+  extractedText: string
   chapters: { title: string; keyConcepts: string[]; estimatedDifficulty: string; summary: string }[]
 }
 const result = ref<AnalysisResult | null>(null)
@@ -159,7 +161,7 @@ async function analyze(file: File) {
     selectedChapters.value = result.value!.chapters.map((_, i) => i)
   } catch (err: any) {
     console.error(err)
-    errorMsg.value = err.response?.data?.error || 'Erreur lors de l\'analyse du PDF. Réessayez.'
+    errorMsg.value = err.response?.data?.error || t('analysis.errorAnalysis')
   } finally {
     loading.value = false
   }
@@ -188,12 +190,14 @@ async function importChapters() {
     await api.post('/pdf/import', {
       subjectId: targetSubjectId.value,
       chapters,
-      fileName: currentFileName.value
+      fileName: currentFileName.value,
+      extractedText: result.value.extractedText
     })
     importSuccess.value = true
     await subjectsStore.fetchAll()
-  } catch (err) {
+   } catch (err) {
     console.error(err)
+    toast.error(t('common.unexpectedError'))
   } finally {
     importing.value = false
   }

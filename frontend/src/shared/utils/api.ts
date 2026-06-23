@@ -5,14 +5,14 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-// Interceptor — ajoute automatiquement le token JWT à chaque requête
+// Ajoute automatiquement le token JWT et la locale courante à chaque requête
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
+  config.headers['X-Locale'] = localStorage.getItem('locale') || 'fr'
   return config
 })
 
-// Interceptor — redirige vers login si token expiré
 api.interceptors.response.use(
   (response) => response,
   (error) => {

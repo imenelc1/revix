@@ -1,5 +1,6 @@
 import { Response } from 'express'
 import { planningService } from './planning.service'
+import { t } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
 
 export const planningController = {
@@ -8,7 +9,7 @@ export const planningController = {
     try {
       const { availableDays, hoursPerDay, startHour } = req.body
       if (!availableDays || !hoursPerDay) {
-        res.status(400).json({ error: 'availableDays et hoursPerDay sont requis' })
+        res.status(400).json({ error: t('planning.availableDaysAndHoursRequired', req.locale) })
         return
       }
       const planning = await planningService.generate(req.userId!, {
@@ -18,7 +19,7 @@ export const planningController = {
       })
       res.status(201).json(planning)
     } catch (error: any) {
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -27,18 +28,18 @@ export const planningController = {
       const planning = await planningService.get(req.userId!)
       res.json(planning)
     } catch (error: any) {
-      res.status(404).json({ error: error.message })
+      res.status(404).json({ error: t(error.message, req.locale) })
     }
   },
 
   async getWeek(req: AuthRequest, res: Response): Promise<void> {
     try {
       const { weekStart } = req.query
-      if (!weekStart) { res.status(400).json({ error: 'weekStart requis' }); return }
+      if (!weekStart) { res.status(400).json({ error: t('planning.weekStartRequired', req.locale) }); return }
       const sessions = await planningService.getWeek(req.userId!, String(weekStart))
       res.json(sessions)
     } catch (error: any) {
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
@@ -47,22 +48,26 @@ export const planningController = {
       const { sessionId } = req.params
       const { status } = req.body
       if (!['completed', 'missed'].includes(status)) {
-        res.status(400).json({ error: 'Status invalide. Utiliser: completed ou missed' })
+        res.status(400).json({ error: t('planning.invalidStatus', req.locale) })
         return
       }
       const planning = await planningService.updateSessionStatus(req.userId!, String(sessionId), status)
       res.json(planning)
     } catch (error: any) {
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
 
   async reschedule(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const result = await planningService.reschedule(req.userId!)
-      res.json(result)
+      const result: any = await planningService.reschedule(req.userId!)
+      if (result?.message && !result?.sessions) {
+        res.json({ message: t(result.message, req.locale) })
+      } else {
+        res.json(result)
+      }
     } catch (error: any) {
-      res.status(400).json({ error: error.message })
+      res.status(400).json({ error: t(error.message, req.locale) })
     }
   }
 }

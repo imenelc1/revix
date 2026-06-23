@@ -4,12 +4,15 @@
       <component :is="Component" :key="route.path" />
     </Transition>
   </RouterView>
+  <AppToast />
+  <ConfirmDialog />
 </template>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 import { useUiStore } from '@/stores/ui.store'
+import AppToast from '@/shared/components/AppToast.vue'
+import ConfirmDialog from '@/shared/components/ConfirmDialog.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -185,8 +185,8 @@ const liveSessions = [
 function validate(): boolean {
   errors.email    = undefined
   errors.password = undefined
-  if (!email.value)    errors.email    = t('auth.email') + ' requis'
-  if (!password.value) errors.password = t('auth.password') + ' requis'
+  if (!email.value)    errors.email    = t('auth.errorEmailRequired')
+  if (!password.value) errors.password = t('auth.errorPasswordRequired')
   return !errors.email && !errors.password
 }
 

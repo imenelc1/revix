@@ -89,7 +89,14 @@
     "errorTerms": "You must accept the terms",
     "registerTitle": "Create your account",
     "registerSubtitle2": "You can start organizing your study schedule in less than 2 minutes.",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "errorEmailRequired": "Email required",
+    "errorPasswordRequired": "Password required",
+    "errorFirstNameRequired": "First name required",
+    "errorLastNameRequired": "Last name required",
+    "connecting": "Signing in…",
+    "googleFailed": "Google sign-in failed.",
+    "profileError": "Error retrieving profile."
   },
   "buttons": {
     "google": "Google"
@@ -153,7 +160,10 @@
     "addModule": "Add a module",
     "metaFree": "100% free",
     "metaAI": "Llama 3.3 AI",
-    "metaLang": "EN / FR"
+    "metaLang": "EN / FR",
+    "errorModuleNameRequired": "Module name required",
+    "errorExamDateRequired": "Exam date required",
+    "errorSaving": "Error while saving."
   },
   "sidebar": {
     "academicExcellence": "Academic Excellence",
@@ -161,8 +171,21 @@
     "modules": "Modules",
     "calendar": "Calendar",
     "iaAnalysis": "AI Analysis",
-    "settings": "Settings"
+    "chat": "AI Assistant",
+    "settings": "Settings",
+    "flashcards": "Flashcards"
   },
+  "chat": {
+  "title": "Course Assistant",
+  "subtitle": "Ask questions about your modules",
+  "selectModule": "Select a module",
+  "clearHistory": "Clear history",
+  "confirmClear": "Clear the entire conversation?",
+  "emptyTitle": "Choose a module",
+  "emptyDescription": "Select a module to ask questions about its content and imported documents.",
+  "startConversation": "Ask your first question about this module.",
+  "inputPlaceholder": "Ask a question about this course..."
+},
   "planning": {
     "title": "My Schedule",
     "subtitle": "Generate your personalized study plan",
@@ -198,7 +221,9 @@
     "nextWeek": "Next week",
     "noSessionsWeek": "No sessions this week",
     "break": "Break",
-    "min": "min"
+    "min": "min",
+    "regenerateWarningTitle": "Regenerate the schedule?",
+  "regenerateWarningMessage": "Your current progress (completed and missed sessions) will be lost and replaced by a new schedule."
   },
   "dashboard": {
     "greetingMorning": "Good morning",
@@ -244,27 +269,58 @@
     "loadingDocuments": "Loading...",
     "noDocuments": "No document imported for this module.",
     "chaptersFromDoc": "{count} chapters",
-    "addDocument": "Add a PDF"
+    "addDocument": "Add a PDF",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "chapterTitlePlaceholder": "Chapter title...",
+    "addChapterBtn": "Add a chapter",
+    "chatWithModule": "Chat",
+    "deleteConfirmTitle": "Delete this module?",
+  "deletedSuccess": "Module deleted successfully"
   },
-  "study": {
-    "title": "Flashcards & Quiz",
-    "generateTitle": "Generate Cards",
-    "labelModule": "Module",
-    "selectModule": "Select a module",
-    "labelCourseText": "Course text",
-    "placeholderText": "Paste a course extract here...",
-    "btnFlashcards": "Generate flashcards",
-    "btnQuiz": "Generate quiz",
-    "flashcardsTitle": "Flashcards ({count})",
-    "cardAnswer": "Answer",
-    "cardQuestion": "Question",
-    "quizTitle": "Quiz",
-    "quizCorrect": "correct",
-    "emptyTitle": "No cards generated",
-    "emptyDescription": "Select a module, paste text, and generate.",
-    "dropPdf": "Drop your PDF here or click",
-    "pdfMeta": "PDF · Max 10MB"
-  },
+ "study": {
+  "title": "Flashcards & Quiz",
+  "generateTitle": "Generate Cards",
+  "labelModule": "Module",
+  "selectModule": "Select a module",
+  "dropPdf": "Drop your PDF here or click",
+  "pdfMeta": "PDF · Max 10MB",
+  "btnFlashcards": "Generate flashcards",
+  "btnQuiz": "Generate quiz",
+  "flashcardsTitle": "Flashcards ({count})",
+  "clickToFlip": "Click to flip",
+  "cardAnswer": "Answer",
+  "cardQuestion": "Question",
+  "viewInHistory": "View in history",
+  "quizTitle": "Quiz",
+  "emptyTitle": "No cards generated",
+  "emptyDescription": "Select a module, upload a PDF, and generate.",
+  "tabGenerate": "Generate",
+  "tabMyFlashcards": "My flashcards",
+  "tabMyQuizzes": "My quizzes",
+  "allModules": "All modules",
+  "cardsUnit": "cards",
+  "quizzesUnit": "quizzes",
+  "noFlashcards": "No flashcards generated for this module.",
+  "noQuizzes": "No quiz generated for this module.",
+  "unknownModule": "Unknown module",
+  "collapse": "Collapse",
+  "moreCards": "+ {count} more cards",
+  "generatedQuizzes": "Quizzes generated",
+  "avgScore": "Average score",
+  "totalQuestions": "Total questions",
+  "questionsUnit": "questions",
+  "correct": "correct",
+  "notSubmitted": "not submitted yet",
+  "close": "Close",
+  "retry": "Retry",
+  "start": "Start",
+  "saving": "Saving...",
+  "restart": "Restart",
+  "quizCorrect": "correct"
+},
   "analysis": {
     "uploadTitle": "Analyze your course with AI",
     "uploadDesc": "Drag a PDF or click to select",
@@ -273,7 +329,8 @@
     "chaptersDetected": "{count} chapter detected | {count} chapters detected",
     "importOptionPlaceholder": "Import into a module...",
     "btnImport": "Import ({count})",
-    "importSuccess": "{count} chapters imported successfully!"
+    "importSuccess": "{count} chapters imported successfully!",
+    "errorAnalysis": "Error analyzing the PDF. Please try again."
   },
   "calendar": {
     "title": "Calendar",
@@ -307,6 +364,22 @@
     "googleAccountNotice": "You're signed in with Google. Password management isn't available.",
     "accountTitle": "Account",
     "memberSince": "Member since",
-    "logoutAccount": "Log out"
-  }
+    "logoutAccount": "Log out",
+    "errorFirstNameShort": "First name too short",
+    "errorLastNameShort": "Last name too short",
+    "errorCurrentPasswordRequired": "Current password required",
+    "errorPasswordMinLength": "Minimum 8 characters",
+    "errorChangePassword": "Error changing password"
+  },
+  "notFound": {
+  "title": "Page not found",
+  "description": "This page doesn't exist or has been moved.",
+  "backToDashboard": "Back to dashboard"
+},
+"common": {
+  "confirmTitle": "Confirmation",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "unexpectedError": "Something went wrong. Please try again."
+}
 }

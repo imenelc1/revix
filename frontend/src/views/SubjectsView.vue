@@ -272,15 +272,21 @@
               <component :is="riskInfo(subject.examDate).icon" :size="11" />
               {{ riskInfo(subject.examDate).label }}
             </span>
-            <button
-              @click="startAddChapter(subject._id)"
-              class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition"
-            >
-              <Plus :size="13" />
-              Ajouter un chapitre
-            </button>
-          </div>
+            <div class="flex items-center gap-3">
+              <RouterLink
+                :to="{ path: '/chat', query: { subjectId: subject._id } }"
+                class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition"
+              >
+                <MessageCircle :size="13" />
+                {{ t('subjects.chatWithModule') }}
+              </RouterLink>
+              <button @click="startAddChapter(subject._id)" class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition">
+                <Plus :size="13" />
+                {{ t('subjects.addChapterBtn') }}
+              </button>
+            </div>
         </div>
+      </div>
       </div>
 
     </div>
@@ -294,7 +300,7 @@ import { useI18n } from 'vue-i18n'
 import {
   Plus, Trash2, BookOpen, Pencil, Check, X,
   AlertCircle, Clock3, CheckCircle2, XCircle, HelpCircle, CheckCircle, Frown, Meh, Smile,
-  FileText, ChevronDown
+  FileText, ChevronDown,MessageCircle
 } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
@@ -302,7 +308,11 @@ import AppSpinner from '@/shared/components/AppSpinner.vue'
 import { useSubjectsStore } from '@/stores/subjects.store'
 import { useDocumentsStore } from '@/stores/documents.store'
 import type { Subject, Chapter } from '@/stores/subjects.store'
+import { useConfirm } from '@/shared/composables/useConfirm'
+import { useToast } from '@/shared/composables/useToast'
 
+const { confirm } = useConfirm()
+const toast = useToast()
 const { t } = useI18n()
 const subjectsStore = useSubjectsStore()
 const documentsStore = useDocumentsStore()
@@ -369,8 +379,18 @@ async function saveSubject(id: string) {
 }
 
 async function confirmDeleteSubject(id: string) {
-  if (confirm(t('subjects.deleteConfirm'))) {
+  const ok = await confirm({
+    title: t('subjects.deleteConfirmTitle'),
+    message: t('subjects.deleteConfirm'),
+    confirmLabel: t('subjects.delete'),
+    danger: true
+  })
+  if (!ok) return
+  try {
     await subjectsStore.remove(id)
+    toast.success(t('subjects.deletedSuccess'))
+  } catch {
+    toast.error(t('common.unexpectedError'))
   }
 }
 

@@ -29,5 +29,6 @@ flashcardRoutes.post('/quiz/generate', flashcardController.generateQuiz)
 flashcardRoutes.post('/quiz/generate-from-pdf', upload.single('pdf'), flashcardController.generateQuizFromPdf)
 
 flashcardRoutes.get('/quiz/subject/:subjectId', flashcardController.getQuizzes)
+flashcardRoutes.get('/quiz/:quizId', flashcardController.getQuizById)
 flashcardRoutes.post('/quiz/:quizId/submit', flashcardController.submitQuiz)
 flashcardRoutes.delete('/quiz/:id', flashcardController.deleteQuiz)

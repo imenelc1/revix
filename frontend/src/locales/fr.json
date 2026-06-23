@@ -89,7 +89,14 @@
     "errorTerms": "Vous devez accepter les conditions",
     "registerTitle": "Créez votre compte",
     "registerSubtitle2": "Vous pouvez commencer à organiser vos révisions en moins de 2 minutes.",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "errorEmailRequired": "Email requis",
+    "errorPasswordRequired": "Mot de passe requis",
+    "errorFirstNameRequired": "Prénom requis",
+    "errorLastNameRequired": "Nom requis",
+    "connecting": "Connexion en cours…",
+    "googleFailed": "Échec de la connexion Google.",
+    "profileError": "Erreur lors de la récupération du profil."
   },
   "buttons": {
     "google": "Google"
@@ -154,7 +161,10 @@
     "addModule": "Ajouter un module",
     "metaFree": "100% gratuit",
     "metaAI": "IA Llama 3.3",
-    "metaLang": "FR / EN"
+    "metaLang": "FR / EN",
+    "errorModuleNameRequired": "Nom du module requis",
+    "errorExamDateRequired": "Date d'examen requise",
+    "errorSaving": "Erreur lors de la sauvegarde."
   },
   "sidebar": {
     "academicExcellence": "Excellence Académique",
@@ -162,8 +172,21 @@
     "modules": "Modules",
     "calendar": "Calendrier",
     "iaAnalysis": "Analyses IA",
-    "settings": "Paramètres"
+     "chat": "Assistant IA" ,
+    "settings": "Paramètres",
+    "flashcards": "Flashcards"
   },
+  "chat": {
+  "title": "Assistant de cours",
+  "subtitle": "Posez vos questions sur vos modules",
+  "selectModule": "Sélectionner un module",
+  "clearHistory": "Effacer l'historique",
+  "confirmClear": "Effacer toute la conversation ?",
+  "emptyTitle": "Choisissez un module",
+  "emptyDescription": "Sélectionnez un module pour poser des questions sur son contenu et ses documents importés.",
+  "startConversation": "Posez votre première question sur ce module.",
+  "inputPlaceholder": "Posez une question sur ce cours..."
+},
   "planning": {
     "title": "Mon Planning",
     "subtitle": "Générez votre planning personnalisé",
@@ -199,7 +222,9 @@
     "nextWeek": "Semaine suivante",
     "noSessionsWeek": "Aucune session cette semaine",
     "break": "Pause",
-    "min": "min"
+    "min": "min",
+    "regenerateWarningTitle": "Régénérer le planning ?",
+  "regenerateWarningMessage": "Votre progression actuelle (sessions terminées et manquées) sera perdue et remplacée par un nouveau planning."
   },
   "dashboard": {
     "greetingMorning": "Bonjour",
@@ -245,27 +270,58 @@
     "loadingDocuments": "Chargement...",
     "noDocuments": "Aucun document importé pour ce module.",
     "chaptersFromDoc": "{count} chapitres",
-    "addDocument": "Ajouter un PDF"
+    "addDocument": "Ajouter un PDF",
+     "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "chapterTitlePlaceholder": "Titre du chapitre...",
+    "addChapterBtn": "Ajouter un chapitre",
+    "chatWithModule": "Discuter" ,
+    "deleteConfirmTitle": "Supprimer ce module ?",
+  "deletedSuccess": "Module supprimé avec succès"
   },
   "study": {
-    "title": "Flashcards & Quiz",
-    "generateTitle": "Générer des fiches",
-    "labelModule": "Module",
-    "selectModule": "Sélectionner un module",
-    "labelCourseText": "Texte du cours",
-    "placeholderText": "Collez un extrait de cours ici...",
-    "btnFlashcards": "Générer flashcards",
-    "btnQuiz": "Générer quiz",
-    "flashcardsTitle": "Flashcards ({count})",
-    "cardAnswer": "Réponse",
-    "cardQuestion": "Question",
-    "quizTitle": "Quiz",
-    "quizCorrect": "correctes",
-    "emptyTitle": "Aucune fiche générée",
-    "emptyDescription": "Sélectionnez un module, collez du texte et générez.",
-    "dropPdf": "Glissez votre PDF ici ou cliquez",
-    "pdfMeta": "PDF · Max 10MB"
-  },
+  "title": "Flashcards & Quiz",
+  "generateTitle": "Générer des fiches",
+  "labelModule": "Module",
+  "selectModule": "Sélectionner un module",
+  "dropPdf": "Glissez votre PDF ici ou cliquez",
+  "pdfMeta": "PDF · Max 10MB",
+  "btnFlashcards": "Générer flashcards",
+  "btnQuiz": "Générer quiz",
+  "flashcardsTitle": "Flashcards ({count})",
+  "clickToFlip": "Cliquez pour retourner",
+  "cardAnswer": "Réponse",
+  "cardQuestion": "Question",
+  "viewInHistory": "Voir dans l'historique",
+  "quizTitle": "Quiz",
+  "emptyTitle": "Aucune fiche générée",
+  "emptyDescription": "Sélectionnez un module, importez un PDF et générez.",
+  "tabGenerate": "Générer",
+  "tabMyFlashcards": "Mes flashcards",
+  "tabMyQuizzes": "Mes quiz",
+  "allModules": "Tous les modules",
+  "cardsUnit": "cartes",
+  "quizzesUnit": "quiz",
+  "noFlashcards": "Aucune flashcard générée pour ce module.",
+  "noQuizzes": "Aucun quiz généré pour ce module.",
+  "unknownModule": "Module inconnu",
+  "collapse": "Réduire",
+  "moreCards": "+ {count} autres cartes",
+  "generatedQuizzes": "Quiz générés",
+  "avgScore": "Score moyen",
+  "totalQuestions": "Questions total",
+  "questionsUnit": "questions",
+  "correct": "correctes",
+  "notSubmitted": "pas encore soumis",
+  "close": "Fermer",
+  "retry": "Refaire",
+  "start": "Commencer",
+  "saving": "Enregistrement...",
+  "restart": "Recommencer",
+  "quizCorrect": "correctes"
+},
   "analysis": {
     "uploadTitle": "Analysez votre cours par IA",
     "uploadDesc": "Glissez un PDF ou cliquez pour sélectionner",
@@ -274,7 +330,8 @@
     "chaptersDetected": "{count} chapitre détecté | {count} chapitres détectés",
     "importOptionPlaceholder": "Importer dans un module...",
     "btnImport": "Importer ({count})",
-    "importSuccess": "{count} chapitres importés avec succès !"
+    "importSuccess": "{count} chapitres importés avec succès !",
+    "errorAnalysis": "Erreur lors de l'analyse du PDF. Réessayez."
   },
   "calendar": {
     "title": "Calendrier",
@@ -308,6 +365,22 @@
     "googleAccountNotice": "Vous êtes connecté via Google. La gestion du mot de passe n'est pas disponible.",
     "accountTitle": "Compte",
     "memberSince": "Membre depuis",
-    "logoutAccount": "Se déconnecter"
-  }
+    "logoutAccount": "Se déconnecter",
+    "errorFirstNameShort": "Prénom trop court",
+    "errorLastNameShort": "Nom trop court",
+    "errorCurrentPasswordRequired": "Mot de passe actuel requis",
+    "errorPasswordMinLength": "Minimum 8 caractères",
+    "errorChangePassword": "Erreur lors du changement de mot de passe"
+  },
+  "notFound": {
+  "title": "Page introuvable",
+  "description": "Cette page n'existe pas ou a été déplacée.",
+  "backToDashboard": "Retour au dashboard"
+},
+"common": {
+  "confirmTitle": "Confirmation",
+  "cancel": "Annuler",
+  "confirm": "Confirmer",
+  "unexpectedError": "Une erreur est survenue. Réessayez."
+}
 }

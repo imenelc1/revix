@@ -1,27 +1,28 @@
 import { z } from 'zod'
 
 export const RegisterSchema = z.object({
-  firstName: z.string().min(2, 'Prénom trop court'),
-  lastName: z.string().min(2, 'Nom trop court'),
-  email: z.string().email('Email invalide'),
-  password: z.string().min(8, 'Mot de passe minimum 8 caractères')
+    firstName: z.string().min(2, 'auth.firstNameTooShort'),
+    lastName: z.string().min(2, 'auth.lastNameTooShort'),
+    email: z.string().email('auth.invalidEmail'),
+    password: z.string().min(8, 'auth.passwordMinLength')
 })
 
 export const LoginSchema = z.object({
-  email: z.string().email('Email invalide'),
-  password: z.string().min(1, 'Mot de passe requis')
+  email: z.string().email('auth.invalidEmail'),
+  password: z.string().min(1, 'auth.passwordRequired')
 })
 
 export type RegisterInput = z.infer<typeof RegisterSchema>
 export type LoginInput = z.infer<typeof LoginSchema>
+
 export const UpdateProfileSchema = z.object({
-  firstName: z.string().min(2, 'Prénom trop court').optional(),
-  lastName: z.string().min(2, 'Nom trop court').optional()
+  firstName: z.string().min(2, 'auth.firstNameTooShort').optional(),
+  lastName: z.string().min(2, 'auth.lastNameTooShort').optional()
 })
 
 export const ChangePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'Mot de passe actuel requis'),
-  newPassword: z.string().min(8, 'Le nouveau mot de passe doit contenir au moins 8 caractères')
+  currentPassword: z.string().min(1, 'auth.currentPasswordRequired'),
+  newPassword: z.string().min(8, 'auth.newPasswordMinLength')
 })
 
 export type UpdateProfileInput = z.infer<typeof UpdateProfileSchema>

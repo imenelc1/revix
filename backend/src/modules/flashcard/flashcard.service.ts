@@ -52,11 +52,11 @@ Génère entre 10 et 15 flashcards couvrant l'ensemble du contenu, pas seulement
   },
 
   // Supprimer une flashcard
-  async delete(userId: string, flashcardId: string) {
-    const card = await Flashcard.findOneAndDelete({ _id: flashcardId, userId })
-    if (!card) throw new Error('Flashcard introuvable')
-    return { message: 'Flashcard supprimée' }
-  },
+ async delete(userId: string, flashcardId: string) {
+  const card = await Flashcard.findOneAndDelete({ _id: flashcardId, userId })
+  if (!card) throw new Error('flashcard.notFound')
+  return { message: 'flashcard.deleted' }
+},
 
   // Générer un quiz via IA depuis un texte
   async generateQuiz(userId: string, subjectId: string, text: string, chapterId?: string) {
@@ -104,18 +104,25 @@ Génère entre 8 et 10 questions couvrant l'ensemble du contenu. correctIndex es
 
   // Récupérer les quiz d'un module
   async getQuizBySubject(userId: string, subjectId: string) {
-    return Quiz.find({ userId, subjectId }).sort({ createdAt: -1 })
-  },
+  return Quiz.find({ userId, subjectId })
+    .select('-questions.correctIndex -questions.explanation')
+    .sort({ createdAt: -1 })
+},
+async getQuizById(userId: string, quizId: string) {
+  const quiz = await Quiz.findOne({ _id: quizId, userId })
+  if (!quiz) throw new Error('quiz.notFound')
+  return quiz
+},
     async deleteQuiz(userId: string, quizId: string) {
     const quiz = await Quiz.findOneAndDelete({ _id: quizId, userId })
-    if (!quiz) throw new Error('Quiz introuvable')
-    return { message: 'Quiz supprimé' }
+    if (!quiz) throw new Error('quiz.notFound')
+    return { message: 'quiz.deleted' }
   },
 
   // Soumettre les réponses d'un quiz et calculer le score
   async submitQuiz(userId: string, quizId: string, answers: number[]) {
     const quiz = await Quiz.findOne({ _id: quizId, userId })
-    if (!quiz) throw new Error('Quiz introuvable')
+    if (!quiz) throw new Error('quiz.notFound')
 
     let correct = 0
     quiz.questions.forEach((q, i) => {

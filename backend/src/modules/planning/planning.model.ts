@@ -23,6 +23,11 @@ export interface IPlanning extends Document {
   sessions: ISession[]
   overallReadinessScore: number
   generatedAt: Date
+  availability: {
+    availableDays: number[]
+    hoursPerDay: number
+    startHour: number
+  }
   createdAt: Date
   updatedAt: Date
 }
@@ -42,11 +47,18 @@ const SessionSchema = new Schema<ISession>({
   breakDurationMinutes:{ type: Number, default: 0 }
 })
 
+const AvailabilitySchema = new Schema({
+  availableDays: { type: [Number], default: [] },
+  hoursPerDay:   { type: Number, default: 4 },
+  startHour:     { type: Number, default: 9 }
+}, { _id: false })
+
 const PlanningSchema = new Schema<IPlanning>({
   userId:               { type: Schema.Types.ObjectId, ref: 'User', required: true },
   sessions:             { type: [SessionSchema], default: [] },
   overallReadinessScore:{ type: Number, default: 0 },
-  generatedAt:          { type: Date, default: Date.now }
+  generatedAt:          { type: Date, default: Date.now },
+  availability:         { type: AvailabilitySchema, default: () => ({ availableDays: [], hoursPerDay: 4, startHour: 9 }) }
 }, { timestamps: true })
 
 export const Planning = mongoose.model<IPlanning>('Planning', PlanningSchema)

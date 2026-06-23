@@ -6,5 +6,6 @@ export const documentRoutes = Router()
 
 documentRoutes.use(authMiddleware)
 
+documentRoutes.post('/', documentController.create)
 documentRoutes.get('/subject/:subjectId', documentController.getBySubject)
 documentRoutes.delete('/:id', documentController.delete)

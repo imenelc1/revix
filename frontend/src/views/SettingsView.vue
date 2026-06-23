@@ -199,8 +199,8 @@ const savingProfile = ref(false)
 const profileSuccess = ref(false)
 
 function validateProfile(): boolean {
-  profileErrors.firstName = profileForm.firstName.trim().length < 2 ? 'Prénom trop court' : undefined
-  profileErrors.lastName  = profileForm.lastName.trim().length < 2  ? 'Nom trop court'    : undefined
+  profileErrors.firstName = profileForm.firstName.trim().length < 2 ? t('settings.errorFirstNameShort') : undefined
+  profileErrors.lastName  = profileForm.lastName.trim().length < 2  ? t('settings.errorLastNameShort')  : undefined
   return !profileErrors.firstName && !profileErrors.lastName
 }
 
@@ -227,8 +227,8 @@ const savingPassword = ref(false)
 const passwordSuccess = ref(false)
 
 function validatePassword(): boolean {
-  passwordErrors.currentPassword = !passwordForm.currentPassword ? 'Mot de passe actuel requis' : undefined
-  passwordErrors.newPassword = passwordForm.newPassword.length < 8 ? 'Minimum 8 caractères' : undefined
+  passwordErrors.currentPassword = !passwordForm.currentPassword ? t('settings.errorCurrentPasswordRequired') : undefined
+  passwordErrors.newPassword = passwordForm.newPassword.length < 8 ? t('settings.errorPasswordMinLength') : undefined
   passwordErrors.confirmNewPassword = passwordForm.newPassword !== passwordForm.confirmNewPassword
     ? t('auth.errorPasswordMatch')
     : undefined
@@ -248,7 +248,7 @@ async function savePassword() {
     passwordForm.confirmNewPassword = ''
     setTimeout(() => { passwordSuccess.value = false }, 3000)
   } catch (err: any) {
-    passwordApiError.value = err.response?.data?.error || 'Erreur lors du changement de mot de passe'
+    passwordApiError.value = err.response?.data?.error || t('settings.errorChangePassword')
   } finally {
     savingPassword.value = false
   }

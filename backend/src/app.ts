@@ -12,8 +12,10 @@ import { planningRoutes }  from './modules/planning/planning.routes'
 import { pdfRoutes }       from './modules/pdf/pdf.routes'
 import { flashcardRoutes } from './modules/flashcard/flashcard.routes'
 import { documentRoutes }  from './modules/document/document.routes'
+import { localeMiddleware } from './middlewares/locale.middleware'
+import { errorMiddleware }  from './middlewares/error.middleware'
 import { ENV }             from './config/env'
-
+import { chatRoutes }      from './modules/chat/chat.routes'
 const app = express()
 
 app.use(helmet())
@@ -24,14 +26,14 @@ app.use(cors({
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(localeMiddleware)
 
 // Session minimale requise par Passport (même avec JWT)
 app.use(session({
-  secret: ENV.JWT_SECRET,
+  secret: ENV.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
 }))
-
 app.use(passport.initialize())
 
 // Routes
@@ -42,9 +44,16 @@ app.use('/api/planning',   planningRoutes)
 app.use('/api/pdf',        pdfRoutes)
 app.use('/api/flashcards', flashcardRoutes)
 app.use('/api/documents',  documentRoutes)
+app.use('/api/chat', chatRoutes)
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'OK', message: 'Revix API opérationnelle' })
 })
+
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'OK', message: 'Revix API opérationnelle' })
+})
+
+app.use(errorMiddleware)
 
 export default app
