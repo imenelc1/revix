@@ -4,10 +4,10 @@ import api from '@/shared/utils/api'
 
 export interface Session {
   _id: string
-  subjectId: string
+  subjectId?: string
   subjectName: string
   subjectColor: string
-  chapterId: string
+  chapterId?: string         
   chapterTitle: string
   date: string
   startTime: string
@@ -16,6 +16,7 @@ export interface Session {
   status: 'planned' | 'completed' | 'missed' | 'rescheduled'
   hasBreak: boolean
   breakDurationMinutes: number
+  isManual?: boolean         
 }
 
 export interface Planning {
@@ -80,6 +81,36 @@ export const usePlanningStore = defineStore('planning', () => {
     planning.value = res.data
     return res.data
   }
+async function addSession(data: {
+    subjectId?: string | null
+    chapterId?: string
+    customTitle?: string
+    date: string
+    startTime: string
+    durationMinutes: number
+  }) {
+    const res = await api.post('/planning/sessions', data)
+    planning.value = res.data
+    return res.data
+  }
 
-  return { planning, weekSessions, loading, error, generate, fetch, fetchWeek, updateStatus, reschedule }
+  async function updateSession(sessionId: string, data: {
+    subjectId?: string | null
+    chapterId?: string
+    customTitle?: string
+    date?: string
+    startTime?: string
+    durationMinutes?: number
+  }) {
+    const res = await api.put(`/planning/sessions/${sessionId}`, data)
+    planning.value = res.data
+    return res.data
+  }
+
+  async function deleteSession(sessionId: string) {
+    const res = await api.delete(`/planning/sessions/${sessionId}`)
+    planning.value = res.data
+    return res.data
+  }
+  return { planning, weekSessions, loading, error, generate, fetch, fetchWeek, updateStatus, reschedule, addSession, updateSession, deleteSession }
 })

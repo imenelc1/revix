@@ -9,6 +9,7 @@ const messages: Messages = {
   'auth.lastNameTooShort': { fr: 'Nom trop court', en: 'Last name too short' },
   'auth.invalidEmail': { fr: 'Email invalide', en: 'Invalid email' },
   'auth.passwordMinLength': { fr: 'Mot de passe minimum 8 caractères', en: 'Password must be at least 8 characters' },
+  'auth.passwordWeak': { fr: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial', en: 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character' },
   'auth.passwordRequired': { fr: 'Mot de passe requis', en: 'Password required' },
   'auth.currentPasswordRequired': { fr: 'Mot de passe actuel requis', en: 'Current password required' },
   'auth.newPasswordMinLength': { fr: 'Le nouveau mot de passe doit contenir au moins 8 caractères', en: 'The new password must be at least 8 characters' },
@@ -21,6 +22,9 @@ const messages: Messages = {
   'auth.tokenMissing': { fr: 'Token manquant', en: 'Token missing' },
   'auth.tokenInvalid': { fr: 'Token invalide ou expiré', en: 'Invalid or expired token' },
   'auth.tooManyAttempts': { fr: 'Trop de tentatives. Réessayez dans quelques minutes.', en: 'Too many attempts. Please try again in a few minutes.' },
+  'auth.resetEmailSentIfExists': { fr: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.', en: 'If an account exists with this email, a reset link has been sent.' },
+  'auth.resetTokenRequired': { fr: 'Token requis', en: 'Token required' },
+  'auth.resetTokenInvalid': { fr: 'Lien de réinitialisation invalide ou expiré', en: 'Invalid or expired reset link' },
 
   // ── Subject / Chapter ────────────────────────────────────────────────────
   'subject.nameRequired': { fr: 'Nom requis', en: 'Name required' },
@@ -66,6 +70,8 @@ const messages: Messages = {
   'planning.noneFound': { fr: 'Aucun planning trouvé', en: 'No schedule found' },
   'planning.sessionNotFound': { fr: 'Session introuvable', en: 'Session not found' },
   'planning.noMissedToReschedule': { fr: 'Aucune session ratée à rattraper', en: 'No missed session to reschedule' },
+  'planning.sessionFieldsRequired': { fr: 'date, startTime et durationMinutes sont requis', en: 'date, startTime and durationMinutes are required' },
+  'planning.sessionTitleRequired': { fr: 'Choisissez un chapitre existant ou entrez un titre', en: 'Choose an existing chapter or enter a title' },
 
   // ── Générique ─────────────────────────────────────────────────────────────
   'common.unexpectedError': { fr: 'Une erreur est survenue', en: 'An error occurred' },

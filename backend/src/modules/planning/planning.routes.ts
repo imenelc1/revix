@@ -20,3 +20,7 @@ planningRoutes.patch('/sessions/:sessionId/status', planningController.updateSes
 
 // Déclencher le rattrapage automatique
 planningRoutes.post('/reschedule', planningController.reschedule)
+// Ajouter / modifier / supprimer une séance manuellement
+planningRoutes.post('/sessions', planningController.addSession)
+planningRoutes.put('/sessions/:sessionId', planningController.updateSession)
+planningRoutes.delete('/sessions/:sessionId', planningController.deleteSession)

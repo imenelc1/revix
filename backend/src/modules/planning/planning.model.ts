@@ -4,10 +4,10 @@ export type SessionStatus = 'planned' | 'completed' | 'missed' | 'rescheduled'
 
 export interface ISession {
   _id?: mongoose.Types.ObjectId
-  subjectId: mongoose.Types.ObjectId
+  subjectId?: mongoose.Types.ObjectId
   subjectName: string
   subjectColor: string
-  chapterId: mongoose.Types.ObjectId
+  chapterId?: mongoose.Types.ObjectId   
   chapterTitle: string
   date: Date
   startTime: string
@@ -16,6 +16,7 @@ export interface ISession {
   status: SessionStatus
   hasBreak: boolean
   breakDurationMinutes: number
+  isManual?: boolean                   
 }
 
 export interface IPlanning extends Document {
@@ -33,10 +34,10 @@ export interface IPlanning extends Document {
 }
 
 const SessionSchema = new Schema<ISession>({
-  subjectId:           { type: Schema.Types.ObjectId, ref: 'Subject', required: true },
+  subjectId:           { type: Schema.Types.ObjectId, ref: 'Subject' },
   subjectName:         { type: String, required: true },
   subjectColor:        { type: String, default: '#6366f1' },
-  chapterId:           { type: Schema.Types.ObjectId, required: true },
+  chapterId:           { type: Schema.Types.ObjectId },               
   chapterTitle:        { type: String, required: true },
   date:                { type: Date, required: true },
   startTime:           { type: String, required: true },
@@ -44,9 +45,9 @@ const SessionSchema = new Schema<ISession>({
   durationMinutes:     { type: Number, required: true },
   status:              { type: String, enum: ['planned', 'completed', 'missed', 'rescheduled'], default: 'planned' },
   hasBreak:            { type: Boolean, default: false },
-  breakDurationMinutes:{ type: Number, default: 0 }
+  breakDurationMinutes:{ type: Number, default: 0 },
+  isManual:            { type: Boolean, default: false }              
 })
-
 const AvailabilitySchema = new Schema({
   availableDays: { type: [Number], default: [] },
   hoursPerDay:   { type: Number, default: 4 },

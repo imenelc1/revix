@@ -94,11 +94,22 @@
     "logout": "Log Out",
     "errorEmailRequired": "Email required",
     "errorPasswordRequired": "Password required",
+    "errorPasswordWeak": "Use at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character",
     "errorFirstNameRequired": "First name required",
     "errorLastNameRequired": "Last name required",
     "connecting": "Signing in…",
     "googleFailed": "Google sign-in failed.",
-    "profileError": "Error retrieving profile."
+    "profileError": "Error retrieving profile.",
+    "forgotPasswordTitle": "Forgot password",
+    "forgotPasswordSubtitle": "Enter your email and we'll send you a link to reset your password.",
+    "sendResetLink": "Send reset link",
+    "checkEmailMessage": "If an account exists with this email, a reset link has just been sent. Check your inbox.",
+    "backToLogin": "Back to login",
+    "resetPasswordTitle": "Reset password",
+    "resetPasswordSubtitle": "Choose a new password for your account.",
+    "resetPasswordButton": "Reset password",
+    "resetSuccess": "Your password has been reset successfully.",
+    "errorTokenMissing": "Invalid or expired link. Please request a new one."
   },
   "buttons": {
     "google": "Google"
@@ -226,7 +237,20 @@
     "break": "Break",
     "min": "min",
     "regenerateWarningTitle": "Regenerate the schedule?",
-  "regenerateWarningMessage": "Your current progress (completed and missed sessions) will be lost and replaced by a new schedule."
+  "regenerateWarningMessage": "Your current progress (completed and missed sessions) will be lost and replaced by a new schedule.",
+      "addSession": "Add a session",
+    "editSession": "Edit session",
+    "formModule": "Optional module",
+    "formSelectModule": "No module",
+    "formChapter": "Chapter",
+    "formCustomTitleOption": "Custom session (free title)",
+    "formCustomTitlePlaceholder": "Session title...",
+    "formDate": "Date",
+    "formStartTime": "Start time",
+    "formDuration": "Duration",
+    "deleteSession": "Delete session",
+    "formErrorTitle": "Choose a chapter or enter a title",
+    "formErrorDateTime": "Date and start time required"
   },
   "dashboard": {
     "greetingMorning": "Good morning",
@@ -372,6 +396,7 @@
     "errorLastNameShort": "Last name too short",
     "errorCurrentPasswordRequired": "Current password required",
     "errorPasswordMinLength": "Minimum 8 characters",
+    "errorPasswordWeak": "Use at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character",
     "errorChangePassword": "Error changing password"
   },
   "notFound": {

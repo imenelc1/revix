@@ -115,7 +115,7 @@
           <div class="opacity-0 animate-rise" style="animation-delay: 0.34s">
             <div class="flex items-center justify-between gap-3 mb-2">
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('auth.password') }}</label>
-              <a href="#" class="min-h-[44px] inline-flex items-center text-xs text-primary-soft hover:text-primary transition">{{ t('auth.forgotPassword') }}</a>
+              <RouterLink to="/forgot-password" class="min-h-[44px] inline-flex items-center text-xs text-primary-soft hover:text-primary transition">{{ t('auth.forgotPassword') }}</RouterLink>
             </div>
             <AppInput
               v-model="password"

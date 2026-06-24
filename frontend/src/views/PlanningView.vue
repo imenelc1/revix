@@ -81,6 +81,14 @@
               <template #icon-left><RefreshCw :size="16" /></template>
               {{ t('planning.reschedule') }}
             </AppButton>
+            <AppButton
+              variant="outline"
+              size="md"
+              @click="openAddSession"
+            >
+              <template #icon-left><Plus :size="16" /></template>
+              {{ t('planning.addSession') }}
+            </AppButton>
           </div>
         </div>
 
@@ -203,6 +211,20 @@
             <!-- Actions -->
             <div class="shrink-0 flex gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
               <button
+                @click="openEditSession(session)"
+                class="w-11 h-11 flex items-center justify-center rounded-lg bg-primary/10 text-primary-soft hover:bg-primary/20 transition"
+                :title="t('subjects.edit')"
+              >
+                <Pencil :size="14" />
+              </button>
+              <button
+                @click="deleteSession(session)"
+                class="w-11 h-11 flex items-center justify-center rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition"
+                :title="t('planning.deleteSession')"
+              >
+                <Trash2 :size="14" />
+              </button>
+              <button
                 v-if="session.status === 'planned'"
                 @click="markStatus(session._id, 'completed')"
                 class="w-11 h-11 flex items-center justify-center rounded-lg bg-secondary/10 text-secondary hover:bg-secondary/20 transition"
@@ -236,6 +258,12 @@
       </div>
 
     </div>
+    <SessionFormModal
+  :show="showSessionModal"
+  :session="editingSession"
+  @close="showSessionModal = false"
+  @saved="onSessionSaved"
+/>
   </AppLayout>
 </template>
 
@@ -244,7 +272,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   Sparkles, RefreshCw, Calendar, CalendarDays,
-  ChevronLeft, ChevronRight, Check, X, Coffee
+  ChevronLeft, ChevronRight, Check, X, Coffee, Pencil, Trash2
 } from '@lucide/vue'
 import AppLayout from '@/shared/components/AppLayout.vue'
 import AppButton from '@/shared/components/AppButton.vue'
@@ -252,6 +280,8 @@ import { usePlanningStore } from '@/stores/planning.store'
 import type { Session } from '@/stores/planning.store'
 import { useConfirm } from '@/shared/composables/useConfirm'
 import { formatLongDate, formatWeekdayShortDate } from '@/shared/utils/dates'
+import { useSubjectsStore } from '@/stores/subjects.store'
+import SessionFormModal from '@/features/planning/components/SessionFormModal.vue'
 const { confirm } = useConfirm()
 const { t, locale } = useI18n()
 const planningStore = usePlanningStore()
@@ -267,7 +297,24 @@ const weekDays = computed(() => [
   t('planning.monday'), t('planning.tuesday'), t('planning.wednesday'),
   t('planning.thursday'), t('planning.friday'), t('planning.saturday'), t('planning.sunday')
 ])
+const subjectsStore = useSubjectsStore()
 
+const showSessionModal = ref(false)
+const editingSession = ref<Session | null>(null)
+
+function openAddSession() {
+  editingSession.value = null
+  showSessionModal.value = true
+}
+
+function openEditSession(session: Session) {
+  editingSession.value = session
+  showSessionModal.value = true
+}
+
+async function onSessionSaved() {
+  await loadWeek()
+}
 function toggleDay(day: number) {
   const idx = config.value.availableDays.indexOf(day)
   if (idx === -1) config.value.availableDays.push(day)
@@ -375,6 +422,18 @@ async function markStatus(sessionId: string, status: 'completed' | 'missed') {
   await planningStore.updateStatus(sessionId, status)
 }
 
+async function deleteSession(session: Session) {
+  const ok = await confirm({
+    title: t('planning.deleteSession'),
+    message: session.chapterTitle,
+    confirmLabel: t('planning.deleteSession'),
+    danger: true
+  })
+  if (!ok) return
+  await planningStore.deleteSession(session._id)
+  await loadWeek()
+}
+
 const rescheduling = ref(false)
 async function doReschedule() {
   rescheduling.value = true
@@ -388,6 +447,7 @@ async function doReschedule() {
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 onMounted(async () => {
+  await subjectsStore.fetchAll()
   await planningStore.fetch()
   if (planningStore.planning) {
     await loadWeek()

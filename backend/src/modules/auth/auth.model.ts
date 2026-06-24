@@ -6,7 +6,9 @@ export interface IUser extends Document {
   lastName:     string
   email:        string
   passwordHash: string
-  googleId?:    string   // ← nouveau champ
+  googleId?:    string
+  resetPasswordToken?:   string   
+  resetPasswordExpires?: Date    
   createdAt:    Date
   comparePassword(password: string): Promise<boolean>
 }
@@ -16,7 +18,9 @@ const UserSchema = new Schema<IUser>({
   lastName:     { type: String, required: true, trim: true },
   email:        { type: String, required: true, unique: true, lowercase: true, trim: true },
   passwordHash: { type: String, required: true },
-  googleId:     { type: String, sparse: true, unique: true }, // ← nouveau champ
+  googleId:     { type: String, sparse: true, unique: true },
+  resetPasswordToken:   { type: String, sparse: true, select: false }, 
+  resetPasswordExpires: { type: Date, select: false },                
 }, { timestamps: true })
 
 UserSchema.pre('save', async function () {

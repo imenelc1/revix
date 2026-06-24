@@ -209,6 +209,7 @@ import Divider from '@/features/auth/components/AuthDivider.vue'
 import GoogleButton from '@/features/auth/components/AuthGoogleButton.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useUiStore } from '@/stores/ui.store'
+import { isStrongPassword } from '@/shared/utils/password'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -248,7 +249,8 @@ function validate(): boolean {
   if (!firstName.value)  errors.firstName      = t('auth.errorFirstNameRequired')
   if (!lastName.value)   errors.lastName       = t('auth.errorLastNameRequired')
   if (!email.value)      errors.email          = t('auth.errorEmailRequired')
-  if (!password.value)   errors.password       = t('auth.errorPasswordRequired')
+  if (!password.value) errors.password = t('auth.errorPasswordRequired')
+  else if (!isStrongPassword(password.value)) errors.password = t('auth.errorPasswordWeak')
   if (password.value !== confirmPassword.value) errors.confirmPassword = t('auth.errorPasswordMatch')
   if (!acceptTerms.value) errors.terms         = t('auth.errorTerms')
 

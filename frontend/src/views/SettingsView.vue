@@ -175,6 +175,7 @@ import GoogleIcon from '@/shared/components/icons/GoogleIcon.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useUiStore } from '@/stores/ui.store'
 import { formatMonthYear } from '@/shared/utils/dates'
+import { isStrongPassword } from '@/shared/utils/password'
 const { t, locale } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
@@ -228,7 +229,7 @@ const passwordSuccess = ref(false)
 
 function validatePassword(): boolean {
   passwordErrors.currentPassword = !passwordForm.currentPassword ? t('settings.errorCurrentPasswordRequired') : undefined
-  passwordErrors.newPassword = passwordForm.newPassword.length < 8 ? t('settings.errorPasswordMinLength') : undefined
+  passwordErrors.newPassword = !isStrongPassword(passwordForm.newPassword) ? t('settings.errorPasswordWeak') : undefined
   passwordErrors.confirmNewPassword = passwordForm.newPassword !== passwordForm.confirmNewPassword
     ? t('auth.errorPasswordMatch')
     : undefined

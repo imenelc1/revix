@@ -20,3 +20,5 @@ authRoutes.put('/me', authMiddleware, authController.updateMe)
 // PUT /api/auth/me/password — changer le mot de passe
 authRoutes.put('/me/password', authMiddleware, authController.changePassword)
 authRoutes.post('/logout', authController.logout)
+authRoutes.post('/forgot-password', authRateLimiter, authController.forgotPassword)
+authRoutes.post('/reset-password', authRateLimiter, authController.resetPassword)

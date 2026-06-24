@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'
 import { User } from './auth.model'
 import { ENV } from '../../config/env'
 import type { RegisterInput, LoginInput } from './auth.schema'
-
+import crypto from 'crypto'
+import { sendPasswordResetEmail } from '../../utils/mailer'
 export const authService = {
 
   async register(data: RegisterInput) {
@@ -55,7 +56,7 @@ export const authService = {
     if (!user) throw new Error('auth.userNotFound')
 
     if (user.googleId && user.passwordHash.startsWith('google_')) {
-      throw new Error('auth.googleAccountPasswordChange')
+      throw new Error('auth.googleAccountCannotChangePassword')
     }
 
     const valid = await user.comparePassword(currentPassword)
@@ -65,8 +66,48 @@ export const authService = {
     await user.save()
 
     return { message: 'auth.passwordUpdated' }
+  },
+  // ── Demander la réinitialisation du mot de passe ─────────────────────────────
+  async forgotPassword(email: string, locale: 'fr' | 'en') {
+    const user = await User.findOne({ email })
+
+    // On répond toujours la même chose pour ne pas révéler si l'email existe
+    if (!user || (user.googleId && user.passwordHash.startsWith('google_'))) {
+      return { message: 'auth.resetEmailSentIfExists' }
+    }
+
+    const token = crypto.randomBytes(32).toString('hex')
+    user.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex')
+    user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000) // 1h
+    await user.save()
+
+    const resetUrl = `${ENV.FRONTEND_URL}/reset-password?token=${token}`
+    sendPasswordResetEmail(user.email, resetUrl, locale).catch(err =>
+      console.error('Erreur envoi email reset:', err)
+    )
+
+    return { message: 'auth.resetEmailSentIfExists' }
+  },
+
+  // ── Réinitialiser le mot de passe avec le token reçu par email ───────────────
+  async resetPassword(token: string, newPassword: string) {
+    const hashed = crypto.createHash('sha256').update(token).digest('hex')
+    const user = await User.findOne({
+      resetPasswordToken: hashed,
+      resetPasswordExpires: { $gt: new Date() }
+    }).select('+resetPasswordToken +resetPasswordExpires')
+
+    if (!user) throw new Error('auth.resetTokenInvalid')
+
+    user.passwordHash = newPassword // re-hashé par le hook pre-save
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpires = undefined
+    await user.save()
+
+    return { message: 'auth.passwordUpdated' }
   }
 }
+
 
 function generateToken(userId: string): string {
   return jwt.sign({ id: userId }, ENV.JWT_SECRET, {

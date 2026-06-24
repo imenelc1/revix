@@ -12,6 +12,8 @@ const router = createRouter({
 
     // ← Route de callback Google OAuth — PUBLIQUE, pas de guard
     { path: '/auth/callback', name: 'auth-callback', component: () => import('../views/AuthCallbackView.vue') },
+    { path: '/forgot-password', name: 'forgot-password', component: () => import('../views/ForgotPasswordView.vue') },
+    { path: '/reset-password',  name: 'reset-password',  component: () => import('../views/ResetPasswordView.vue') },
 
     { path: '/onboarding',    name: 'onboarding',  component: () => import('../views/OnboardingView.vue') },
     { path: '/dashboard',     name: 'dashboard',   component: () => import('../views/DashboardView.vue') },

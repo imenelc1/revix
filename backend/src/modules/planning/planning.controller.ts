@@ -69,5 +69,45 @@ export const planningController = {
     } catch (error: any) {
       res.status(400).json({ error: t(error.message, req.locale) })
     }
+  },
+  async addSession(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { subjectId, chapterId, customTitle, date, startTime, durationMinutes } = req.body
+      if (!date || !startTime || !durationMinutes) {
+        res.status(400).json({ error: t('planning.sessionFieldsRequired', req.locale) })
+        return
+      }
+      const planning = await planningService.addSession(req.userId!, {
+        subjectId, chapterId, customTitle, date, startTime,
+        durationMinutes: Number(durationMinutes)
+      })
+      res.status(201).json(planning)
+    } catch (error: any) {
+      res.status(400).json({ error: t(error.message, req.locale) })
+    }
+  },
+
+  async updateSession(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { sessionId } = req.params
+      const { subjectId, chapterId, customTitle, date, startTime, durationMinutes } = req.body
+      const planning = await planningService.updateSession(req.userId!, String(sessionId), {
+        subjectId, chapterId, customTitle, date, startTime,
+        durationMinutes: durationMinutes !== undefined ? Number(durationMinutes) : undefined
+      })
+      res.json(planning)
+    } catch (error: any) {
+      res.status(400).json({ error: t(error.message, req.locale) })
+    }
+  },
+
+  async deleteSession(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { sessionId } = req.params
+      const planning = await planningService.deleteSession(req.userId!, String(sessionId))
+      res.json(planning)
+    } catch (error: any) {
+      res.status(400).json({ error: t(error.message, req.locale) })
+    }
   }
 }

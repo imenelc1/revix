@@ -21,10 +21,13 @@ Demo : https://revix-app.netlify.app
 ## Fonctionnalites
 
 - Authentification email/mot de passe et Google OAuth
+- Politique de mot de passe renforcee : minimum 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special
+- Mot de passe oublie avec lien de reinitialisation par email SMTP
 - Creation de modules avec dates d'examen, chapitres, difficulte et niveau de maitrise
 - Analyse de PDF pour extraire des chapitres et contenus de revision
 - Generation de flashcards et quiz a partir des cours
 - Planning de revision intelligent avec sessions, rattrapage et score de preparation
+- Ajout manuel de seances dans le planning, avec ou sans module, puis modification et suppression
 - Chatbot IA capable de repondre avec le contexte des cours uploades
 - Interface responsive, dark mode et support FR/EN
 
@@ -61,6 +64,7 @@ revix/
 - MongoDB local ou MongoDB Atlas
 - Une cle Groq API
 - Identifiants Google OAuth si la connexion Google est activee
+- Un compte SMTP si vous voulez envoyer les emails de mot de passe oublie
 
 ### Backend
 
@@ -89,19 +93,49 @@ L'application demarre par defaut sur `http://localhost:5173`.
 ### Backend
 
 ```env
-PORT=
-MONGODB_URI=
-JWT_SECRET=
-JWT_EXPIRES_IN=
-SESSION_SECRET=
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/revix
+JWT_SECRET=change_this_to_a_long_random_string
+JWT_EXPIRES_IN=7d
+SESSION_SECRET=change_this_to_a_different_long_random_string
 GROQ_API_KEY=
+
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-GOOGLE_CALLBACK_URL=
-FRONTEND_URL=
-FRONTEND_URLS=
-NODE_ENV=
+GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
+
+FRONTEND_URL=http://localhost:5173
+FRONTEND_URLS=http://localhost:5173
+NODE_ENV=development
+
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=Revix <no-reply@revix.app>
 ```
+
+Details :
+
+- `MONGODB_URI` : URL de connexion MongoDB locale ou Atlas.
+- `JWT_SECRET` et `SESSION_SECRET` : valeurs longues, aleatoires et differentes en production.
+- `GROQ_API_KEY` : cle API Groq utilisee pour les fonctionnalites IA.
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL` : requis seulement pour Google OAuth.
+- `FRONTEND_URL` : URL principale du frontend, utilisee notamment pour generer les liens de reset password.
+- `FRONTEND_URLS` : liste d'origines autorisees CORS, separees par des virgules si besoin.
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` : configuration d'envoi email pour le mot de passe oublie.
+
+Exemple SMTP avec Gmail :
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=votre-adresse@gmail.com
+SMTP_PASS=mot_de_passe_application_google
+SMTP_FROM=Revix <votre-adresse@gmail.com>
+```
+
+Pour Gmail, `SMTP_PASS` n'est pas le mot de passe normal du compte. Il faut activer la validation en deux etapes Google, puis generer un mot de passe d'application. En developpement, si SMTP n'est pas configure, le backend affiche le lien de reinitialisation dans la console au lieu d'envoyer un email.
 
 ### Frontend
 
@@ -110,6 +144,14 @@ VITE_API_URL=
 ```
 
 Ne committez jamais de fichier `.env` contenant des valeurs reelles. Utilisez uniquement les fichiers `.env.example` comme documentation.
+
+## Planning Manuel
+
+Depuis la page Planning, l'utilisateur peut cliquer sur `Ajouter une seance`.
+
+- Pour une seance libre, laisser `Aucun module`, saisir un titre, choisir la date, l'heure et la duree.
+- Pour une seance liee aux cours, choisir un module puis un chapitre ou saisir un titre personnalise.
+- Les seances peuvent ensuite etre modifiees avec le bouton crayon, supprimees avec le bouton poubelle, marquees terminees ou marquees ratees.
 
 ## Scripts Utiles
 

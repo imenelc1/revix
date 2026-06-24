@@ -94,11 +94,22 @@
     "logout": "Déconnexion",
     "errorEmailRequired": "Email requis",
     "errorPasswordRequired": "Mot de passe requis",
+    "errorPasswordWeak": "Minimum 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial",
     "errorFirstNameRequired": "Prénom requis",
     "errorLastNameRequired": "Nom requis",
     "connecting": "Connexion en cours…",
     "googleFailed": "Échec de la connexion Google.",
-    "profileError": "Erreur lors de la récupération du profil."
+    "profileError": "Erreur lors de la récupération du profil.",
+    "forgotPasswordTitle": "Mot de passe oublié",
+    "forgotPasswordSubtitle": "Entrez votre email, nous vous envoyons un lien pour réinitialiser votre mot de passe.",
+    "sendResetLink": "Envoyer le lien de réinitialisation",
+    "checkEmailMessage": "Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé. Vérifiez votre boîte de réception.",
+    "backToLogin": "Retour à la connexion",
+    "resetPasswordTitle": "Réinitialiser le mot de passe",
+    "resetPasswordSubtitle": "Choisissez un nouveau mot de passe pour votre compte.",
+    "resetPasswordButton": "Réinitialiser le mot de passe",
+    "resetSuccess": "Votre mot de passe a été réinitialisé avec succès.",
+    "errorTokenMissing": "Lien invalide ou expiré. Veuillez refaire une demande."
   },
   "buttons": {
     "google": "Google"
@@ -227,7 +238,20 @@
     "break": "Pause",
     "min": "min",
     "regenerateWarningTitle": "Régénérer le planning ?",
-  "regenerateWarningMessage": "Votre progression actuelle (sessions terminées et manquées) sera perdue et remplacée par un nouveau planning."
+      "regenerateWarningMessage": "Votre progression actuelle (sessions terminées et manquées) sera perdue et remplacée par un nouveau planning.",
+      "addSession": "Ajouter une séance",
+    "editSession": "Modifier la séance",
+    "formModule": "Module optionnel",
+    "formSelectModule": "Aucun module",
+    "formChapter": "Chapitre",
+    "formCustomTitleOption": "Séance personnalisée (titre libre)",
+    "formCustomTitlePlaceholder": "Titre de la séance...",
+    "formDate": "Date",
+    "formStartTime": "Heure de début",
+    "formDuration": "Durée",
+    "deleteSession": "Supprimer la séance",
+    "formErrorTitle": "Choisissez un chapitre ou entrez un titre",
+    "formErrorDateTime": "Date et heure de début requises"
   },
   "dashboard": {
     "greetingMorning": "Bonjour",
@@ -373,6 +397,7 @@
     "errorLastNameShort": "Nom trop court",
     "errorCurrentPasswordRequired": "Mot de passe actuel requis",
     "errorPasswordMinLength": "Minimum 8 caractères",
+    "errorPasswordWeak": "Minimum 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial",
     "errorChangePassword": "Erreur lors du changement de mot de passe"
   },
   "notFound": {

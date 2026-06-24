@@ -77,11 +77,39 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token') // nettoyage legacy
     await api.post('/auth/logout', undefined, { skipAuthRedirect: true }).catch(() => {})
   }
+  async function forgotPassword(email: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const res = await api.post('/auth/forgot-password', { email })
+      return res.data
+    } catch (err: any) {
+      error.value = err.response?.data?.error || 'Erreur'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function resetPassword(token: string, newPassword: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const res = await api.post('/auth/reset-password', { token, newPassword })
+      return res.data
+    } catch (err: any) {
+      error.value = err.response?.data?.error || 'Erreur'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
 
   return {
     user, loading, error, isAuthenticated,
     loginWithGoogle,
     register, login, fetchMe, logout,
     updateProfile, changePassword,
+    forgotPassword, resetPassword,
   }
 })

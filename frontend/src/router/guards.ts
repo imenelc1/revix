@@ -5,7 +5,7 @@ export function setupGuards(router: Router) {
   router.beforeEach(async (to, _from, next) => {
     const authStore = useAuthStore()
 
-    const publicRoutes = ['/', '/login', '/register', '/auth/callback', '/legal', '/privacy']
+    const publicRoutes = ['/', '/login', '/register', '/auth/callback', '/legal', '/privacy', '/forgot-password', '/reset-password']
     const isPublic     = publicRoutes.includes(to.path)
 
     if (!authStore.user) {

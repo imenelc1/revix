@@ -3,6 +3,7 @@ import { CourseDocument } from '../document/document.model'
 import { Flashcard, Quiz } from '../flashcard/flashcard.model'
 import { ChatMessage } from '../chat/chat.model'
 import { Planning } from '../planning/planning.model'
+import { countUniqueCoveredChapters } from '../planning/planning.service'
 import type { CreateSubjectInput, ChapterInput } from './subject.schema'
 
 export const subjectService = {
@@ -59,7 +60,7 @@ export const subjectService = {
       if (totalChapters === 0) {
         await Planning.deleteOne({ userId })
       } else {
-        const uniqueCovered = new Set(planning.sessions.map(s => s.chapterId.toString())).size
+        const uniqueCovered = countUniqueCoveredChapters(planning.sessions)
         planning.overallReadinessScore = Math.round((uniqueCovered / totalChapters) * 100)
         await planning.save()
       }
