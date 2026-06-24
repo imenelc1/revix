@@ -18,7 +18,7 @@ import { ENV }             from './config/env'
 import { chatRoutes }      from './modules/chat/chat.routes'
 import cookieParser from 'cookie-parser'
 const app = express()
-
+app.set('trust proxy', 1)
 const allowedOrigins = new Set([
   ...ENV.FRONTEND_URLS,
   ...(ENV.NODE_ENV !== 'production' ? ['http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'] : [])

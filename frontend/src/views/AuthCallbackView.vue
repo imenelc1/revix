@@ -14,6 +14,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth.store'
+import api from '@/shared/utils/api'
 import AppSpinner from '@/shared/components/AppSpinner.vue'
 
 const router    = useRouter()
@@ -24,19 +25,24 @@ const message   = ref(t('auth.connecting'))
 onMounted(async () => {
   const params = new URLSearchParams(window.location.search)
   const error  = params.get('error')
+  const code   = params.get('code')
 
-  if (error) {
+  if (error || !code) {
     message.value = t('auth.googleFailed')
     setTimeout(() => router.push('/login?error=google_failed'), 2000)
     return
   }
 
-  // Le cookie est déjà posé par le backend — on fetch juste le profil
-  await authStore.fetchMe()
+  try {
+    const res = await api.get('/auth/exchange', {
+      params: { code },
+      withCredentials: true,
+      skipAuthRedirect: true,
+    })
 
-  if (authStore.user) {
+    authStore.user = res.data.user
     router.push('/dashboard')
-  } else {
+  } catch {
     message.value = t('auth.profileError')
     setTimeout(() => router.push('/login'), 2000)
   }
