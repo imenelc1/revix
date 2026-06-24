@@ -8,6 +8,7 @@ const authCookieOptions = {
   httpOnly: true,
   secure: true,
   sameSite: 'none' as const,
+  partitioned: true,
   maxAge: 7 * 24 * 60 * 60 * 1000
 }
 

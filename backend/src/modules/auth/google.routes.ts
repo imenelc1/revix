@@ -9,9 +9,9 @@ const authCookieOptions = {
   httpOnly: true,
   secure: true,
   sameSite: 'none' as const,
+  partitioned: true,
   maxAge: 7 * 24 * 60 * 60 * 1000
 }
-
 // ─── Étape 1 : Rediriger vers Google ──────────────────────────────────────────
 // GET /api/auth/google
 googleRoutes.get(
