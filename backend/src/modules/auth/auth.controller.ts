@@ -83,7 +83,8 @@ export const authController = {
     res.clearCookie('token', {
       httpOnly: true,
       sameSite: authCookieOptions.sameSite,
-      secure: authCookieOptions.secure
+      secure: authCookieOptions.secure,
+      partitioned: authCookieOptions.partitioned
     })
     res.json({ message: 'Déconnecté' })
   }
