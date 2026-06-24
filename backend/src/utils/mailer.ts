@@ -3,11 +3,14 @@ import { ENV } from '../config/env'
 
 export const mailer = nodemailer.createTransport({
   host: ENV.SMTP_HOST,
-  port: ENV.SMTP_PORT,
-  secure: ENV.SMTP_PORT === 465,
+  port: parseInt(ENV.SMTP_PORT as unknown as string, 10) || 587, 
+  secure: parseInt(ENV.SMTP_PORT as unknown as string, 10) === 465,
   auth: {
     user: ENV.SMTP_USER,
-    pass: ENV.SMTP_PASS
+    pass: ENV.SMTP_PASS?.trim() 
+  },
+  tls: {
+    rejectUnauthorized: false 
   }
 })
 
