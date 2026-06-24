@@ -7,6 +7,8 @@ const router = createRouter({
     { path: '/',              name: 'landing',   component: () => import('../views/LandingView.vue') },
     { path: '/login',         name: 'login',     component: () => import('../views/LoginView.vue') },
     { path: '/register',      name: 'register',  component: () => import('../views/RegisterView.vue') },
+    { path: '/legal',         name: 'legal',     component: () => import('../views/LegalView.vue') },
+    { path: '/privacy',       name: 'privacy',   component: () => import('../views/PrivacyView.vue') },
 
     // ← Route de callback Google OAuth — PUBLIQUE, pas de guard
     { path: '/auth/callback', name: 'auth-callback', component: () => import('../views/AuthCallbackView.vue') },

@@ -1,14 +1,14 @@
 <template>
   <AppLayout :title="t('study.title')">
-    <div class="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
+    <div class="p-4 md:p-8 max-w-4xl mx-auto space-y-6 overflow-x-hidden">
 
       <!-- Onglets -->
-      <div class="flex gap-1 border-b border-gray-200 dark:border-ink-700 mb-2">
+      <div class="flex gap-1 border-b border-gray-200 dark:border-ink-700 mb-2 overflow-x-auto">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           @click="activeTab = tab.id"
-          class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors"
+          class="min-h-[44px] flex items-center gap-2 px-3 sm:px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap shrink-0"
           :class="activeTab === tab.id
             ? 'border-primary text-primary dark:text-primary-soft'
             : 'border-transparent text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'"
@@ -24,7 +24,7 @@
 
       <!-- ══ ONGLET GÉNÉRER ══ -->
       <div v-if="activeTab === 'generate'" class="space-y-4">
-        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
+        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm">
           <h2 class="font-display font-bold text-gray-900 dark:text-white mb-4">{{ t('study.generateTitle') }}</h2>
 
           <div class="mb-4">
@@ -54,7 +54,7 @@
             <input ref="fileInput" type="file" accept=".pdf" class="hidden" @change="onFileSelect" />
           </div>
 
-          <div class="flex gap-3">
+          <div class="flex flex-col sm:flex-row gap-3">
             <AppButton variant="primary" size="sm" :disabled="!canGenerate" :loading="generating === 'flashcards'" @click="generate('flashcards')">
               <template #icon-left><Layers :size="15" /></template>
               {{ t('study.btnFlashcards') }}
@@ -116,7 +116,7 @@
 
       <!-- ══ ONGLET MES FLASHCARDS ══ -->
       <div v-if="activeTab === 'flashcards'" class="space-y-4">
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
           <select
             v-model="filterSubjectId"
             class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
@@ -148,10 +148,10 @@
           <div
             v-for="group in flashcardGroups"
             :key="group.subjectId"
-            class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 shadow-sm mb-4"
+            class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-4 md:p-5 shadow-sm mb-4 min-w-0"
           >
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-2">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+              <div class="flex items-center gap-2 min-w-0">
                 <span class="w-3 h-3 rounded-full" :style="{ background: group.color }"></span>
                 <span class="font-display font-bold text-gray-900 dark:text-white">{{ group.name }}</span>
                 <span class="text-xs font-mono text-gray-400">{{ group.cards.length }} {{ t('study.cardsUnit') }}</span>
@@ -175,7 +175,7 @@
                 <p class="text-sm text-gray-900 dark:text-white">{{ card.flipped ? card.answer : card.question }}</p>
                 <button
                   @click.stop="deleteFlashcard(card._id)"
-                  class="absolute top-2 right-2 p-1 rounded text-gray-300 hover:text-red-500 opacity-0 group-hover/card:opacity-100 transition"
+                  class="absolute top-1 right-1 w-11 h-11 flex items-center justify-center rounded text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover/card:opacity-100 transition"
                 >
                   <Trash2 :size="12" />
                 </button>
@@ -196,7 +196,7 @@
 
       <!-- ══ ONGLET MES QUIZ ══ -->
       <div v-if="activeTab === 'quizzes'" class="space-y-4">
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
           <select
             v-model="filterSubjectId"
             class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
@@ -209,7 +209,7 @@
         </div>
 
         <!-- Stats globales -->
-        <div v-if="allQuizzes.length > 0" class="grid grid-cols-3 gap-3">
+        <div v-if="allQuizzes.length > 0" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-xl p-4 text-center shadow-sm">
             <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">{{ allQuizzes.length }}</p>
             <p class="text-xs text-gray-400 mt-0.5">{{ t('study.generatedQuizzes') }}</p>
@@ -243,9 +243,9 @@
           <div
             v-for="quiz in allQuizzes"
             :key="quiz._id"
-            class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 shadow-sm"
+            class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-4 md:p-5 shadow-sm min-w-0"
           >
-            <div class="flex items-start gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-start gap-4">
               <!-- Score ring -->
               <div class="relative w-14 h-14 shrink-0">
                 <svg viewBox="0 0 36 36" class="w-full h-full -rotate-90">
@@ -281,13 +281,13 @@
               </div>
 
               <!-- Actions -->
-              <div class="flex gap-2 shrink-0">
+              <div class="flex gap-2 shrink-0 w-full sm:w-auto">
                 <AppButton variant="primary" size="sm" :loading="loadingQuizDetail && openQuizId !== quiz._id ? false : undefined" @click="toggleQuiz(quiz._id)">
                   {{ openQuizId === quiz._id ? t('study.close') : quiz.userScore !== undefined ? t('study.retry') : t('study.start') }}
                 </AppButton>
                 <button
                   @click="removeQuiz(quiz._id)"
-                  class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
+                  class="w-11 h-11 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
                 >
                   <Trash2 :size="15" />
                 </button>

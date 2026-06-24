@@ -1,16 +1,15 @@
 <template>
   <AppLayout :title="t('sidebar.dashboard')" :score="readinessScore">
-    <div class="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
+    <div class="p-4 md:p-8 max-w-6xl mx-auto space-y-6 overflow-x-hidden">
 
       <!-- Welcome banner -->
-      <div class="bg-gradient-to-br from-primary to-[#4F52E8] rounded-2xl p-6 text-white relative overflow-hidden">
+      <div class="bg-gradient-to-br from-primary to-[#4F52E8] rounded-2xl p-5 md:p-6 text-white relative overflow-hidden">
         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;" />
         <div class="relative z-10">
           <p class="font-mono text-xs text-white/70 uppercase tracking-widest mb-1">{{ greeting }}</p>
-          <h2 class="font-display text-2xl font-bold mb-1 flex items-center gap-2">
-  {{ authStore.user?.firstName }}
-
-</h2>
+          <h2 class="font-display text-xl md:text-2xl font-bold mb-1 break-words">
+            {{ authStore.user?.firstName }}
+          </h2>
           <p class="text-white/80 text-sm">{{ todaySummary }}</p>
         </div>
         <div class="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2">
@@ -22,11 +21,11 @@
       </div>
 
       <!-- Stats row -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <div
           v-for="stat in stats"
           :key="stat.label"
-          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-4 shadow-sm"
+          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-4 shadow-sm min-w-0"
         >
           <div class="flex items-center justify-between mb-3">
             <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="stat.iconBg">
@@ -40,11 +39,11 @@
       </div>
 
       <!-- Main grid -->
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <!-- Modules progress -->
-        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
-          <div class="flex items-center justify-between mb-5">
+        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm min-w-0">
+          <div class="flex items-center justify-between gap-3 mb-5">
             <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.modules') }}</h3>
             <RouterLink to="/subjects" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
               {{ t('dashboard.viewAll') }}
@@ -61,12 +60,12 @@
 
           <div v-else class="space-y-4">
             <div v-for="subject in subjectsStore.subjects.slice(0, 5)" :key="subject._id">
-              <div class="flex items-center justify-between mb-1.5">
-                <div class="flex items-center gap-2">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 mb-1.5">
+                <div class="flex items-center gap-2 min-w-0">
                   <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ background: subject.color }"></span>
                   <span class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ subject.name }}</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                   <span class="text-xs text-gray-400 font-mono">{{ subject.chapters.length }} {{ t('dashboard.chapters') }}</span>
                   <span class="text-xs font-semibold text-gray-900 dark:text-white">{{ subjectProgress(subject) }}%</span>
                 </div>
@@ -77,7 +76,7 @@
                   :style="{ width: subjectProgress(subject) + '%', background: subject.color }"
                 />
               </div>
-              <div class="flex justify-between mt-1">
+              <div class="flex flex-col sm:flex-row sm:justify-between gap-1 mt-1">
                 <span class="text-[10px] font-mono text-gray-400">
                   {{ t('dashboard.exam') }} : {{ formatExamDate(subject.examDate) }}
                 </span>
@@ -100,8 +99,8 @@
         </div>
 
         <!-- Upcoming sessions -->
-        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
-          <div class="flex items-center justify-between mb-5">
+        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm min-w-0">
+          <div class="flex items-center justify-between gap-3 mb-5">
             <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.upcomingSessions') }}</h3>
             <RouterLink to="/planning" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
               {{ t('dashboard.viewPlanning') }} 
@@ -147,8 +146,8 @@
 
       <!-- Heatmap placeholder -->
      <!-- Chapitres prioritaires à réviser -->
-<div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
-  <div class="flex items-center justify-between mb-5">
+<div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm min-w-0">
+  <div class="flex items-center justify-between gap-3 mb-5">
     <h3 class="font-display font-bold text-gray-900 dark:text-white">{{ t('dashboard.priorityTitle') }}</h3>
     <RouterLink to="/subjects" class="text-xs text-primary-soft hover:text-primary font-semibold transition">
       {{ t('dashboard.viewAll') }}
@@ -166,7 +165,7 @@
     <div
       v-for="(item, i) in priorityChapters"
       :key="i"
-      class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-ink-900/60 border border-gray-100 dark:border-ink-700"
+      class="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-ink-900/60 border border-gray-100 dark:border-ink-700"
     >
       <component
         :is="item.masteryLevel === 'not_understood' ? XCircle : HelpCircle"
@@ -182,7 +181,7 @@
         </div>
       </div>
       <span
-        class="shrink-0 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-lg"
+        class="shrink-0 text-[11px] font-mono font-semibold px-2 py-1 rounded-lg w-fit"
         :class="item.daysUntilExam <= 7 ? 'bg-warm/10 text-warm' : 'bg-gray-100 dark:bg-ink-700 text-gray-500 dark:text-gray-400'"
       >
         {{ t('dashboard.daysRemaining', { days: item.daysUntilExam }) }}

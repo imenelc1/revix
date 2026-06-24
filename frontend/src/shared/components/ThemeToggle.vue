@@ -1,7 +1,7 @@
 <template>
   <button
     @click="ui.toggleTheme()"
-    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-gray-300"
+    class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-gray-300"
     :aria-label="ui.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
   >
     <Sun v-if="ui.theme === 'dark'" :size="20" />

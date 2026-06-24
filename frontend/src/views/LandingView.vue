@@ -8,8 +8,8 @@
         scrolled ? 'border-gray-200 dark:border-ink-600 shadow-sm' : 'border-transparent'
       ]"
     >
-      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <AppLogo size="2xl" />
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-3">
+        <AppLogo size="xl" class="shrink-0" />
 
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
           <a href="#features" class="relative group transition hover:text-gray-900 dark:hover:text-white">
@@ -22,17 +22,17 @@
           </a>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 md:gap-2">
           <LanguageToggle />
           <ThemeToggle />
           <template v-if="authStore.isAuthenticated">
-          <AppButton variant="ghost" size="sm" to="/dashboard">{{ t('nav.dashboard') }}</AppButton>
+          <AppButton variant="ghost" size="sm" to="/dashboard" class="hidden sm:inline-flex">{{ t('nav.dashboard') }}</AppButton>
           <AppButton variant="primary" size="sm" @click="authStore.logout(); $router.push('/')">
             {{ t('nav.logout') }}
           </AppButton>
         </template>
         <template v-else>
-          <AppButton variant="ghost" size="sm" to="/login">{{ t('nav.login') }}</AppButton>
+          <AppButton variant="ghost" size="sm" to="/login" class="hidden sm:inline-flex">{{ t('nav.login') }}</AppButton>
           <AppButton variant="primary" size="sm" to="/register">{{ t('nav.register') }}</AppButton>
         </template>
         </div>
@@ -40,8 +40,8 @@
     </nav>
 
     <!-- ===== HERO ===== -->
-    <section class="relative w-full px-6 pt-16 pb-20 overflow-hidden">
-      <div class="max-w-6xl mx-auto px-6">
+    <section class="relative w-full px-4 md:px-6 pt-10 md:pt-16 pb-14 md:pb-20 overflow-hidden">
+      <div class="max-w-6xl mx-auto">
 
       <!-- grain -->
       <div
@@ -56,36 +56,36 @@
       <div class="absolute top-56 -left-52 w-[550px] h-[550px] rounded-full pointer-events-none blur-3xl animate-drift-reverse"
            :class="ui.theme === 'dark' ? 'bg-warm/10' : 'bg-warm/5'"></div>
 
-      <div class="relative z-10 grid md:grid-cols-2 gap-14 items-center">
-        <div>
+      <div class="relative z-10 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+        <div class="min-w-0">
           <div class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-primary-soft mb-6 opacity-0 animate-rise" style="animation-delay: 0.05s">
             <span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_theme(colors.primary)] animate-pulse-dot"></span>
             {{ t('landing.badge') }}
           </div>
 
-          <h1 class="font-display text-5xl md:text-[60px] leading-[1.06] font-bold tracking-tight mb-5 opacity-0 animate-rise" style="animation-delay: 0.12s">
+          <h1 class="font-display text-4xl sm:text-5xl md:text-[60px] leading-[1.08] md:leading-[1.06] font-bold tracking-tight mb-5 opacity-0 animate-rise break-words" style="animation-delay: 0.12s">
             {{ t('landing.title1') }}<br>
             <span class="bg-gradient-to-br from-primary to-primary-soft bg-clip-text text-transparent">{{ t('landing.titleHighlight') }}</span>
             {{ t('landing.title2') }}
           </h1>
 
-          <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-9 max-w-md opacity-0 animate-rise" style="animation-delay: 0.2s">
+          <p class="text-sm sm:text-base md:text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8 md:mb-9 max-w-md opacity-0 animate-rise" style="animation-delay: 0.2s">
             {{ t('landing.description') }}
           </p>
 
-          <div class="flex flex-wrap gap-3.5 mb-11 opacity-0 animate-rise" style="animation-delay: 0.28s">
-            <AppButton variant="primary" size="lg" to="/register" class="group">
+          <div class="flex flex-col sm:flex-row gap-3.5 mb-8 md:mb-11 opacity-0 animate-rise" style="animation-delay: 0.28s">
+            <AppButton variant="primary" size="lg" to="/register" class="group w-full sm:w-auto">
               {{ t('landing.ctaStart') }}
               <template #icon-right><ArrowRight :size="18" class="transition-transform group-hover:translate-x-1" /></template>
             </AppButton>
             <a href="#how">
-              <AppButton variant="outline" size="lg">
+              <AppButton variant="outline" size="lg" class="w-full sm:w-auto">
                 {{ t('landing.ctaFeatures') }}
               </AppButton>
             </a>
           </div>
 
-          <div class="flex items-center gap-5 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise" style="animation-delay: 0.36s">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs text-gray-400 dark:text-ink-600 opacity-0 animate-rise" style="animation-delay: 0.36s">
             <span>{{ t('landing.freeTag') }}</span>
             <span class="w-px h-3 bg-gray-200 dark:bg-ink-600"></span>
             <span>{{ t('landing.noCardTag') }}</span>
@@ -95,7 +95,7 @@
         </div>
 
         <!-- Signature visual: animated weekly planner grid -->
-        <div class="relative opacity-0 animate-rise" style="animation-delay: 0.3s">
+        <div class="relative min-w-0 opacity-0 animate-rise" style="animation-delay: 0.3s">
 
           <div class="hidden lg:block absolute -top-4 right-8 z-20 opacity-0 animate-rise" style="animation-delay: 0.6s">
             <div class="bg-white dark:bg-ink-800 rounded-xl shadow-lg border border-gray-200 dark:border-ink-600 px-3.5 py-2.5 flex items-center gap-2 whitespace-nowrap text-xs font-medium animate-float">
@@ -104,14 +104,14 @@
             </div>
           </div>
 
-          <AppCard class="relative shadow-2xl shadow-gray-200/60 dark:shadow-black/50 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary group">
-            <div class="flex items-center justify-between mb-5">
+          <AppCard class="relative shadow-2xl shadow-gray-200/60 dark:shadow-black/50 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary group overflow-hidden">
+            <div class="flex items-center justify-between gap-3 mb-5">
               <div class="font-display font-bold text-[15px]">{{ t('landing.thisWeek') }}</div>
               <div class="font-mono text-[11px] tracking-wide bg-primary/10 text-primary-soft px-2.5 py-1 rounded-md">{{ t('landing.fourModules') }}</div>
             </div>
 
             <!-- week grid -->
-            <div class="grid grid-cols-[32px_repeat(5,1fr)] gap-1.5 mb-4">
+            <div class="grid grid-cols-[26px_repeat(5,minmax(0,1fr))] sm:grid-cols-[32px_repeat(5,minmax(0,1fr))] gap-1 sm:gap-1.5 mb-4">
               <div></div>
               <div v-for="d in days" :key="d" class="font-mono text-[11px] text-gray-400 dark:text-ink-600 text-center pb-1.5">{{ d }}</div>
 
@@ -120,7 +120,7 @@
                 <div
                   v-for="(cell, colIdx) in row.cells"
                   :key="colIdx"
-                  class="h-8 rounded-md transition-transform duration-150"
+                  class="h-7 sm:h-8 rounded-md transition-transform duration-150"
                   :class="[
                     cell ? `${cell} opacity-0 animate-fill-in cursor-pointer hover:scale-110 hover:z-10` : 'bg-gray-100 dark:bg-ink-700'
                   ]"
@@ -129,13 +129,13 @@
               </template>
             </div>
 
-            <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-ink-600">
-              <div class="flex gap-4 text-xs text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-gray-200 dark:border-ink-600">
+              <div class="flex flex-wrap gap-3 sm:gap-4 text-xs text-gray-500 dark:text-gray-400">
                 <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span>MongoDB</div>
                 <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-warm"></span>Algo</div>
                 <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-teal"></span>Réseaux</div>
               </div>
-              <div class="text-right">
+              <div class="sm:text-right">
                 <div class="font-display text-[26px] font-bold text-primary-soft leading-none">73%</div>
                 <div class="font-mono text-[10px] tracking-wide text-gray-300 dark:text-ink-600">{{ t('landing.readyLabel') }}</div>
               </div>
@@ -155,7 +155,7 @@
 
     <!-- ===== STATS ===== -->
     <section class="border-y border-gray-200 dark:border-ink-600 bg-gray-50 dark:bg-ink-900">
-      <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 text-center">
         <div v-for="(stat, i) in stats" :key="stat.label" ref="statRefs" class="opacity-0" :class="{ 'animate-rise': visibleStats }" :style="{ animationDelay: `${i * 0.08}s` }">
           <p class="font-display text-4xl font-extrabold text-primary-soft tracking-tight">{{ stat.value }}</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-1.5">{{ stat.label }}</p>
@@ -164,14 +164,14 @@
     </section>
 
     <!-- ===== FEATURES ===== -->
-    <section id="features" class="max-w-6xl mx-auto px-6 py-24">
-      <div class="text-center max-w-xl mx-auto mb-16">
+    <section id="features" class="max-w-6xl mx-auto px-4 md:px-6 py-16 md:py-24">
+      <div class="text-center max-w-xl mx-auto mb-10 md:mb-16">
         <div class="font-mono text-xs tracking-widest text-primary-soft uppercase mb-4">{{ t('landing.whyTag') }}</div>
         <h2 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-3">{{ t('landing.featuresTitle') }}</h2>
         <p class="text-gray-500 dark:text-gray-400">{{ t('landing.featuresSubtitle') }}</p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div
           v-for="(feature, i) in features"
           :key="feature.title"
@@ -193,7 +193,7 @@
           </div>
 
           <!-- content -->
-          <div class="p-7">
+          <div class="p-5 md:p-7">
             <h3 class="font-display text-lg font-bold mb-2.5 tracking-tight">{{ feature.title }}</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{{ feature.desc }}</p>
             <div class="flex flex-wrap gap-2">
@@ -207,14 +207,14 @@
     </section>
 
     <!-- ===== HOW IT WORKS ===== -->
-    <section id="how" class="max-w-6xl mx-auto px-6 pb-24">
-      <div class="text-center max-w-xl mx-auto mb-16">
+    <section id="how" class="max-w-6xl mx-auto px-4 md:px-6 pb-16 md:pb-24">
+      <div class="text-center max-w-xl mx-auto mb-10 md:mb-16">
         <div class="font-mono text-xs tracking-widest text-primary-soft uppercase mb-4">{{ t('landing.howTag') }}</div>
         <h2 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-3">{{ t('landing.howTitle') }}</h2>
         <p class="text-gray-500 dark:text-gray-400">{{ t('landing.howSubtitle') }}</p>
       </div>
 
-      <div class="relative grid md:grid-cols-4 gap-10 md:gap-6">
+      <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
         <div class="hidden md:block absolute top-[26px] left-[6%] right-[6%] h-px bg-gray-200 dark:bg-ink-600"></div>
 
         <div
@@ -235,8 +235,8 @@
     </section>
 
     <!-- ===== CTA ===== -->
-    <section class="max-w-6xl mx-auto px-6 pb-24">
-      <div class="relative bg-gradient-to-br from-primary to-[#4F52E8] rounded-3xl px-8 py-16 text-center text-white overflow-hidden">
+    <section class="max-w-6xl mx-auto px-4 md:px-6 pb-16 md:pb-24">
+      <div class="relative bg-gradient-to-br from-primary to-[#4F52E8] rounded-3xl px-5 md:px-8 py-12 md:py-16 text-center text-white overflow-hidden">
         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"></div>
         <div class="relative z-10">
           <h2 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-3">{{ t('landing.ctaTitle') }}</h2>
@@ -252,12 +252,13 @@
 
     <!-- ===== Footer ===== -->
     <footer class="border-t border-gray-200 dark:border-ink-600 py-8">
-      <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400 text-center md:text-left">
         <span class="font-display font-bold text-gray-900 dark:text-white"><AppLogo size="2xl" /></span>
         <span>© 2026 Revix. {{ t('footer.rights') }}</span>
-        <div class="flex gap-6">
-          <a href="#" class="hover:text-primary transition">{{ t('footer.support') }}</a>
-          <a href="#" class="hover:text-primary transition">{{ t('footer.privacy') }}</a>
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="mailto:revix26@gmail.com" class="min-h-[44px] inline-flex items-center hover:text-primary transition">{{ t('footer.support') }}</a>
+          <RouterLink to="/privacy" class="min-h-[44px] inline-flex items-center hover:text-primary transition">{{ t('footer.privacy') }}</RouterLink>
+          <RouterLink to="/legal" class="min-h-[44px] inline-flex items-center hover:text-primary transition">CGU</RouterLink>
         </div>
       </div>
     </footer>

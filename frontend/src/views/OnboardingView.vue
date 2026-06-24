@@ -1,20 +1,20 @@
 <template>
   <AppLayout :title="t('onboarding.addModuleTitle')" :subtitle="t('onboarding.moduleSubtitle')" :score="globalScore">
 
-    <div class="flex-1 p-8">
+    <div class="flex-1 p-4 md:p-8 overflow-x-hidden">
       <!-- dot grid bg -->
       <div class="fixed inset-0 bg-[radial-gradient(#dde1ea_1px,transparent_1px)] dark:bg-[radial-gradient(#1e222d_1px,transparent_1px)] [background-size:20px_20px] opacity-60 pointer-events-none z-0" />
 
       <div class="relative z-10 max-w-2xl mx-auto">
 
         <!-- Stepper -->
-        <div class="relative flex items-center justify-between mb-12 max-w-md mx-auto">
+        <div class="relative flex items-start justify-between gap-2 mb-8 md:mb-12 max-w-md mx-auto">
           <div class="absolute left-0 top-[18px] right-0 h-[2px] bg-gray-200 dark:bg-ink-700 -z-10" />
           <div
             class="absolute left-0 top-[18px] h-[2px] bg-primary transition-all duration-500 -z-10"
             :style="{ width: stepProgress }"
           />
-          <div v-for="(label, i) in stepLabels" :key="i" class="flex flex-col items-center gap-2">
+          <div v-for="(label, i) in stepLabels" :key="i" class="flex flex-col items-center gap-2 min-w-0 flex-1">
             <div
               class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 border-2"
               :class="currentStep > i + 1
@@ -26,14 +26,14 @@
               <Check v-if="currentStep > i + 1" :size="16" />
               <span v-else>{{ i + 1 }}</span>
             </div>
-            <span class="text-xs font-semibold" :class="currentStep >= i + 1 ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+            <span class="text-xs font-semibold text-center leading-tight break-words" :class="currentStep >= i + 1 ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
               {{ label }}
             </span>
           </div>
         </div>
 
         <!-- Card -->
-        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-8 shadow-lg shadow-gray-200/30 dark:shadow-black/40">
+        <div class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-8 shadow-lg shadow-gray-200/30 dark:shadow-black/40 min-w-0">
 
           <!-- Step 1 — Identité -->
           <div v-if="currentStep === 1" class="space-y-6 animate-rise">
@@ -73,7 +73,7 @@
                   v-for="color in moduleColors"
                   :key="color"
                   @click="form.color = color"
-                  class="w-8 h-8 rounded-lg transition-all duration-200 hover:scale-110"
+                  class="w-11 h-11 rounded-lg transition-all duration-200 hover:scale-110"
                   :style="{ background: color }"
                   :class="form.color === color ? 'ring-2 ring-offset-2 ring-primary scale-110' : ''"
                 />
@@ -114,7 +114,7 @@
               </div>
               <button
                 @click="triggerPdfUpload"
-                class="flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-1"
+                class="min-h-[44px] flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-1"
               >
                 <Plus :size="13" /> {{ t('onboarding.addAnotherPdf') }}
               </button>
@@ -126,7 +126,7 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-mono font-bold uppercase text-gray-400">{{ t('onboarding.addedChapters') }}</span>
-                <button @click="addChapter" class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition">
+                <button @click="addChapter" class="min-h-[44px] text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition">
                   <Plus :size="14" /> {{ t('onboarding.addManually') }}
                 </button>
               </div>
@@ -138,7 +138,7 @@
               <div
                 v-for="(chapter, idx) in form.chapters"
                 :key="idx"
-                class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-ink-900/60 border border-gray-200 dark:border-ink-700 rounded-xl group"
+                class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-ink-900/60 border border-gray-200 dark:border-ink-700 rounded-xl group min-w-0"
               >
                 <span class="w-6 h-6 rounded-md bg-primary/10 text-primary-soft text-xs font-mono flex items-center justify-center shrink-0">{{ idx + 1 }}</span>
                 <input
@@ -146,7 +146,7 @@
                   class="flex-1 bg-transparent text-sm font-medium text-gray-800 dark:text-gray-200 outline-none placeholder:text-gray-300"
                   :placeholder="`${t('onboarding.chapterPlaceholderText')} ${idx + 1}`"
                 />
-                <button @click="removeChapter(idx)" class="text-gray-300 hover:text-red-500 transition opacity-0 group-hover:opacity-100">
+                <button @click="removeChapter(idx)" class="w-11 h-11 flex items-center justify-center text-gray-300 hover:text-red-500 transition opacity-100 sm:opacity-0 sm:group-hover:opacity-100 shrink-0">
                   <Trash2 :size="15" />
                 </button>
               </div>
@@ -168,7 +168,7 @@
               >
                 <p class="text-sm font-bold text-gray-900 dark:text-white mb-4">{{ chapter.title }}</p>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <!-- Mastery -->
                   <div>
                     <p class="text-[11px] font-mono font-bold uppercase text-gray-400 mb-2">{{ t('onboarding.masteryLabel') }}</p>
@@ -178,7 +178,7 @@
                         :key="level.value"
                         @click="chapter.masteryLevel = level.value"
                         :title="level.label"
-                        class="w-9 h-9 rounded-lg border-2 flex items-center justify-center transition-all duration-200 hover:scale-110"
+                      class="w-11 h-11 rounded-lg border-2 flex items-center justify-center transition-all duration-200 hover:scale-110"
                         :class="chapter.masteryLevel === level.value ? `${level.activeClass} scale-110` : 'border-gray-200 dark:border-ink-600 text-gray-400'"
                       >
                         <component :is="level.icon" :size="16" />
@@ -189,12 +189,12 @@
                   <!-- Difficulty -->
                   <div>
                     <p class="text-[11px] font-mono font-bold uppercase text-gray-400 mb-2">{{ t('onboarding.difficultyLabel') }}</p>
-                    <div class="flex bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-700 rounded-xl p-0.5 w-fit">
+                    <div class="flex flex-wrap bg-white dark:bg-ink-800 border border-gray-200 dark:border-ink-700 rounded-xl p-0.5 w-fit">
                       <button
                         v-for="level in difficultyLevels"
                         :key="level.value"
                         @click="chapter.difficulty = level.value"
-                        class="px-3 py-1 text-xs font-medium rounded-lg transition-all"
+                        class="min-h-[44px] px-3 py-1 text-xs font-medium rounded-lg transition-all"
                         :class="chapter.difficulty === level.value
                           ? 'bg-gray-100 dark:bg-ink-700 text-gray-900 dark:text-white font-bold shadow-sm'
                           : 'text-gray-400 hover:text-gray-600'"
@@ -205,14 +205,14 @@
                   </div>
 
                   <!-- Importance -->
-                  <div class="col-span-2">
+                  <div class="sm:col-span-2">
                     <p class="text-[11px] font-mono font-bold uppercase text-gray-400 mb-2">{{ t('onboarding.importanceLabel') }}</p>
                     <div class="flex gap-1.5">
                       <button
                         v-for="n in 5"
                         :key="n"
                         @click="chapter.importanceScore = n"
-                        class="w-8 h-8 rounded-lg border text-xs font-bold transition-all"
+                        class="w-11 h-11 rounded-lg border text-xs font-bold transition-all"
                         :class="chapter.importanceScore >= n
                           ? 'bg-primary text-white border-primary'
                           : 'border-gray-200 dark:border-ink-600 text-gray-400 hover:border-primary'"
@@ -225,11 +225,11 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center justify-between mt-8 pt-6 border-t border-gray-200 dark:border-ink-700">
+          <div class="flex items-center justify-between gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-ink-700">
             <button
               v-if="currentStep > 1"
               @click="currentStep--"
-              class="text-sm font-semibold text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
+              class="min-h-[44px] text-sm font-semibold text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
             >
               ← {{ t('onboarding.back') }}
             </button>

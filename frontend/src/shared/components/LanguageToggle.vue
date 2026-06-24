@@ -1,7 +1,7 @@
 <template>
   <button
     @click="toggleLocale"
-    class="px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase"
+    class="min-w-[44px] h-11 px-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase"
   >
     {{ locale === 'fr' ? 'EN' : 'FR' }}
   </button>

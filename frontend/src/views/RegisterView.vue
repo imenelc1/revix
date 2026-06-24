@@ -90,9 +90,9 @@
 
     <!-- ===== Form slot ===== -->
     <template #form>
-      <div class="w-full max-w-[400px]">
+      <div class="w-full max-w-[400px] min-w-0">
         <h2
-          class="font-display text-3xl font-bold tracking-tight mb-2.5 opacity-0 animate-rise"
+          class="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-2.5 opacity-0 animate-rise"
           style="animation-delay: 0.15s"
         >
           {{ t('auth.registerTitle') }}
@@ -105,7 +105,7 @@
         </p>
 
         <form @submit.prevent="onSubmit" class="space-y-4">
-          <div class="grid grid-cols-2 gap-3 opacity-0 animate-rise" style="animation-delay: 0.26s">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 opacity-0 animate-rise" style="animation-delay: 0.26s">
             <AppInput
               v-model="firstName"
               :label="t('auth.firstName')"
@@ -132,7 +132,7 @@
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-3 opacity-0 animate-rise" style="animation-delay: 0.34s">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 opacity-0 animate-rise" style="animation-delay: 0.34s">
             <AppInput
               v-model="password"
               type="password"
@@ -152,17 +152,17 @@
           </div>
 
           <!-- Terms checkbox -->
-          <label class="flex items-start gap-2.5 cursor-pointer opacity-0 animate-rise" style="animation-delay: 0.38s">
+          <label class="min-h-[44px] flex items-start gap-2.5 cursor-pointer opacity-0 animate-rise" style="animation-delay: 0.38s">
             <input
               type="checkbox"
               v-model="acceptTerms"
-              class="mt-0.5 w-4 h-4 rounded border-gray-300 dark:border-ink-600 text-primary focus:ring-primary/40 bg-white dark:bg-ink-800"
+              class="mt-0.5 w-5 h-5 rounded border-gray-300 dark:border-ink-600 text-primary focus:ring-primary/40 bg-white dark:bg-ink-800 shrink-0"
             />
             <span class="text-[13px] text-gray-500 dark:text-gray-400 leading-snug">
               {{ t('auth.terms') }}
-              <a href="#" class="text-primary-soft hover:text-primary transition">{{ t('auth.termsLink') }}</a>
+              <RouterLink to="/legal" class="text-primary-soft hover:text-primary transition">{{ t('auth.termsLink') }}</RouterLink>
               {{ t('auth.and') }}
-              <a href="#" class="text-primary-soft hover:text-primary transition">{{ t('auth.privacyLink') }}</a>
+              <RouterLink to="/privacy" class="text-primary-soft hover:text-primary transition">{{ t('auth.privacyLink') }}</RouterLink>
             </span>
           </label>
           <p v-if="errors.terms" class="text-sm text-red-500 -mt-1">{{ errors.terms }}</p>

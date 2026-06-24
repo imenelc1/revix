@@ -16,7 +16,7 @@
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         :placeholder="placeholder"
         :class="[
-          'w-full rounded-xl border bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition',
+          'w-full min-h-[44px] rounded-xl border bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition',
           icon ? 'pl-10' : '',
           type === 'password' ? 'pr-10' : ''
         ]"
@@ -25,7 +25,7 @@
         v-if="type === 'password'"
         type="button"
         @click="showPassword = !showPassword"
-        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        class="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
       >
         <Eye v-if="!showPassword" :size="18" />
         <EyeOff v-else :size="18" />

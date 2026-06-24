@@ -14,7 +14,7 @@
         v-for="item in navItems"
         :key="item.to"
         :to="item.to"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group"
+        class="min-h-[44px] flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group"
         :class="isActive(item.to)
           ? 'bg-primary/10 dark:bg-primary/15 text-primary dark:text-primary-soft border border-primary/20'
           : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-ink-800'"
@@ -44,7 +44,7 @@
 
       <button
         @click="handleLogout"
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-200"
+        class="w-full min-h-[44px] flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-200"
       >
         <LogOut :size="16" />
         {{ t('auth.logout') }}

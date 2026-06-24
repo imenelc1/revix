@@ -1,9 +1,9 @@
 <template>
   <AppLayout :title="t('sidebar.modules')">
-    <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+    <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6 overflow-x-hidden">
 
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <p class="text-sm text-gray-500 dark:text-gray-400">
           {{ t('subjects.count', { count: subjectsStore.subjects.length }) }}
         </p>
@@ -36,14 +36,14 @@
       </div>
 
       <!-- Subjects grid -->
-      <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div
           v-for="subject in subjectsStore.subjects"
           :key="subject._id"
-          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200"
+          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 min-w-0 overflow-hidden"
         >
           <!-- Card header -->
-          <div class="flex items-start gap-3 p-5 pb-3">
+          <div class="flex items-start gap-3 p-4 md:p-5 pb-3">
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-display font-bold text-sm shrink-0"
               :style="{ background: subject.color }"
@@ -71,7 +71,7 @@
                     v-for="color in moduleColors"
                     :key="color"
                     @click="editForm.color = color"
-                    class="w-5 h-5 rounded-md transition-transform hover:scale-110"
+                    class="w-11 h-11 rounded-md transition-transform hover:scale-110"
                     :style="{ background: color }"
                     :class="editForm.color === color ? 'ring-2 ring-offset-1 ring-primary scale-110' : ''"
                   />
@@ -89,18 +89,18 @@
             <!-- Actions header -->
             <div class="flex gap-1 shrink-0">
               <template v-if="editingSubjectId === subject._id">
-                <button @click="saveSubject(subject._id)" class="p-1.5 rounded-lg text-secondary hover:bg-secondary/10 transition" title="Sauvegarder">
+                <button @click="saveSubject(subject._id)" class="w-11 h-11 flex items-center justify-center rounded-lg text-secondary hover:bg-secondary/10 transition" title="Sauvegarder">
                   <Check :size="15" />
                 </button>
-                <button @click="cancelEditSubject" class="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-ink-700 transition" title="Annuler">
+                <button @click="cancelEditSubject" class="w-11 h-11 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-ink-700 transition" title="Annuler">
                   <X :size="15" />
                 </button>
               </template>
               <template v-else>
-                <button @click="startEditSubject(subject)" class="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition" title="Modifier">
+                <button @click="startEditSubject(subject)" class="w-11 h-11 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition" title="Modifier">
                   <Pencil :size="15" />
                 </button>
-                <button @click="confirmDeleteSubject(subject._id)" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition" title="Supprimer">
+                <button @click="confirmDeleteSubject(subject._id)" class="w-11 h-11 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition" title="Supprimer">
                   <Trash2 :size="15" />
                 </button>
               </template>
@@ -108,7 +108,7 @@
           </div>
 
           <!-- Progress bar -->
-          <div class="px-5 mb-3">
+          <div class="px-4 md:px-5 mb-3">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-gray-500 dark:text-gray-400">{{ t('subjects.chapters', { count: subject.chapters.length }) }}</span>
               <span class="font-semibold text-gray-900 dark:text-white">{{ subjectProgress(subject) }}%</span>
@@ -122,11 +122,11 @@
           </div>
 
           <!-- Chapitres -->
-          <div class="px-5 pb-3 space-y-1">
+          <div class="px-4 md:px-5 pb-3 space-y-1">
             <div
               v-for="chapter in subject.chapters"
               :key="chapter._id"
-              class="group/ch flex items-center gap-2 py-1.5 rounded-lg px-2 hover:bg-gray-50 dark:hover:bg-ink-900/60 transition"
+              class="group/ch flex items-center gap-2 py-2 rounded-lg px-2 hover:bg-gray-50 dark:hover:bg-ink-900/60 transition min-w-0"
             >
               <component
                 :is="masteryIcon(chapter.masteryLevel)"
@@ -151,7 +151,7 @@
                     :key="lvl.value"
                     @click="chapterForm.masteryLevel = lvl.value"
                     :title="lvl.label"
-                    class="w-5 h-5 rounded flex items-center justify-center transition"
+                    class="w-11 h-11 rounded flex items-center justify-center transition"
                     :class="chapterForm.masteryLevel === lvl.value ? lvl.activeClass : 'text-gray-300 hover:text-gray-500'"
                   >
                     <component :is="lvl.icon" :size="12" />
@@ -179,17 +179,17 @@
                 <span class="text-[10px] font-mono text-gray-300 dark:text-ink-600 shrink-0 hidden group-hover/ch:inline">
                   {{ difficultyLabel(chapter.difficulty) }}
                 </span>
-                <div class="flex gap-0.5 opacity-0 group-hover/ch:opacity-100 transition shrink-0">
+                <div class="flex gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/ch:opacity-100 transition shrink-0">
                   <button
                     @click="startEditChapter(subject._id, chapter)"
-                    class="p-1 rounded text-gray-400 hover:text-primary transition"
+                    class="w-11 h-11 flex items-center justify-center rounded text-gray-400 hover:text-primary transition"
                     title="Modifier"
                   >
                     <Pencil :size="11" />
                   </button>
                   <button
                     @click="deleteChapter(subject._id, chapter._id)"
-                    class="p-1 rounded text-gray-400 hover:text-red-500 transition"
+                    class="w-11 h-11 flex items-center justify-center rounded text-gray-400 hover:text-red-500 transition"
                     title="Supprimer"
                   >
                     <Trash2 :size="11" />
@@ -199,7 +199,7 @@
             </div>
 
             <!-- Ajouter un chapitre inline -->
-            <div v-if="addingChapterFor === subject._id" class="flex items-center gap-2 py-1.5 px-2">
+            <div v-if="addingChapterFor === subject._id" class="flex items-center gap-2 py-2 px-2">
               <Plus :size="13" class="text-primary shrink-0" />
               <input
                 v-model="newChapterTitle"
@@ -209,20 +209,20 @@
                 @keyup.escape="addingChapterFor = null"
                 ref="newChapterInput"
               />
-              <button @click="addChapter(subject._id)" class="text-secondary hover:text-secondary/80 transition">
+              <button @click="addChapter(subject._id)" class="w-11 h-11 flex items-center justify-center text-secondary hover:text-secondary/80 transition">
                 <Check :size="13" />
               </button>
-              <button @click="addingChapterFor = null" class="text-gray-400 hover:text-gray-600 transition">
+              <button @click="addingChapterFor = null" class="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-gray-600 transition">
                 <X :size="13" />
               </button>
             </div>
           </div>
 
           <!-- Documents importés -->
-          <div class="px-5 pb-3">
+          <div class="px-4 md:px-5 pb-3">
             <button
               @click="toggleDocuments(subject._id)"
-              class="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition mb-2"
+              class="min-h-[44px] flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition mb-2"
             >
               <FileText :size="13" />
               {{ t('subjects.documents', { count: documentsStore.documents.filter(d => d.subjectId === subject._id).length }) }}
@@ -250,7 +250,7 @@
                 </div>
                 <button
                   @click="deleteDocument(doc._id)"
-                  class="opacity-0 group-hover/doc:opacity-100 text-gray-300 hover:text-red-500 transition shrink-0"
+                  class="w-11 h-11 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover/doc:opacity-100 text-gray-300 hover:text-red-500 transition shrink-0"
                 >
                   <Trash2 :size="13" />
                 </button>
@@ -258,7 +258,7 @@
 
               <RouterLink
                 :to="{ path: '/pdf', query: { subjectId: subject._id } }"
-                class="flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-2"
+                class="min-h-[44px] flex items-center gap-1.5 text-xs font-semibold text-primary-soft hover:text-primary transition mt-2"
               >
                 <Plus :size="13" />
                 {{ t('subjects.addDocument') }}
@@ -267,20 +267,20 @@
           </div>
 
           <!-- Footer card -->
-          <div class="px-5 py-3 border-t border-gray-100 dark:border-ink-700 flex items-center justify-between">
+          <div class="px-4 md:px-5 py-3 border-t border-gray-100 dark:border-ink-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <span class="text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1" :class="riskInfo(subject.examDate).class">
               <component :is="riskInfo(subject.examDate).icon" :size="11" />
               {{ riskInfo(subject.examDate).label }}
             </span>
-            <div class="flex items-center gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <RouterLink
                 :to="{ path: '/chat', query: { subjectId: subject._id } }"
-                class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition"
+                class="min-h-[44px] text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition"
               >
                 <MessageCircle :size="13" />
                 {{ t('subjects.chatWithModule') }}
               </RouterLink>
-              <button @click="startAddChapter(subject._id)" class="text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition">
+              <button @click="startAddChapter(subject._id)" class="min-h-[44px] text-xs font-semibold text-primary-soft hover:text-primary flex items-center gap-1 transition">
                 <Plus :size="13" />
                 {{ t('subjects.addChapterBtn') }}
               </button>

@@ -54,10 +54,10 @@
     </div>
 
     <!-- ===== RIGHT: Form panel ===== -->
-    <div class="flex items-center justify-center p-6 sm:p-12 relative">
+    <div class="flex items-center justify-center px-4 py-24 sm:p-12 relative min-w-0">
 
       <!-- Top bar: mobile logo + theme/lang toggles -->
-      <div class="absolute top-6 left-6 right-6 flex items-center justify-between">
+      <div class="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between gap-3">
         <RouterLink to="/" class="lg:hidden">
           <AppLogo size="2xl" />
         </RouterLink>
@@ -68,7 +68,9 @@
       </div>
 
       <!-- Form content -->
-      <slot name="form" />
+      <div class="w-full min-w-0 flex justify-center">
+        <slot name="form" />
+      </div>
     </div>
 
   </div>

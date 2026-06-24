@@ -1,11 +1,11 @@
 <template>
   <AppLayout :title="t('chat.title')" :subtitle="t('chat.subtitle')">
-    <div class="p-4 md:p-8 max-w-3xl mx-auto h-[calc(100vh-4rem)] flex flex-col">
+    <div class="p-4 md:p-8 max-w-3xl mx-auto h-[calc(100vh-4rem)] flex flex-col overflow-x-hidden">
 
       <div class="flex items-center gap-3 mb-4">
         <select
           v-model="selectedSubjectId"
-          class="flex-1 rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
+          class="flex-1 min-w-0 min-h-[44px] rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
         >
           <option value="">{{ t('chat.selectModule') }}</option>
           <option v-for="s in subjectsStore.subjects" :key="s._id" :value="s._id">{{ s.name }}</option>
@@ -13,7 +13,7 @@
         <button
           v-if="selectedSubjectId && chatStore.messages.length > 0"
           @click="confirmClear"
-          class="p-2.5 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition shrink-0"
+          class="w-11 h-11 flex items-center justify-center rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition shrink-0"
           :title="t('chat.clearHistory')"
         >
           <Trash2 :size="16" />
@@ -47,14 +47,14 @@
           <div
             v-for="msg in chatStore.messages"
             :key="msg._id"
-            class="flex gap-3"
+            class="flex gap-2 sm:gap-3 min-w-0"
             :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
           >
             <div v-if="msg.role === 'assistant'" class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
               <Bot :size="16" class="text-primary" />
             </div>
             <div
-              class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap"
+              class="max-w-[88%] sm:max-w-[80%] min-w-0 rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap break-words"
               :class="msg.role === 'user'
                 ? 'bg-primary text-white rounded-br-md'
                 : 'bg-gray-50 dark:bg-ink-900/60 border border-gray-100 dark:border-ink-700 text-gray-800 dark:text-gray-200 rounded-bl-md'"
@@ -82,7 +82,7 @@
             v-model="question"
             rows="1"
             :placeholder="t('chat.inputPlaceholder')"
-            class="flex-1 resize-none rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition max-h-32"
+            class="flex-1 min-w-0 resize-none rounded-xl border border-gray-300 dark:border-ink-600 bg-white dark:bg-ink-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition max-h-32"
             @keydown.enter.exact.prevent="send"
           />
           <button

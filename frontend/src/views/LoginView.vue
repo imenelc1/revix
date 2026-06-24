@@ -86,9 +86,9 @@
 
     <!-- ===== Form slot ===== -->
     <template #form>
-      <div class="w-full max-w-[380px]">
+      <div class="w-full max-w-[380px] min-w-0">
         <h2
-          class="font-display text-3xl font-bold tracking-tight mb-2.5 opacity-0 animate-rise"
+          class="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-2.5 opacity-0 animate-rise"
           style="animation-delay: 0.15s"
         >
           {{ t('auth.welcomeBack') }}
@@ -113,9 +113,9 @@
           </div>
 
           <div class="opacity-0 animate-rise" style="animation-delay: 0.34s">
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center justify-between gap-3 mb-2">
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('auth.password') }}</label>
-              <a href="#" class="text-xs text-primary-soft hover:text-primary transition">{{ t('auth.forgotPassword') }}</a>
+              <a href="#" class="min-h-[44px] inline-flex items-center text-xs text-primary-soft hover:text-primary transition">{{ t('auth.forgotPassword') }}</a>
             </div>
             <AppInput
               v-model="password"

@@ -1,12 +1,12 @@
 <template>
   <AppLayout :title="t('planning.title')" :subtitle="t('planning.subtitle')">
-    <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+    <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6 overflow-x-hidden">
 
       <!-- ── Config + Stats ── -->
-      <div class="grid md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         <!-- Config card -->
-        <div class="md:col-span-2 bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm">
+        <div class="md:col-span-2 bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm min-w-0">
           <h2 class="font-display font-bold text-base text-gray-900 dark:text-white mb-5">
             {{ t('planning.availableDays') }}
           </h2>
@@ -17,7 +17,7 @@
               v-for="(day, i) in weekDays"
               :key="i"
               @click="toggleDay(i + 1)"
-              class="px-3 py-1.5 rounded-lg text-sm font-semibold border-2 transition-all duration-200"
+              class="min-h-[44px] px-3 py-2 rounded-lg text-sm font-semibold border-2 transition-all duration-200"
               :class="config.availableDays.includes(i + 1)
                 ? 'bg-primary text-white border-primary shadow-sm shadow-primary/30'
                 : 'border-gray-200 dark:border-ink-600 text-gray-500 dark:text-gray-400 hover:border-primary'"
@@ -27,17 +27,17 @@
           </div>
 
           <!-- Heures + Heure de début -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-mono font-bold uppercase text-gray-400 mb-2">
                 {{ t('planning.hoursPerDay') }}
               </label>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 min-w-0">
                 <input
                   type="range"
                   min="1" max="10"
                   v-model.number="config.hoursPerDay"
-                  class="flex-1 accent-primary"
+                  class="flex-1 min-w-0 accent-primary"
                 />
                 <span class="font-display font-bold text-primary text-lg min-w-[40px]">{{ config.hoursPerDay }}h</span>
               </div>
@@ -46,12 +46,12 @@
               <label class="block text-xs font-mono font-bold uppercase text-gray-400 mb-2">
                 {{ t('planning.startHour') }}
               </label>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 min-w-0">
                 <input
                   type="range"
                   min="6" max="20"
                   v-model.number="config.startHour"
-                  class="flex-1 accent-primary"
+                  class="flex-1 min-w-0 accent-primary"
                 />
                 <span class="font-display font-bold text-primary text-lg min-w-[50px]">{{ config.startHour }}:00</span>
               </div>
@@ -59,7 +59,7 @@
           </div>
 
           <!-- Generate button -->
-          <div class="mt-5 flex gap-3">
+          <div class="mt-5 flex flex-col sm:flex-row gap-3">
             <AppButton
               variant="primary"
               size="md"
@@ -87,7 +87,7 @@
         <!-- Stats card -->
         <div
           v-if="planningStore.planning"
-          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm space-y-4"
+          class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm space-y-4 min-w-0"
         >
           <h2 class="font-display font-bold text-base text-gray-900 dark:text-white">
             {{ t('planning.readinessScore') }}
@@ -129,7 +129,7 @@
         </div>
 
         <!-- Empty stats -->
-        <div v-else class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center gap-3">
+        <div v-else class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-5 md:p-6 shadow-sm flex flex-col items-center justify-center text-center gap-3 min-w-0">
           <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
             <Calendar :size="22" class="text-primary" />
           </div>
@@ -141,14 +141,14 @@
       <div v-if="planningStore.planning" class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl shadow-sm overflow-hidden">
 
         <!-- Week navigation -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-surface-border dark:border-ink-700">
-          <button @click="prevWeek" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-ink-700 transition text-gray-500 dark:text-gray-400">
+        <div class="flex items-center justify-between gap-3 px-4 md:px-6 py-4 border-b border-surface-border dark:border-ink-700">
+          <button @click="prevWeek" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-ink-700 transition text-gray-500 dark:text-gray-400">
             <ChevronLeft :size="18" />
           </button>
-          <span class="font-display font-bold text-gray-900 dark:text-white text-sm">
+          <span class="font-display font-bold text-gray-900 dark:text-white text-sm text-center">
             {{ t('planning.weekOf') }} {{ formatWeekStart }}
           </span>
-          <button @click="nextWeek" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-ink-700 transition text-gray-500 dark:text-gray-400">
+          <button @click="nextWeek" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-ink-700 transition text-gray-500 dark:text-gray-400">
             <ChevronRight :size="18" />
           </button>
         </div>
@@ -162,13 +162,13 @@
           <div
             v-for="session in weekSessions"
             :key="session._id"
-            class="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-ink-700/50 transition group"
+            class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 md:px-6 py-4 hover:bg-gray-50 dark:hover:bg-ink-700/50 transition group"
           >
             <!-- Color dot -->
-            <div class="w-2 h-10 rounded-full shrink-0" :style="{ background: session.subjectColor }"></div>
+            <div class="hidden sm:block w-2 h-10 rounded-full shrink-0" :style="{ background: session.subjectColor }"></div>
 
             <!-- Date + time -->
-            <div class="min-w-[100px] shrink-0">
+            <div class="w-full sm:w-auto sm:min-w-[100px] shrink-0 border-l-4 sm:border-l-0 pl-3 sm:pl-0" :style="{ borderColor: session.subjectColor }">
               <p class="text-xs font-mono text-gray-400">{{ formatDate(session.date) }}</p>
               <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ session.startTime }} – {{ session.endTime }}</p>
             </div>
@@ -190,9 +190,9 @@
             </div>
 
             <!-- Status badge -->
-            <div class="shrink-0">
+            <div class="shrink-0 w-full sm:w-auto">
               <span
-                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold"
                 :class="statusClass(session.status)"
               >
                 <component :is="statusIcon(session.status)" :size="12" />
@@ -201,11 +201,11 @@
             </div>
 
             <!-- Actions -->
-            <div class="shrink-0 flex gap-1.5 opacity-0 group-hover:opacity-100 transition">
+            <div class="shrink-0 flex gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
               <button
                 v-if="session.status === 'planned'"
                 @click="markStatus(session._id, 'completed')"
-                class="p-1.5 rounded-lg bg-secondary/10 text-secondary hover:bg-secondary/20 transition"
+                class="w-11 h-11 flex items-center justify-center rounded-lg bg-secondary/10 text-secondary hover:bg-secondary/20 transition"
                 :title="t('planning.markCompleted')"
               >
                 <Check :size="14" />
@@ -213,7 +213,7 @@
               <button
                 v-if="session.status === 'planned'"
                 @click="markStatus(session._id, 'missed')"
-                class="p-1.5 rounded-lg bg-warm/10 text-warm hover:bg-warm/20 transition"
+                class="w-11 h-11 flex items-center justify-center rounded-lg bg-warm/10 text-warm hover:bg-warm/20 transition"
                 :title="t('planning.markMissed')"
               >
                 <X :size="14" />
@@ -226,7 +226,7 @@
       <!-- Empty state global -->
       <div
         v-if="!planningStore.planning && !planningStore.loading"
-        class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-16 text-center shadow-sm"
+        class="bg-white dark:bg-ink-800 border border-surface-border dark:border-ink-600 rounded-2xl p-6 md:p-16 text-center shadow-sm"
       >
         <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
           <CalendarDays :size="28" class="text-primary" />

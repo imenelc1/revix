@@ -6,7 +6,7 @@
       <!-- Burger menu — mobile only -->
       <button
         @click="$emit('toggle-sidebar')"
-        class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-ink-800 transition"
+        class="lg:hidden w-11 h-11 flex items-center justify-center rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-ink-800 transition"
       >
         <Menu :size="20" />
       </button>
