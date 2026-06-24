@@ -1,23 +1,43 @@
 <template>
-  <img v-if="variant === 'full'" :src="logoSrc" alt="Revix" :class="sizeClass" />
-  <img v-else :src="logoIcon" alt="Revix" :class="iconSizeClass" />
+  <img
+    v-if="variant === 'full'"
+    :src="logoSrc"
+    alt="Revix"
+    :class="sizeClass"
+  />
+
+  <img
+    v-else
+    src="/icon.png"
+    alt="Revix"
+    :class="iconSizeClass"
+  />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import logoFull from '@/assets/logo/logo.png'
 import logoFullDark from '@/assets/logo/logodarkmode.png'
-import logoIcon from '@/assets/logo/icon.png'
 import { useUiStore } from '@/stores/ui.store'
 
-const props = withDefaults(defineProps<{
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  variant?: 'full' | 'icon'
-}>(), { size: 'md', variant: 'full' })
+const props = withDefaults(
+  defineProps<{
+    size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    variant?: 'full' | 'icon'
+  }>(),
+  {
+    size: 'md',
+    variant: 'full'
+  }
+)
 
 const ui = useUiStore()
 
-const logoSrc = computed(() => (ui.theme === 'dark' ? logoFullDark : logoFull))
+const logoSrc = computed(() =>
+  ui.theme === 'dark'
+    ? logoFullDark
+    : logoFull
+)
 
 const sizeClass = {
   sm: 'h-10',
