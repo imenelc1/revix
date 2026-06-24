@@ -1,18 +1,34 @@
 import nodemailer from 'nodemailer'
+import type SMTPTransport from 'nodemailer/lib/smtp-transport'
+import dns from 'dns'
 import { ENV } from '../config/env'
 
-export const mailer = nodemailer.createTransport({
+interface CustomSMTPOptions extends SMTPTransport.Options {
+  dnsLookup?: (
+    hostname: string,
+    options: dns.LookupOneOptions,
+    callback: (err: NodeJS.ErrnoException | null, address: string, family: number) => void
+  ) => void
+}
+
+const mailerOptions: CustomSMTPOptions = {
   host: ENV.SMTP_HOST,
-  port: parseInt(ENV.SMTP_PORT as unknown as string, 10) || 587, 
+  port: parseInt(ENV.SMTP_PORT as unknown as string, 10) || 587,
   secure: parseInt(ENV.SMTP_PORT as unknown as string, 10) === 465,
   auth: {
     user: ENV.SMTP_USER,
-    pass: ENV.SMTP_PASS?.trim() 
+    pass: ENV.SMTP_PASS?.trim()
   },
-  tls: {
-    rejectUnauthorized: false 
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  dnsLookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4 }, (err, address, family) => {
+      callback(err, address, family)
+    })
   }
-})
+}
+
+export const mailer = nodemailer.createTransport(mailerOptions as any)
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string, locale: 'fr' | 'en') {
   if (!ENV.SMTP_HOST || !ENV.SMTP_USER || !ENV.SMTP_PASS) {
@@ -20,7 +36,6 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string, local
       console.info(`Lien de réinitialisation pour ${to}: ${resetUrl}`)
       return
     }
-
     throw new Error('SMTP configuration missing')
   }
 
