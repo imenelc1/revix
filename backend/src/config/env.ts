@@ -26,6 +26,7 @@ export const ENV = {
   SMTP_USER: process.env.SMTP_USER || '',
   SMTP_PASS: process.env.SMTP_PASS || '',
   SMTP_FROM: process.env.SMTP_FROM || 'Revix <no-reply@revix.app>',
+  RESEND_API_KEY: process.env.RESEND_API_KEY || '',
 }
 
 // ── Garde-fou production ──────────────────────────────────────────────────────
