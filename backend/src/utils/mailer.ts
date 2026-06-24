@@ -43,11 +43,12 @@ export async function sendPasswordResetEmail(
 
   try {
     const result = await resend.emails.send({
-      from: 'Revix <noreply@revix-app.netlify.app>',
+      from: 'Revix <onboarding@resend.dev>',
       to,
       subject,
       html
     })
+     console.log('RESEND RESULT =', result)
     console.log('Email envoyé:', result.data?.id)
     return result
   } catch (error) {
