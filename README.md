@@ -118,20 +118,7 @@ Details :
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL` : requis seulement pour Google OAuth.
 - `FRONTEND_URL` : URL principale du frontend, utilisee notamment pour generer les liens de reset password.
 - `FRONTEND_URLS` : liste d'origines autorisees CORS, separees par des virgules si besoin.
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` : configuration d'envoi email pour le mot de passe oublie.
-
-Exemple SMTP avec Gmail :
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=votre-adresse@gmail.com
-SMTP_PASS=mot_de_passe_application_google
-SMTP_FROM=Revix <votre-adresse@gmail.com>
-```
-
-Pour Gmail, `SMTP_PASS` n'est pas le mot de passe normal du compte. Il faut activer la validation en deux etapes Google, puis generer un mot de passe d'application. En developpement, si SMTP n'est pas configure, le backend affiche le lien de reinitialisation dans la console au lieu d'envoyer un email.
-
+- `RESEND_API_KEY ` : clé API Resend utilisée pour l'envoi des emails (mot de passe oublié, emails système).
 ### Frontend
 
 ```env
