@@ -3,14 +3,23 @@ import { authService } from './auth.service'
 import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema, ForgotPasswordSchema, ResetPasswordSchema } from './auth.schema'
 import { t, translateZodErrors } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
-const authCookieOptions = {
+import { ENV } from '../../config/env'
+import type { CookieOptions } from 'express'
+
+const authCookieOptions: CookieOptions = {
   httpOnly: true,
-  secure: true,
-  sameSite: 'none' as const,
-  partitioned: true,
+
+  secure: ENV.NODE_ENV === 'production',
+
+  sameSite:
+    ENV.NODE_ENV === 'production'
+      ? 'none'
+      : 'lax',
+
+  path: '/',
+
   maxAge: 7 * 24 * 60 * 60 * 1000
 }
-
 export const authController = {
 
   async register(req: Request, res: Response): Promise<void> {
@@ -78,15 +87,13 @@ export const authController = {
       res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
-  async logout(_req: Request, res: Response): Promise<void> {
-    res.clearCookie('token', {
-      httpOnly: true,
-      sameSite: authCookieOptions.sameSite,
-      secure: authCookieOptions.secure,
-      partitioned: authCookieOptions.partitioned
-    })
-    res.json({ message: 'Déconnecté' })
-  },
+ async logout(_req: Request, res: Response): Promise<void> {
+  res.clearCookie('token', authCookieOptions)
+
+  res.json({
+    message: 'Déconnecté'
+  })
+},
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const data = ForgotPasswordSchema.parse(req.body)

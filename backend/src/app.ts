@@ -26,25 +26,25 @@ const allowedOrigins = new Set([
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true)
-    if (allowedOrigins.has(origin)) return callback(null, origin)
-    console.log('CORS blocked:', origin, '| Allowed:', [...allowedOrigins])
+    if (!origin) {
+      callback(null, true)
+      return
+    }
+
+    if (allowedOrigins.has(origin)) {
+      callback(null, true)
+      return
+    }
+
+    console.log('CORS blocked:', origin)
+
     callback(new Error('cors.originNotAllowed'))
   },
-  credentials: true,
+  credentials: true
 }))
 
 app.use(helmet())
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.has(origin)) {
-      callback(null, origin || ENV.FRONTEND_URL)
-      return
-    }
-    callback(new Error('cors.originNotAllowed'))
-  },
-  credentials: true,
-}))
+
 app.use(morgan('dev'))
 app.use(cookieParser())
 app.use(express.json({ limit: '5mb' }))
@@ -54,8 +54,19 @@ app.use(localeMiddleware)
 // Session minimale requise par Passport (même avec JWT)
 app.use(session({
   secret: ENV.SESSION_SECRET,
+
   resave: false,
   saveUninitialized: false,
+
+  cookie: {
+    secure: ENV.NODE_ENV === 'production',
+    sameSite:
+      ENV.NODE_ENV === 'production'
+        ? 'none'
+        : 'lax',
+
+    httpOnly: true
+  }
 }))
 app.use(passport.initialize())
 
