@@ -52,13 +52,23 @@ export const authController = {
     }
   },
   async getMe(req: AuthRequest, res: Response): Promise<void> {
-    try {
-      const user = await authService.getMe(req.userId!)
-      res.json(user)
-    } catch (error: any) {
-      res.status(404).json({ error: t(error.message, req.locale) })
-    }
-  },
+  try {
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0'
+    })
+
+    const user = await authService.getMe(req.userId!)
+
+    res.json(user)
+
+  } catch (error: any) {
+    res.status(404).json({
+      error: t(error.message, req.locale)
+    })
+  }
+},
 
   async updateMe(req: AuthRequest, res: Response): Promise<void> {
     try {
@@ -87,8 +97,20 @@ export const authController = {
       res.status(400).json({ error: t(error.message, req.locale) })
     }
   },
- async logout(_req: Request, res: Response): Promise<void> {
-  res.clearCookie('token', authCookieOptions)
+ async logout(_req: Request, res: Response) {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: ENV.NODE_ENV === 'production',
+    sameSite:
+      ENV.NODE_ENV === 'production'
+        ? 'none'
+        : 'lax',
+    path: '/'
+  })
+
+  res.set({
+    'Cache-Control': 'no-store'
+  })
 
   res.json({
     message: 'Déconnecté'

@@ -52,15 +52,23 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchMe() {
-    try {
-      const res  = await api.get('/auth/me', { skipAuthRedirect: true })
-      user.value = res.data
-      return res.data
-    } catch {
-      user.value = null
-      return null
-    }
+  try {
+    const res = await api.get('/auth/me', {
+      skipAuthRedirect: true,
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
+
+    user.value = res.data
+
+    return res.data
+
+  } catch {
+    user.value = null
+    return null
   }
+}
 
   async function updateProfile(firstName: string, lastName: string) {
     const res = await api.put('/auth/me', { firstName, lastName })
@@ -73,10 +81,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+  try {
+    await api.post(
+      '/auth/logout',
+      {},
+      { skipAuthRedirect: true }
+    )
+  } finally {
     user.value = null
-    localStorage.removeItem('token') // nettoyage legacy
-    await api.post('/auth/logout', undefined, { skipAuthRedirect: true }).catch(() => {})
   }
+}
   async function forgotPassword(email: string) {
     loading.value = true
     error.value = null
