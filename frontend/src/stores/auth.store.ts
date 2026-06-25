@@ -24,43 +24,51 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(firstName: string, lastName: string, email: string, password: string) {
-    loading.value = true
-    error.value   = null
-    try {
-      const res  = await api.post('/auth/register', { firstName, lastName, email, password })
-      user.value = res.data.user
-    } catch (err: any) {
-      error.value = err.response?.data?.error || 'Erreur lors de l\'inscription'
-      throw err
-    } finally {
-      loading.value = false
-    }
+  loading.value = true
+  error.value = null
+  try {
+    const res = await api.post('/auth/register', { firstName, lastName, email, password })
+    user.value = res.data.user
+    localStorage.setItem('user', JSON.stringify(res.data.user)) // ← ajoute ça
+  } catch (err: any) {
+    error.value = err.response?.data?.error || 'Erreur lors de l\'inscription'
+    throw err
+  } finally {
+    loading.value = false
   }
+}
 
   async function login(email: string, password: string) {
-    loading.value = true
-    error.value   = null
-    try {
-      const res  = await api.post('/auth/login', { email, password })
-      user.value = res.data.user
-    } catch (err: any) {
-      error.value = err.response?.data?.error || 'Email ou mot de passe incorrect'
-      throw err
-    } finally {
-      loading.value = false
-    }
+  loading.value = true
+  error.value = null
+  try {
+    const res = await api.post('/auth/login', { email, password })
+    user.value = res.data.user
+    localStorage.setItem('user', JSON.stringify(res.data.user)) 
+  } catch (err: any) {
+    error.value = err.response?.data?.error || 'Email ou mot de passe incorrect'
+    throw err
+  } finally {
+    loading.value = false
   }
+}
 
   async function fetchMe() {
-    try {
-      const res  = await api.get('/auth/me', { skipAuthRedirect: true })
-      user.value = res.data
-      return res.data
-    } catch {
-      user.value = null
-      return null
+  try {
+    const res = await api.get('/auth/me', { skipAuthRedirect: true })
+    user.value = res.data
+    localStorage.setItem('user', JSON.stringify(res.data)) 
+    return res.data
+  } catch {
+    const cached = localStorage.getItem('user')
+    if (cached) {
+      user.value = JSON.parse(cached)
+      return user.value
     }
+    user.value = null
+    return null
   }
+}
 
   async function updateProfile(firstName: string, lastName: string) {
     const res = await api.put('/auth/me', { firstName, lastName })
@@ -72,11 +80,12 @@ export const useAuthStore = defineStore('auth', () => {
     return api.put('/auth/me/password', { currentPassword, newPassword })
   }
 
-  async function logout() {
-    user.value = null
-    localStorage.removeItem('token') // nettoyage legacy
-    await api.post('/auth/logout', undefined, { skipAuthRedirect: true }).catch(() => {})
-  }
+ async function logout() {
+  user.value = null
+  localStorage.removeItem('user') 
+  localStorage.removeItem('token')
+  await api.post('/auth/logout', undefined, { skipAuthRedirect: true }).catch(() => {})
+}
   async function forgotPassword(email: string) {
     loading.value = true
     error.value = null

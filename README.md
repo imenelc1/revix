@@ -22,7 +22,7 @@ Demo : https://revix-app.netlify.app
 
 - Authentification email/mot de passe et Google OAuth
 - Politique de mot de passe renforcee : minimum 8 caracteres, une majuscule, une minuscule, un chiffre et un caractere special
-- Mot de passe oublie avec lien de reinitialisation par email SMTP
+- Mot de passe oublié avec lien de réinitialisation par email via Resend
 - Creation de modules avec dates d'examen, chapitres, difficulte et niveau de maitrise
 - Analyse de PDF pour extraire des chapitres et contenus de revision
 - Generation de flashcards et quiz a partir des cours
@@ -64,7 +64,7 @@ revix/
 - MongoDB local ou MongoDB Atlas
 - Une cle Groq API
 - Identifiants Google OAuth si la connexion Google est activee
-- Un compte SMTP si vous voulez envoyer les emails de mot de passe oublie
+- Une clé API Resend si vous voulez envoyer les emails de mot de passe oublié 
 
 ### Backend
 
