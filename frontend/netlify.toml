@@ -1,6 +1,9 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
+# frontend/netlify.toml
+[[redirects]]
+  from = "/api/*"
+  to = "https://revix-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
