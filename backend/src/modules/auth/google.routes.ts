@@ -3,30 +3,14 @@ import passport from '../../config/google.strategy'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { ENV } from '../../config/env'
-
+import { getAuthCookieOptions } from '../../config/authCookie'
 export const googleRoutes = Router()
 
 const OAUTH_CODE_TTL_MS = 60 * 1000
 const pendingOAuthCodes = new Map<string, { token: string; user: any; expiresAt: number }>()
 
-const authCookieOptions = {
-  httpOnly: true,
-  secure: true,
-  sameSite: 'none' as const,
-  partitioned: true,
-  maxAge: 7 * 24 * 60 * 60 * 1000
-}
-// ─── Étape 1 : Rediriger vers Google ──────────────────────────────────────────
-// GET /api/auth/google
-googleRoutes.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-    session: false,
-  })
-)
 
-// ─── Étape 2 : Callback Google → générer JWT → rediriger vers frontend ────────
+
 // GET /api/auth/google/callback
 googleRoutes.get(
   '/google/callback',
@@ -71,7 +55,7 @@ googleRoutes.get('/exchange', (req: Request, res: Response) => {
   }
 
   const user = pending.user
-  res.cookie('token', pending.token, authCookieOptions)
+  res.cookie('token', pending.token, getAuthCookieOptions())
   res.json({
     user: {
       id: user._id,

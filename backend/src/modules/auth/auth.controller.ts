@@ -5,7 +5,7 @@ import { t, translateZodErrors } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
 import { ENV } from '../../config/env'
 import type { CookieOptions } from 'express'
-
+import { getAuthCookieOptions, getClearCookieOptions, AUTH_COOKIE_NAME } from '../../config/authCookie'
 const authCookieOptions: CookieOptions = {
   httpOnly: true,
 
@@ -26,7 +26,7 @@ export const authController = {
     try {
       const data = RegisterSchema.parse(req.body)
       const result = await authService.register(data)
-      res.cookie('token', result.token, authCookieOptions)
+      res.cookie(AUTH_COOKIE_NAME, result.token, getAuthCookieOptions())
       res.status(201).json({ user: result.user })
     } catch (error: any) {
       if (error.name === 'ZodError') {
@@ -41,7 +41,7 @@ export const authController = {
     try {
       const data = LoginSchema.parse(req.body)
       const result = await authService.login(data)
-      res.cookie('token', result.token, authCookieOptions)
+      res.cookie(AUTH_COOKIE_NAME, result.token, getAuthCookieOptions())
       res.json({ user: result.user })
     } catch (error: any) {
       if (error.name === 'ZodError') {
@@ -98,15 +98,7 @@ export const authController = {
     }
   },
  async logout(_req: Request, res: Response) {
-  res.clearCookie('token', {
-    httpOnly: true,
-    secure: ENV.NODE_ENV === 'production',
-    sameSite:
-      ENV.NODE_ENV === 'production'
-        ? 'none'
-        : 'lax',
-    path: '/'
-  })
+ res.clearCookie(AUTH_COOKIE_NAME, getClearCookieOptions())
 
   res.set({
     'Cache-Control': 'no-store'
