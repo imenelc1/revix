@@ -3,7 +3,7 @@ import { authService } from './auth.service'
 import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema, ForgotPasswordSchema, ResetPasswordSchema } from './auth.schema'
 import { t, translateZodErrors } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
-import { getAuthCookieOptions, getClearCookieOptions, AUTH_COOKIE_NAME } from '../../config/authCookie'
+import { getAuthCookieOptions, getClearCookieOptions, getExpiredAuthCookieOptions, AUTH_COOKIE_NAME } from '../../config/authCookie'
 
 export const authController = {
 
@@ -77,7 +77,9 @@ export const authController = {
     }
 },
  async logout(_req: Request, res: Response) {
- res.clearCookie(AUTH_COOKIE_NAME, getClearCookieOptions())
+  res.clearCookie(AUTH_COOKIE_NAME, getClearCookieOptions())
+  res.cookie(AUTH_COOKIE_NAME, '', getExpiredAuthCookieOptions())
+  res.cookie(AUTH_COOKIE_NAME, '', { ...getExpiredAuthCookieOptions(), path: '/api' })
 
   res.json({
     message: 'Déconnecté'

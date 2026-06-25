@@ -11,6 +11,16 @@ const pendingOAuthCodes = new Map<string, { token: string; user: any; expiresAt:
 
 
 
+// GET /api/auth/google
+googleRoutes.get(
+  '/google',
+  passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email'],
+    prompt: 'select_account',
+  })
+)
+
 // GET /api/auth/google/callback
 googleRoutes.get(
   '/google/callback',

@@ -20,3 +20,11 @@ export function getClearCookieOptions(): CookieOptions {
   const { maxAge, ...rest } = getAuthCookieOptions()
   return rest
 }
+
+export function getExpiredAuthCookieOptions(): CookieOptions {
+  return {
+    ...getClearCookieOptions(),
+    expires: new Date(0),
+    maxAge: 0,
+  }
+}
