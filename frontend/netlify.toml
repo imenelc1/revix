@@ -1,7 +1,7 @@
 # frontend/netlify.toml
 [[redirects]]
   from = "/api/*"
-  to = "https://revix-backend.onrender.com/api/:splat"
+  to = "https://revix-qrtf.onrender.com/api/:splat"
   status = 200
   force = true
 
