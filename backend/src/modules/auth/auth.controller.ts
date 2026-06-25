@@ -3,23 +3,8 @@ import { authService } from './auth.service'
 import { RegisterSchema, LoginSchema, UpdateProfileSchema, ChangePasswordSchema, ForgotPasswordSchema, ResetPasswordSchema } from './auth.schema'
 import { t, translateZodErrors } from '../../utils/i18n'
 import type { AuthRequest } from '../../middlewares/auth.middleware'
-import { ENV } from '../../config/env'
-import type { CookieOptions } from 'express'
 import { getAuthCookieOptions, getClearCookieOptions, AUTH_COOKIE_NAME } from '../../config/authCookie'
-const authCookieOptions: CookieOptions = {
-  httpOnly: true,
 
-  secure: ENV.NODE_ENV === 'production',
-
-  sameSite:
-    ENV.NODE_ENV === 'production'
-      ? 'none'
-      : 'lax',
-
-  path: '/',
-
-  maxAge: 7 * 24 * 60 * 60 * 1000
-}
 export const authController = {
 
   async register(req: Request, res: Response): Promise<void> {
@@ -53,12 +38,6 @@ export const authController = {
   },
   async getMe(req: AuthRequest, res: Response): Promise<void> {
   try {
-    res.set({
-      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-      Pragma: 'no-cache',
-      Expires: '0'
-    })
-
     const user = await authService.getMe(req.userId!)
 
     res.json(user)
@@ -96,13 +75,9 @@ export const authController = {
       }
       res.status(400).json({ error: t(error.message, req.locale) })
     }
-  },
+},
  async logout(_req: Request, res: Response) {
  res.clearCookie(AUTH_COOKIE_NAME, getClearCookieOptions())
-
-  res.set({
-    'Cache-Control': 'no-store'
-  })
 
   res.json({
     message: 'Déconnecté'

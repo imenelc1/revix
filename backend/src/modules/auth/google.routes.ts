@@ -3,7 +3,7 @@ import passport from '../../config/google.strategy'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { ENV } from '../../config/env'
-import { getAuthCookieOptions } from '../../config/authCookie'
+import { AUTH_COOKIE_NAME, getAuthCookieOptions } from '../../config/authCookie'
 export const googleRoutes = Router()
 
 const OAUTH_CODE_TTL_MS = 60 * 1000
@@ -55,7 +55,7 @@ googleRoutes.get('/exchange', (req: Request, res: Response) => {
   }
 
   const user = pending.user
-  res.cookie('token', pending.token, getAuthCookieOptions())
+  res.cookie(AUTH_COOKIE_NAME, pending.token, getAuthCookieOptions())
   res.json({
     user: {
       id: user._id,

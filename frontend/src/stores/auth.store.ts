@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!user.value)
 
   function loginWithGoogle() {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+    const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:3000/api')
     window.location.href = `${apiUrl}/auth/google`
   }
 
@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
     const res = await api.get('/auth/me', {
       skipAuthRedirect: true,
       headers: {
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-store'
       }
     })
 
