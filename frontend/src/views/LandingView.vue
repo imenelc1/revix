@@ -27,7 +27,7 @@
           <ThemeToggle />
           <template v-if="authStore.isAuthenticated">
           <AppButton variant="ghost" size="sm" to="/dashboard" class="hidden sm:inline-flex">{{ t('nav.dashboard') }}</AppButton>
-          <AppButton variant="primary" size="sm" @click="authStore.logout(); $router.push('/')">
+          <AppButton variant="primary" size="sm" @click="handleLogout">
             {{ t('nav.logout') }}
           </AppButton>
         </template>
@@ -284,6 +284,10 @@ import { useAuthStore } from '@/stores/auth.store'
 const authStore = useAuthStore()
 const { t } = useI18n()
 const ui = useUiStore()
+
+async function handleLogout() {
+  await authStore.logout()
+}
 
 // Navbar shadow on scroll
 const scrolled = ref(false)

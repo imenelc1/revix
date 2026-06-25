@@ -86,8 +86,8 @@ const userInitials = computed(() => {
   return `${f}${l}`.toUpperCase()
 })
 
-function handleLogout() {
-  authStore.logout()
+async function handleLogout() {
+  await authStore.logout()
   router.push('/login')
 }
 </script>

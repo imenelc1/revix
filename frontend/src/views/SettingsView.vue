@@ -260,8 +260,8 @@ function formatMemberSince(date: string): string {
   return formatMonthYear(date, locale.value)
 }
 
-function handleLogout() {
-  authStore.logout()
+async function handleLogout() {
+  await authStore.logout()
   router.push('/login')
 }
 </script>

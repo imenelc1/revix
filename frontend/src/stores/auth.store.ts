@@ -15,6 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user    = ref<User | null>(null)
   const loading = ref(false)
   const error   = ref<string | null>(null)
+  const loggingOut = ref(false)
 
   const isAuthenticated = computed(() => !!user.value)
 
@@ -52,6 +53,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchMe() {
+  if (loggingOut.value) {
+    user.value = null
+    return null
+  }
+
   try {
     const res = await api.get('/auth/me', {
       skipAuthRedirect: true,
@@ -81,6 +87,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+  loggingOut.value = true
+  user.value = null
   try {
     await api.post(
       '/auth/logout',
@@ -89,6 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
     )
   } finally {
     user.value = null
+    loggingOut.value = false
   }
 }
   async function forgotPassword(email: string) {
@@ -120,7 +129,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    user, loading, error, isAuthenticated,
+    user, loading, error, loggingOut, isAuthenticated,
     loginWithGoogle,
     register, login, fetchMe, logout,
     updateProfile, changePassword,
